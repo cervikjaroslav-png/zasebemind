@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070709">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>Zasebe Mind — Klid mysli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --gold-dim: rgba(201,168,76,.18);
+  --black: #070709;
+  --dark2: #0E0E12;
+  --dark3: #141418;
+  --white: #F0EDE8;
+  --white-dim: rgba(240,237,232,.65);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:24px 60px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(7,7,9,.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(201,168,76,.12);
+}
+.logo-wrap { display:flex;align-items:center;gap:12px;text-decoration:none; }
+.logo-text span:first-child { font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;display:block; }
+.logo-text span:last-child { font-size:9px;font-weight:400;letter-spacing:4px;color:rgba(201,168,76,.5);text-transform:uppercase;display:block;margin-top:3px; }
+.nav-back { color:rgba(240,237,232,.65);text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color .3s;display:flex;align-items:center;gap:8px; }
+.nav-back:hover { color:var(--gold); }
+.nav-back::before { content:'←'; font-size:14px; }
+
+/* ── TAB SWITCHER ── */
+.tab-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  padding-top: 110px;
+  padding-bottom: 0;
+  background: var(--black);
+}
+.tab-btn {
+  background: none;
+  border: 1px solid rgba(201,168,76,.25);
+  border-bottom: 2px solid transparent;
+  color: var(--white-dim);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 16px 40px;
+  cursor: pointer;
+  transition: all .35s;
+  font-weight: 400;
+  position: relative;
+}
+.tab-btn:first-child { border-right: none; }
+.tab-btn:hover {
+  color: var(--gold);
+  background: rgba(201,168,76,.03);
+}
+.tab-btn.active {
+  color: var(--gold);
+  background: rgba(201,168,76,.06);
+  border-bottom-color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── PANELS ── */
+.panel {
+  display: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+.panel.visible {
+  display: block;
+  opacity: 1;
+}
+.panel.fade-in {
+  animation: panelFade .45s ease forwards;
+}
+@keyframes panelFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SHARED SECTION ── */
+.sec-tag { display:inline-flex;align-items:center;gap:12px;margin-bottom:14px; }
+.sec-tag::before { content:'';width:28px;height:1px;background:var(--gold); }
+.sec-tag span { font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:300; }
+.sec-title { font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,48px);font-weight:300;line-height:1.1;text-align:center;margin-bottom:10px; }
+.sec-title em { font-style:italic;color:var(--gold); }
+.sec-desc { font-size:16px;line-height:1.9;color:var(--white-dim);text-align:center;max-width:520px;margin-bottom:44px; }
+
+/* ── SHARED CONTROLS ── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: #000;
+  padding: 14px 40px;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: translateX(-101%);
+  transition: transform .3s;
+}
+.btn-main:hover::before { transform: translateX(0); }
+.btn-main span { position: relative; z-index: 1; }
+.btn-reset, .btn-sec {
+  background: none;
+  border: 1px solid rgba(201,168,76,.35);
+  color: rgba(201,168,76,.6);
+  padding: 14px 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .3s;
+}
+.btn-reset:hover, .btn-sec:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,.04);
+}
+
+/* ── SHARED STATS ── */
+.stats-bar {
+  display: flex;
+  gap: 44px;
+  margin-bottom: 54px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.stat { text-align: center; }
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(240,237,232,.4);
+}
+
+/* ── SHARED COMPLETION ── */
+.completion {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 32px;
+  border: 1px solid rgba(201,168,76,.12);
+  background: rgba(201,168,76,.03);
+  max-width: 400px;
+  width: 100%;
+  animation: fadeUp .9s ease;
+  margin-bottom: 32px;
+}
+.completion.show { display: flex; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+
+/* ══════════════════════════════════════════════════════════════════════
+   BREATHING-SPECIFIC CSS
+   ══════════════════════════════════════════════════════════════════════ */
+.breath-section {
+  padding: 90px 40px 100px;
+  border-top: 1px solid var(--gold-dim);
+  background: var(--dark2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* technique picker */
+.techniques {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 54px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tech-btn {
+  background: var(--dark3);
+  border: none;
+  color: var(--white-dim);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 22px;
+  cursor: pointer;
+  transition: all .3s;
+  border-bottom: 2px solid transparent;
+  font-weight: 400;
+}
+.tech-btn:hover { color: var(--gold); background: rgba(201,168,76,.04); }
+.tech-btn.active {
+  color: var(--gold);
+  background: rgba(201,168,76,.06);
+  border-bottom-color: var(--gold);
+}
+.tech-info {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(201,168,76,.5);
+  margin-left: 6px;
+  font-weight: 300;
+}
+
+/* circle arena */
+.arena {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin-bottom: 52px;
+}
+.ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.12);
+}
+.ring-mid {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.07);
+}
+.ring-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(201,168,76,0) 0%,
+    rgba(201,168,76,.35) var(--progress, 0%),
+    rgba(201,168,76,0) var(--progress, 0%)
+  );
+  transition: --progress 0.1s linear;
+}
+.progress-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.progress-track {
+  fill: none;
+  stroke: rgba(201,168,76,.08);
+  stroke-width: 1.5;
+}
+.progress-bar {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 880;
+  stroke-dashoffset: 880;
+  transition: stroke-dashoffset linear;
+  filter: drop-shadow(0 0 6px rgba(201,168,76,.5));
+}
+.breath-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%,
+    rgba(201,168,76,.28) 0%,
+    rgba(201,168,76,.10) 40%,
+    rgba(201,168,76,.03) 70%,
+    transparent 100%
+  );
+  border: 1px solid rgba(201,168,76,.4);
+  transition: transform linear, opacity .4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.breath-core::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.15);
+}
+.breath-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201,168,76,.8);
+  animation: dotpulse 2.5s ease-in-out infinite;
+}
+@keyframes dotpulse {
+  0%,100% { opacity: .5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+.phase-label {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: rgba(201,168,76,.75);
+  white-space: nowrap;
+  transition: opacity .4s;
+}
+.countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 300;
+  color: rgba(240,237,232,.85);
+  line-height: 1;
+  pointer-events: none;
+  transition: opacity .3s;
+  text-shadow: 0 0 30px rgba(201,168,76,.3);
+}
+
+/* cycle counter */
+.cycle-counter { display: flex; align-items: center; gap: 10px; }
+.cycle-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.3);
+  background: transparent;
+  transition: all .4s;
+}
+.cycle-dot.done {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(201,168,76,.5);
+}
+
+/* technique detail cards */
+.tech-detail {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 52px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 520px;
+  width: 100%;
+}
+.phase-card {
+  flex: 1;
+  min-width: 90px;
+  background: var(--dark3);
+  padding: 18px 14px;
+  text-align: center;
+  border-bottom: 2px solid transparent;
+  transition: all .3s;
+}
+.phase-card.active-phase {
+  background: rgba(201,168,76,.06);
+  border-bottom-color: var(--gold);
+}
+.phase-card-name {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.55);
+  margin-bottom: 8px;
+}
+.phase-card-sec {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--white);
+}
+.phase-card-unit {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(240,237,232,.35);
+  margin-top: 2px;
+}
+
+/* benefit note */
+.benefit-note {
+  line-height: 1.8;
+  color: rgba(240,237,232,.5);
+  text-align: center;
+  max-width: 440px;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  border-top: 1px solid var(--gold-dim);
+  padding-top: 28px;
+}
+.benefit-note strong { color: rgba(201,168,76,.75); font-weight: 400; }
+
+/* completion for breathing */
+.completion-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--white);
+}
+.completion-sub {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.65);
+}
+
+/* sound toggle */
+.sound-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: 1px solid rgba(201,168,76,.15);
+  color: rgba(201,168,76,.45);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all .3s;
+  border-radius: 2px;
+}
+.sound-toggle:hover { color: var(--gold); border-color: rgba(201,168,76,.4); }
+.top-bar {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 36px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MEDITATION-SPECIFIC CSS
+   ══════════════════════════════════════════════════════════════════════ */
+.med-section {
+  padding: 90px 40px 100px;
+  background: var(--black);
+  border-top: 1px solid var(--gold-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ambience picker */
+.ambience-row {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 44px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.amb-btn {
+  background: var(--dark3);
+  border: none;
+  color: var(--white-dim);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: all .3s;
+  border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.amb-btn:hover { color: var(--gold); background: rgba(201,168,76,.04); }
+.amb-btn.active { color: var(--gold); background: rgba(201,168,76,.06); border-bottom-color: var(--gold); }
+.amb-icon { font-size: 14px; }
+
+/* duration picker */
+.duration-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 56px;
+  width: 100%;
+  max-width: 420px;
+}
+.dur-display { display: flex; align-items: baseline; gap: 8px; }
+.dur-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  transition: color .3s;
+  min-width: 110px;
+  text-align: right;
+}
+.dur-unit {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.5);
+  font-weight: 300;
+  padding-bottom: 10px;
+}
+.dur-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold) var(--fill, 0%), rgba(201,168,76,.12) var(--fill, 0%));
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.dur-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--dark2);
+  border: 2px solid var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(201,168,76,.5);
+  transition: box-shadow .2s;
+}
+.dur-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 22px rgba(201,168,76,.8);
+}
+.dur-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--dark2);
+  border: 2px solid var(--gold);
+  cursor: pointer;
+}
+.dur-ticks {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 2px;
+}
+.dur-tick {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: rgba(201,168,76,.3);
+  font-weight: 300;
+  transition: color .3s;
+}
+.dur-tick.near { color: rgba(201,168,76,.65); }
+
+/* clock arena */
+.clock-arena {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin-bottom: 48px;
+}
+.clock-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.c-track { fill:none;stroke:rgba(201,168,76,.07);stroke-width:1.5; }
+.c-bar {
+  fill: none;
+  stroke: url(#goldGrad);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 791;
+  stroke-dashoffset: 791;
+  filter: drop-shadow(0 0 6px rgba(201,168,76,.4));
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* orbiting dot */
+.orbit-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 14px rgba(201,168,76,.9);
+  top: 50%;
+  left: 50%;
+  margin: -4px 0 0 -4px;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* pulse rings */
+.pulse-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.06);
+  animation: clockpulse 6s ease-in-out infinite;
+}
+.pulse-ring:nth-child(1){inset:-12px;animation-delay:0s;}
+.pulse-ring:nth-child(2){inset:-26px;animation-delay:2s;border-color:rgba(201,168,76,.04);}
+.pulse-ring:nth-child(3){inset:-44px;animation-delay:4s;border-color:rgba(201,168,76,.025);}
+@keyframes clockpulse {
+  0%,100%{opacity:.4;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.015)}
+}
+
+.clock-inner {
+  position: absolute;
+  inset: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: radial-gradient(circle, rgba(201,168,76,.03) 0%, transparent 70%);
+}
+.clock-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: 2px;
+  transition: color .5s;
+}
+.clock-phase {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.6);
+  font-weight: 300;
+}
+
+/* wave viz */
+.wave-container {
+  width: 100%;
+  max-width: 480px;
+  height: 48px;
+  margin-bottom: 44px;
+  position: relative;
+  overflow: hidden;
+}
+.wave-canvas { width: 100%; height: 100%; }
+
+/* volume */
+.vol-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 44px;
+}
+.vol-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.5);
+  width: 52px;
+}
+.vol-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 180px;
+  height: 2px;
+  background: rgba(201,168,76,.15);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(201,168,76,.5);
+}
+.vol-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+}
+
+/* milestones */
+.milestones {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 40px;
+  position: relative;
+}
+.ms-line { height: 1px; background: rgba(201,168,76,.12); flex: 1; }
+.ms-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,.25);
+  background: var(--dark3);
+  transition: all .6s;
+  position: relative;
+  flex-shrink: 0;
+}
+.ms-dot.passed {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(201,168,76,.6);
+}
+.ms-dot-label {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(201,168,76,.4);
+  white-space: nowrap;
+}
+
+/* med completion extras */
+.comp-symbol { font-size:32px; margin-bottom: 4px; }
+.comp-title { font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;font-style:italic;color:var(--white); }
+.comp-sub { font-size:12px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.6); }
+.comp-stat { font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--white-dim);margin-top:6px; }
+
+/* med tip */
+.med-tip {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  color: rgba(240,237,232,.45);
+  text-align: center;
+  max-width: 420px;
+  border-top: 1px solid var(--gold-dim);
+  padding-top: 28px;
+  transition: opacity .6s;
+}
+.med-tip strong { color: rgba(201,168,76,.65); font-weight: 400; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .breath-section, .med-section { padding: 90px 20px 80px !important; }
+  .sec-desc { font-size: 16px !important; }
+  .tech-btn { padding: 14px 18px !important; font-size: 11px !important; }
+  .amb-btn { padding: 14px 18px !important; font-size: 11px !important; }
+  .tab-btn { padding: 14px 22px !important; font-size: 10px !important; }
+  .benefit-note { font-size: 16px !important; }
+  .med-tip { font-size: 16px !important; }
+  .phase-card-sec { font-size: 22px !important; }
+  .stat-value { font-size: 28px !important; }
+  .controls { margin-bottom: 32px !important; }
+  .info-grid-4 { grid-template-columns: 1fr 1fr !important; }
+  .info-grid-2 { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .info-item-title { font-size: 15px !important; }
+  .info-item-text { font-size: 14px !important; }
+  .info-card-title { font-size: 15px !important; }
+  .info-card-text { font-size: 14px !important; }
+  nav { padding: 14px 20px !important; }
+}
+@media (max-width: 480px) {
+  .arena { width: 260px; height: 260px; }
+  .breath-core { width: 110px; height: 110px; }
+  .countdown { font-size: 42px; }
+  .stats-bar { gap: 28px; }
+  .clock-arena { width: 240px; height: 240px; }
+  .clock-time { font-size: 42px; }
+  .info-grid-4 { grid-template-columns: 1fr !important; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo-wrap" href="zasebe-mind.html">
+    <div class="logo-text">
+      <span>Zasebe Mind</span>
+      <span>Klid mysli</span>
+    </div>
+  </a>
+  <a class="nav-back" href="zasebe-mind.html">Zpět na Zasebe Mind</a>
+</nav>
+
+<!-- ═══ TAB SWITCHER ═══ -->
+<div class="tab-bar">
+  <button class="tab-btn active" id="tabBreath" onclick="switchTab('breath')">Dechové cvičení</button>
+  <button class="tab-btn" id="tabMed" onclick="switchTab('med')">Meditace</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     PANEL 1 — BREATHING
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="panel-breath" class="panel visible">
+
+<section class="breath-section">
+
+  <div class="sec-tag"><span>Dechové cvičení</span></div>
+  <h2 class="sec-title">Zklidni svou<br><em>mysl dýcháním</em></h2>
+  <p class="sec-desc">Vědomé dýchání přepne nervový systém z boje do klidu během minut. Vyber techniku a začni.</p>
+
+  <!-- TECHNIQUE PICKER -->
+  <div class="techniques" id="techPicker">
+    <button class="tech-btn active" onclick="breath.selectTech(0)" id="tb0">
+      4–7–8 <span class="tech-info">Klid & spánek</span>
+    </button>
+    <button class="tech-btn" onclick="breath.selectTech(1)" id="tb1">
+      Box <span class="tech-info">Soustředění</span>
+    </button>
+    <button class="tech-btn" onclick="breath.selectTech(2)" id="tb2">
+      4–4–4 <span class="tech-info">Rychlý reset</span>
+    </button>
+    <button class="tech-btn" onclick="breath.selectTech(3)" id="tb3">
+      2–1–4–1 <span class="tech-info">Hluboký klid</span>
+    </button>
+  </div>
+
+  <!-- PHASE DETAIL CARDS -->
+  <div class="tech-detail" id="phaseCards"></div>
+
+  <!-- SOUND TOGGLE -->
+  <div class="top-bar">
+    <button class="sound-toggle" id="soundBtn" onclick="breath.toggleSound()" title="Tón při přechodu">🔔</button>
+  </div>
+
+  <!-- ARENA -->
+  <div class="arena" id="arena">
+    <div class="ring-outer"></div>
+    <div class="ring-mid"></div>
+    <svg class="progress-svg" viewBox="0 0 320 320">
+      <circle class="progress-track" cx="160" cy="160" r="140"/>
+      <circle class="progress-bar" id="progressBar" cx="160" cy="160" r="140"/>
+    </svg>
+    <div class="breath-core" id="breathCore">
+      <div class="breath-dot" id="breathDot"></div>
+    </div>
+    <div class="countdown" id="countdown">–</div>
+    <div class="phase-label" id="phaseLabel">Připraven</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value" id="statCycles">0</div>
+      <div class="stat-label">Cyklů</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statTime">0:00</div>
+      <div class="stat-label">Čas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statBpm">–</div>
+      <div class="stat-label">Dechů / min</div>
+    </div>
+  </div>
+
+  <!-- CYCLE DOTS -->
+  <div class="cycle-counter" id="cycleDots" style="margin-bottom:36px;"></div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="btn-main" id="mainBtn" onclick="breath.toggle()"><span id="btnLabel">Začít</span></button>
+    <button class="btn-reset" onclick="breath.reset()">Reset</button>
+  </div>
+
+  <!-- COMPLETION -->
+  <div class="completion" id="completion">
+    <div class="completion-title">Skvělá práce ✦</div>
+    <div class="completion-sub">Cíl splněn — cítíš rozdíl?</div>
+  </div>
+
+  <!-- BENEFIT -->
+  <p class="benefit-note" id="benefitNote"></p>
+
+</section>
+
+<!-- ═══ BREATHING INFO SECTION ═══ -->
+<section style="padding:70px 40px 90px;background:var(--dark2);border-top:1px solid var(--gold-dim);display:flex;flex-direction:column;align-items:center;">
+
+  <div class="info-grid-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:900px;width:100%;margin-bottom:50px;">
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);margin-bottom:10px;">4–7–8</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Klid & spánek</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Snižuje srdeční tep a aktivuje vágový nerv — přirozený vypínač stresu. Ideální před spánkem.</div>
+    </div>
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);margin-bottom:10px;">Box</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Soustředění</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Symetrie 4×4 synchronizuje hemisféry mozku. Používají ho elitní vojáci pro soustředění pod tlakem.</div>
+    </div>
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);margin-bottom:10px;">4–4–4</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Rychlý reset</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Nejjednodušší technika pro rychlý reset v průběhu dne. Tři minuty stačí ke snížení kortizolu.</div>
+    </div>
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);margin-bottom:10px;">2–1–4–1</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Hluboký klid</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Poměr výdechu 1:2 vůči nádechu aktivuje relaxační odpověď nervového systému. Úvod do meditace.</div>
+    </div>
+  </div>
+
+  <div class="info-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:70px;max-width:900px;width:100%;margin-bottom:50px;">
+    <div>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(76,175,80,.65);margin-bottom:12px;display:block;">✓ Kdy dýchat vědomě</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Ráno po probuzení — 3 minuty</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Nastav nervový systém na klid dřív než tě pohltí den. Box breathing nebo 4–4–4.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Před spaním — technika 4–7–8</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Aktivuje vágový nerv a přepne tělo do režimu regenerace. Nahradí doomscrolling.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Při stresu — okamžitý reset</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Kdykoli cítíš nápor, 5 kol box breathingu sníží kortizol a vrátí jasnost myšlení.</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(76,175,80,.65);margin-bottom:12px;display:block;">✓ Proč to funguje</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Parasympatický nervový systém</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Dlouhý výdech aktivuje „brzdný pedál" těla — snižuje tepovou frekvenci a krevní tlak.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Vágový nerv — klíč ke klidu</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Nejdelší nerv v těle spojuje mozek se střevy. Dechová cvičení ho stimulují a zlepšují celkové zdraví.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Snížení kortizolu</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Studie ukazují: 5 minut řízeného dýchání sníží hladinu stresového hormonu o 23 %.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</div><!-- /panel-breath -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     PANEL 2 — MEDITATION
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="panel-med" class="panel">
+
+<section class="med-section">
+
+  <div class="sec-tag"><span>Meditace</span></div>
+  <h2 class="sec-title">Ticho, které<br><em>obnovuje</em></h2>
+  <p class="sec-desc">Vyber délku a ambience. Tibetská mísa tě provede začátkem i koncem. Zbytek je tvůj prostor.</p>
+
+  <!-- AMBIENCE -->
+  <div class="ambience-row" id="med-ambienceRow">
+    <button class="amb-btn active" onclick="med.selectAmbience(0)"><span class="amb-icon">🌊</span> Oceán</button>
+    <button class="amb-btn" onclick="med.selectAmbience(1)"><span class="amb-icon">🌧</span> Déšť</button>
+    <button class="amb-btn" onclick="med.selectAmbience(2)"><span class="amb-icon">🔮</span> 432 Hz Drone</button>
+    <button class="amb-btn" onclick="med.selectAmbience(3)"><span class="amb-icon">🌌</span> Vesmírný klid</button>
+    <button class="amb-btn" onclick="med.selectAmbience(4)"><span class="amb-icon">🔇</span> Ticho + mísa</button>
+  </div>
+
+  <!-- DURATION -->
+  <div class="duration-wrap">
+    <div class="dur-display">
+      <div class="dur-number" id="med-durNumber">10</div>
+      <div class="dur-unit">minut</div>
+    </div>
+    <input type="range" class="dur-slider" id="med-durSlider"
+      min="10" max="60" step="1" value="10"
+      oninput="med.onDurSlider(this.value)">
+    <div class="dur-ticks">
+      <span class="dur-tick" id="med-tick10">10</span>
+      <span class="dur-tick" id="med-tick20">20</span>
+      <span class="dur-tick" id="med-tick30">30</span>
+      <span class="dur-tick" id="med-tick40">40</span>
+      <span class="dur-tick" id="med-tick50">50</span>
+      <span class="dur-tick" id="med-tick60">60</span>
+    </div>
+  </div>
+
+  <!-- CLOCK -->
+  <div class="clock-arena" id="med-clockArena">
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <svg class="clock-svg" viewBox="0 0 280 280">
+      <defs>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#C9A84C" stop-opacity=".6"/>
+          <stop offset="100%" stop-color="#E8C96A"/>
+        </linearGradient>
+      </defs>
+      <circle class="c-track" cx="140" cy="140" r="126"/>
+      <circle class="c-bar" id="med-cBar" cx="140" cy="140" r="126"/>
+    </svg>
+    <div class="orbit-dot" id="med-orbitDot"></div>
+    <div class="clock-inner">
+      <div class="clock-time" id="med-clockTime">10:00</div>
+      <div class="clock-phase" id="med-clockPhase">Připraveno</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS (hned pod clock) -->
+  <div class="controls">
+    <button class="btn-main" id="med-mainBtn" onclick="med.toggle()"><span id="med-btnLabel">Začít meditaci</span></button>
+    <button class="btn-sec" onclick="med.reset()">Reset</button>
+  </div>
+
+  <!-- WAVE -->
+  <div class="wave-container">
+    <canvas class="wave-canvas" id="med-waveCanvas"></canvas>
+  </div>
+
+  <!-- VOLUME -->
+  <div class="vol-row">
+    <span class="vol-label">Hlasitost</span>
+    <input type="range" class="vol-slider" id="med-volSlider" min="0" max="1" step="0.01" value="0.5" oninput="med.setVolume(this.value)">
+  </div>
+
+  <!-- MILESTONES -->
+  <div class="milestones" id="med-milestones" style="width:100%;max-width:360px;margin-bottom:52px;"></div>
+
+  <!-- COMPLETION -->
+  <div class="completion" id="med-completion">
+    <div class="comp-symbol">✦</div>
+    <div class="comp-title">Meditace dokončena</div>
+    <div class="comp-sub" id="med-compSub">10 minut klidu</div>
+    <div class="comp-stat" id="med-compStat"></div>
+  </div>
+
+  <!-- TIP -->
+  <p class="med-tip" id="med-medTip"></p>
+
+</section>
+
+<!-- ═══ MEDITATION INFO SECTION ═══ -->
+<section style="padding:70px 40px 90px;background:var(--dark2);border-top:1px solid var(--gold-dim);display:flex;flex-direction:column;align-items:center;">
+
+  <div class="info-grid-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:900px;width:100%;margin-bottom:50px;">
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;border-left:2px solid transparent;transition:border-color .3s,background .3s;">
+      <div style="font-size:28px;margin-bottom:12px;">🌊</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Oceán</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Zvuky oceánu pro hluboké uvolnění a odpoutání od myšlenek.</div>
+    </div>
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:12px;">🌧</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Déšť</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Konstantní bílý šum deště zklidní nervový systém a pomůže soustředění.</div>
+    </div>
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:12px;">🔮</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">432 Hz Drone</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Frekvence 432 Hz — tzv. přirozené ladění. Rezonuje s tělem a zklidňuje mysl.</div>
+    </div>
+    <div style="background:var(--dark3);padding:28px 18px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:12px;">🌌</div>
+      <div class="info-card-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:8px;">Vesmírný klid</div>
+      <div class="info-card-text" style="font-size:14px;line-height:1.8;color:rgba(240,237,232,.7);font-weight:300;">Ambientní zvuková krajina pro nejhlubší meditační stavy.</div>
+    </div>
+  </div>
+
+  <div class="info-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:70px;max-width:900px;width:100%;margin-bottom:50px;">
+    <div>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(76,175,80,.65);margin-bottom:12px;display:block;">✓ Jak meditovat</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Sedni si pohodlně — rovná záda</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Židle, polštář, zem — nezáleží na pozici, důležité je pohodlí a vzpřímená páteř.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Zaměř se na dech</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Pozoruj nádech a výdech. Když mysl odbloudí, jemně se vrať. To je celá praxe.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Začni s 10 minutami</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Nemusíš sedět hodinu. 10 minut denně už po 8 týdnech mění strukturu mozku.</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(76,175,80,.65);margin-bottom:12px;display:block;">✓ Proč meditovat</span>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Snižuje stres a úzkost</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Studie z Harvardu: 8 týdnů meditace snižuje aktivitu amygdaly — centra strachu v mozku.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,76,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Zlepšuje soustředění</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Pravidelná praxe zvyšuje schopnost udržet pozornost a odolnost vůči rozptýlení.</div></div>
+        </div>
+        <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
+          <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Lepší spánek a regenerace</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Meditace před spaním aktivuje parasympatický nervový systém a zlepšuje kvalitu spánku.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:36px 44px;border:1px solid rgba(201,168,76,.15);background:rgba(201,168,76,.02);position:relative;max-width:600px;width:100%;">
+    <div style="content:'\"';position:absolute;top:-18px;left:28px;font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:rgba(201,168,76,.08);line-height:1;">"</div>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;line-height:1.55;color:var(--white);margin-bottom:14px;position:relative;z-index:1;">„Meditace není útěk od reality. Je to setkání s ní."</p>
+    <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,.7);">Thích Nhất Hạnh</span>
+  </div>
+
+</section>
+
+</div><!-- /panel-med -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  const panelBreath = document.getElementById('panel-breath');
+  const panelMed    = document.getElementById('panel-med');
+  const tabBreath   = document.getElementById('tabBreath');
+  const tabMed      = document.getElementById('tabMed');
+
+  // Stop/reset whichever app is running
+  if (breath._running) breath.reset();
+  if (med._running)    med.reset();
+
+  if (tab === 'breath') {
+    tabBreath.classList.add('active');
+    tabMed.classList.remove('active');
+    panelMed.classList.remove('visible', 'fade-in');
+    panelMed.style.display = 'none';
+    panelBreath.style.display = 'block';
+    // Force reflow then add animation class
+    void panelBreath.offsetWidth;
+    panelBreath.classList.add('visible', 'fade-in');
+  } else {
+    tabMed.classList.add('active');
+    tabBreath.classList.remove('active');
+    panelBreath.classList.remove('visible', 'fade-in');
+    panelBreath.style.display = 'none';
+    panelMed.style.display = 'block';
+    void panelMed.offsetWidth;
+    panelMed.classList.add('visible', 'fade-in');
+    // Reinit wave drawing for meditation
+    med.drawWave();
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════════════
+// BREATHING NAMESPACE
+// ══════════════════════════════════════════════════════════════════════
+const breath = (function() {
+
+  const TECHS = [
+    {
+      id: 0, name: '4–7–8', goal: 4,
+      phases: [
+        { name: 'Nádech', sec: 4, action: 'inhale', label: 'Nadechuj se...' },
+        { name: 'Zadržení', sec: 7, action: 'hold', label: 'Drž dech...' },
+        { name: 'Výdech', sec: 8, action: 'exhale', label: 'Pomalu vydechni...' }
+      ],
+      benefit: '„Technika 4–7–8 snižuje srdeční tep a aktivuje <strong>vágový nerv</strong> — přirozený vypínač stresu. Ideální před spánkem nebo po náročném dni."',
+      bpm: (4+7+8)
+    },
+    {
+      id: 1, name: 'Box Breathing', goal: 5,
+      phases: [
+        { name: 'Nádech',   sec: 4, action: 'inhale', label: 'Nadechuj se...' },
+        { name: 'Zadržení', sec: 4, action: 'hold',   label: 'Drž nahoře...' },
+        { name: 'Výdech',   sec: 4, action: 'exhale', label: 'Vydechuj...' },
+        { name: 'Pauza',    sec: 4, action: 'hold2',  label: 'Drž dole...' }
+      ],
+      benefit: '„Box Breathing používají <strong>Navy SEALs</strong> pro okamžité soustředění pod tlakem. Symetrie 4×4 synchronizuje hemisféry mozku."',
+      bpm: (4*4)
+    },
+    {
+      id: 2, name: '4–4–4', goal: 6,
+      phases: [
+        { name: 'Nádech', sec: 4, action: 'inhale', label: 'Nadechuj se...' },
+        { name: 'Zadržení', sec: 4, action: 'hold', label: 'Drž dech...' },
+        { name: 'Výdech',  sec: 4, action: 'exhale', label: 'Vydechuj...' }
+      ],
+      benefit: '„Nejjednodušší technika pro <strong>rychlý reset</strong> v průběhu dne. Tři minuty stačí ke snížení kortizolu."',
+      bpm: (4*3)
+    },
+    {
+      id: 3, name: '2–1–4–1', goal: 8,
+      phases: [
+        { name: 'Nádech',   sec: 2, action: 'inhale', label: 'Rychlý nádech...' },
+        { name: 'Zadržení', sec: 1, action: 'hold',   label: 'Drž...' },
+        { name: 'Výdech',   sec: 4, action: 'exhale', label: 'Dlouhý výdech...' },
+        { name: 'Pauza',    sec: 1, action: 'hold2',  label: 'Pauza...' }
+      ],
+      benefit: '„Poměr výdechu 1:2 vůči nádechu <strong>aktivuje relaxační odpověď</strong> nervového systému. Vhodné jako úvod do meditace."',
+      bpm: (2+1+4+1)
+    }
+  ];
+
+  let currentTech = 0;
+  let running = false;
+  let paused = false;
+  let currentPhase = 0;
+  let phaseTimer = null;
+  let phaseElapsed = 0;
+  let totalCycles = 0;
+  let totalSeconds = 0;
+  let sessionTimer = null;
+  let soundOn = true;
+  let animFrame = null;
+  let phaseStart = null;
+  const CIRCUMFERENCE = 2 * Math.PI * 140;
+
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  function playTone(freq, dur, vol) {
+    vol = vol || 0.08;
+    if (!soundOn) return;
+    try {
+      ensureAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.05);
+      gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + dur);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + dur + 0.05);
+    } catch(e) {}
+  }
+  function toneForAction(action) {
+    const tones = { inhale: 528, hold: 396, exhale: 285, hold2: 320 };
+    playTone(tones[action] || 432, 0.4);
+  }
+
+  function selectTech(idx) {
+    if (running) _reset();
+    currentTech = idx;
+    document.querySelectorAll('#techPicker .tech-btn').forEach(function(b, i) {
+      b.classList.toggle('active', i === idx);
+    });
+    renderPhaseCards();
+    renderCycleDots();
+    updateBenefit();
+    updateBpm();
+  }
+
+  function renderPhaseCards() {
+    var t = TECHS[currentTech];
+    var el = document.getElementById('phaseCards');
+    el.innerHTML = t.phases.map(function(p, i) {
+      return '<div class="phase-card" id="pc' + i + '">' +
+        '<div class="phase-card-name">' + p.name + '</div>' +
+        '<div class="phase-card-sec">' + p.sec + '</div>' +
+        '<div class="phase-card-unit">sekund</div></div>';
+    }).join('');
+  }
+
+  function renderCycleDots() {
+    var t = TECHS[currentTech];
+    var el = document.getElementById('cycleDots');
+    var html = '';
+    for (var i = 0; i < t.goal; i++) {
+      html += '<div class="cycle-dot' + (i < totalCycles ? ' done' : '') + '" id="cd' + i + '"></div>';
+    }
+    el.innerHTML = html;
+  }
+
+  function updateBenefit() {
+    document.getElementById('benefitNote').innerHTML = TECHS[currentTech].benefit;
+  }
+
+  function updateBpm() {
+    var t = TECHS[currentTech];
+    var cycleLen = t.phases.reduce(function(a, b) { return a + b.sec; }, 0);
+    var bpm = (60 / cycleLen).toFixed(1);
+    document.getElementById('statBpm').textContent = bpm;
+  }
+
+  function startPhase(phaseIdx) {
+    var t = TECHS[currentTech];
+    var phase = t.phases[phaseIdx];
+    currentPhase = phaseIdx;
+
+    document.querySelectorAll('#phaseCards .phase-card').forEach(function(c, i) {
+      c.classList.toggle('active-phase', i === phaseIdx);
+    });
+
+    document.getElementById('phaseLabel').textContent = phase.label;
+    toneForAction(phase.action);
+
+    var coreEl = document.getElementById('breathCore');
+    if (phase.action === 'inhale') {
+      coreEl.style.transition = 'transform ' + phase.sec + 's ease-in-out';
+      coreEl.style.transform = 'translate(-50%,-50%) scale(1.55)';
+    } else if (phase.action === 'exhale') {
+      coreEl.style.transition = 'transform ' + phase.sec + 's ease-in-out';
+      coreEl.style.transform = 'translate(-50%,-50%) scale(0.85)';
+    } else {
+      coreEl.style.transition = 'transform .3s ease-in-out';
+    }
+
+    phaseStart = performance.now();
+    animatePhase(phase.sec, phaseIdx);
+  }
+
+  function animatePhase(totalSec, phaseIdx) {
+    function frame(now) {
+      if (!running || paused) return;
+      var elapsed = (now - phaseStart) / 1000;
+      var remaining = Math.max(0, totalSec - elapsed);
+      var progress = Math.min(1, elapsed / totalSec);
+
+      document.getElementById('countdown').textContent = Math.ceil(remaining);
+
+      var offset = CIRCUMFERENCE * (1 - progress);
+      var bar = document.getElementById('progressBar');
+      bar.style.strokeDashoffset = offset;
+      bar.style.transition = 'none';
+
+      if (elapsed >= totalSec - 0.05) {
+        var t = TECHS[currentTech];
+        var nextPhase = (phaseIdx + 1) % t.phases.length;
+        if (nextPhase === 0) {
+          totalCycles++;
+          document.getElementById('statCycles').textContent = totalCycles;
+          updateCycleDots();
+          if (totalCycles >= t.goal) {
+            finishSession();
+            return;
+          }
+        }
+        startPhase(nextPhase);
+      } else {
+        animFrame = requestAnimationFrame(frame);
+      }
+    }
+    animFrame = requestAnimationFrame(frame);
+  }
+
+  function updateCycleDots() {
+    var t = TECHS[currentTech];
+    for (var i = 0; i < t.goal; i++) {
+      var d = document.getElementById('cd' + i);
+      if (d) d.classList.toggle('done', i < totalCycles);
+    }
+  }
+
+  function startSessionTimer() {
+    sessionTimer = setInterval(function() {
+      totalSeconds++;
+      var m = Math.floor(totalSeconds / 60);
+      var s = totalSeconds % 60;
+      document.getElementById('statTime').textContent =
+        m + ':' + s.toString().padStart(2, '0');
+    }, 1000);
+  }
+
+  function _toggle() {
+    if (!running) {
+      running = true;
+      paused = false;
+      document.getElementById('btnLabel').textContent = 'Pauza';
+      document.getElementById('completion').classList.remove('show');
+      startSessionTimer();
+      startPhase(0);
+    } else if (!paused) {
+      paused = true;
+      cancelAnimationFrame(animFrame);
+      clearInterval(sessionTimer);
+      document.getElementById('btnLabel').textContent = 'Pokračovat';
+      document.getElementById('phaseLabel').textContent = 'Pozastaveno';
+      document.getElementById('breathCore').style.transition = 'transform .5s';
+      document.getElementById('breathCore').style.transform = 'translate(-50%,-50%) scale(1)';
+    } else {
+      paused = false;
+      document.getElementById('btnLabel').textContent = 'Pauza';
+      startSessionTimer();
+      phaseStart = performance.now();
+      startPhase(currentPhase);
+    }
+  }
+
+  function _reset() {
+    running = false;
+    paused = false;
+    cancelAnimationFrame(animFrame);
+    clearInterval(sessionTimer);
+    totalCycles = 0;
+    totalSeconds = 0;
+    currentPhase = 0;
+    document.getElementById('btnLabel').textContent = 'Začít';
+    document.getElementById('countdown').textContent = '–';
+    document.getElementById('phaseLabel').textContent = 'Připraven';
+    document.getElementById('statCycles').textContent = '0';
+    document.getElementById('statTime').textContent = '0:00';
+    document.getElementById('breathCore').style.transition = 'transform .6s ease-in-out';
+    document.getElementById('breathCore').style.transform = 'translate(-50%,-50%) scale(1)';
+    document.getElementById('progressBar').style.strokeDashoffset = CIRCUMFERENCE;
+    document.querySelectorAll('#phaseCards .phase-card').forEach(function(c) { c.classList.remove('active-phase'); });
+    document.getElementById('completion').classList.remove('show');
+    updateCycleDots();
+    updateBpm();
+  }
+
+  function finishSession() {
+    running = false;
+    cancelAnimationFrame(animFrame);
+    clearInterval(sessionTimer);
+    document.getElementById('btnLabel').textContent = 'Znovu';
+    document.getElementById('phaseLabel').textContent = '✦';
+    document.getElementById('countdown').textContent = '✓';
+    document.getElementById('breathCore').style.transition = 'transform .8s ease-in-out';
+    document.getElementById('breathCore').style.transform = 'translate(-50%,-50%) scale(1.1)';
+    document.getElementById('completion').classList.add('show');
+    playTone(528, 1.2, 0.1);
+    setTimeout(function() { playTone(639, 1.2, 0.08); }, 500);
+    totalCycles = 0;
+    currentPhase = 0;
+  }
+
+  function _toggleSound() {
+    soundOn = !soundOn;
+    document.getElementById('soundBtn').textContent = soundOn ? '🔔' : '🔕';
+    document.getElementById('soundBtn').style.opacity = soundOn ? '1' : '.4';
+  }
+
+  // Init
+  selectTech(0);
+  updateBpm();
+
+  return {
+    selectTech: selectTech,
+    toggle: _toggle,
+    reset: _reset,
+    toggleSound: _toggleSound,
+    get _running() { return running; }
+  };
+
+})();
+
+
+// ══════════════════════════════════════════════════════════════════════
+// MEDITATION NAMESPACE
+// ══════════════════════════════════════════════════════════════════════
+const med = (function() {
+
+  const DURATIONS = [10 * 60, 15 * 60, 20 * 60];
+  const AMBIENCES = [
+    { name: 'Oceán',        id: 0 },
+    { name: 'Déšť',         id: 1 },
+    { name: '432 Hz Drone', id: 2 },
+    { name: 'Vesmírný klid',id: 3 },
+    { name: 'Ticho + mísa', id: 4 },
+  ];
+  const TIPS = [
+    'Zaměř svou pozornost na dech. Když mysl odbloudí — to je v pořádku. Jen se jemně vrať.',
+    'Skenuj tělo od prstů na nohou po temeno hlavy. Kde cítíš napětí — dovolte mu odejít.',
+    'Představ si místo, kde se cítíš v bezpečí. Hory, les, moře — tvůj vnitřní azyl.',
+    'Opakuj si v mysli slovo <strong>„klid"</strong>. Při nádechu ho přijmi, při výdechu ho rozešli.',
+    'Pozoruj myšlenky jako mraky. Nepřitahuj je — nech je plynout.',
+  ];
+
+  const CIRCUMFERENCE = 2 * Math.PI * 126;
+
+  let currentDur = 0;
+  let currentAmb = 0;
+  let running = false;
+  let paused = false;
+  let secondsLeft = 10 * 60;
+  let totalDur = 10 * 60;
+  let mainInterval = null;
+  let orbitAngle = -90;
+  let audioCtx = null;
+  let masterGain = null;
+  let ambNodes = [];
+  let orbitRAF = null;
+  let waveRAF = null;
+  let sessionStartTime = null;
+  let waveOffset = 0;
+  let tipIdx = 0;
+
+  function ensureCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.5;
+      masterGain.connect(audioCtx.destination);
+    }
+  }
+
+  function _setVolume(v) {
+    if (masterGain) masterGain.gain.setTargetAtTime(parseFloat(v), audioCtx.currentTime, 0.1);
+  }
+
+  function playBowl(freq, duration) {
+    freq = freq || 174;
+    duration = duration || 5;
+    ensureCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    var t = audioCtx.currentTime;
+    var osc = audioCtx.createOscillator();
+    var osc2 = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    var gain2 = audioCtx.createGain();
+
+    osc.type = 'sine'; osc.frequency.value = freq;
+    osc2.type = 'sine'; osc2.frequency.value = freq * 2.756;
+
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.55, t + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+    gain2.gain.setValueAtTime(0, t);
+    gain2.gain.linearRampToValueAtTime(0.18, t + 0.04);
+    gain2.gain.exponentialRampToValueAtTime(0.001, t + duration * 0.6);
+
+    osc.connect(gain); osc2.connect(gain2);
+    gain.connect(masterGain); gain2.connect(masterGain);
+    osc.start(t); osc2.start(t);
+    osc.stop(t + duration + 0.1); osc2.stop(t + duration + 0.1);
+  }
+
+  function createNoise(type) {
+    type = type || 'brown';
+    ensureCtx();
+    var bufferSize = audioCtx.sampleRate * 4;
+    var buffer = audioCtx.createBuffer(2, bufferSize, audioCtx.sampleRate);
+    for (var ch = 0; ch < 2; ch++) {
+      var data = buffer.getChannelData(ch);
+      var last = 0;
+      for (var i = 0; i < bufferSize; i++) {
+        var white = Math.random() * 2 - 1;
+        if (type === 'brown') {
+          data[i] = (last + 0.02 * white) / 1.02;
+          last = data[i];
+          data[i] *= 3.5;
+        } else {
+          data[i] = white * 0.6;
+        }
+      }
+    }
+    var src = audioCtx.createBufferSource();
+    src.buffer = buffer;
+    src.loop = true;
+    return src;
+  }
+
+  function startOcean() {
+    ensureCtx();
+    var noise = createNoise('brown');
+    var filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 600;
+    filter.Q.value = 0.8;
+
+    var lfoGain = audioCtx.createGain();
+    var lfo = audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.12;
+    var lfoDepth = audioCtx.createGain();
+    lfoDepth.gain.value = 200;
+    lfo.connect(lfoDepth);
+    lfoDepth.connect(filter.frequency);
+
+    var g = audioCtx.createGain();
+    g.gain.value = 0;
+    noise.connect(filter);
+    filter.connect(g);
+    g.connect(masterGain);
+
+    noise.start();
+    lfo.start();
+    g.gain.setTargetAtTime(1, audioCtx.currentTime, 2);
+    ambNodes = [noise, lfo, g];
+  }
+
+  function startRain() {
+    ensureCtx();
+    var noise = createNoise('pink');
+    var filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 2200;
+    filter.Q.value = 0.4;
+
+    var filter2 = audioCtx.createBiquadFilter();
+    filter2.type = 'lowpass';
+    filter2.frequency.value = 3500;
+
+    var g = audioCtx.createGain();
+    g.gain.value = 0;
+    noise.connect(filter);
+    filter.connect(filter2);
+    filter2.connect(g);
+    g.connect(masterGain);
+
+    noise.start();
+    g.gain.setTargetAtTime(0.9, audioCtx.currentTime, 1.5);
+    ambNodes = [noise, g];
+  }
+
+  function startDrone() {
+    ensureCtx();
+    var freqs = [108, 216, 432, 864];
+    var vols  = [0.22, 0.16, 0.14, 0.08];
+    var nodes = [];
+    freqs.forEach(function(f, i) {
+      var osc = audioCtx.createOscillator();
+      var vibrato = audioCtx.createOscillator();
+      var vibGain = audioCtx.createGain();
+      var g = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      vibrato.type = 'sine';
+      vibrato.frequency.value = 0.15 + i * 0.05;
+      vibGain.gain.value = f * 0.003;
+
+      vibrato.connect(vibGain);
+      vibGain.connect(osc.frequency);
+      g.gain.value = 0;
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(); vibrato.start();
+      g.gain.setTargetAtTime(vols[i], audioCtx.currentTime, 2.5);
+      nodes.push(osc, vibrato, g);
+    });
+    ambNodes = nodes;
+  }
+
+  function startSpace() {
+    ensureCtx();
+    var baseFreqs = [55, 82.5, 110, 165];
+    var nodes = [];
+    baseFreqs.forEach(function(f, i) {
+      var osc = audioCtx.createOscillator();
+      var lfo = audioCtx.createOscillator();
+      var lfoG = audioCtx.createGain();
+      var g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.04 + i * 0.02;
+      lfoG.gain.value = f * 0.01;
+      lfo.connect(lfoG); lfoG.connect(osc.frequency);
+      g.gain.value = 0;
+      osc.connect(g); g.connect(masterGain);
+      osc.start(); lfo.start();
+      g.gain.setTargetAtTime(0.18 - i * 0.03, audioCtx.currentTime, 3);
+      nodes.push(osc, lfo, g);
+    });
+    var shimOsc = audioCtx.createOscillator();
+    shimOsc.type = 'sine';
+    shimOsc.frequency.value = 528;
+    var shimG = audioCtx.createGain();
+    shimG.gain.value = 0;
+    var shimLFO = audioCtx.createOscillator();
+    shimLFO.frequency.value = 0.08;
+    var shimLD = audioCtx.createGain();
+    shimLD.gain.value = 0.04;
+    shimLFO.connect(shimLD); shimLD.connect(shimG.gain);
+    shimOsc.connect(shimG); shimG.connect(masterGain);
+    shimOsc.start(); shimLFO.start();
+    nodes.push(shimOsc, shimLFO, shimG);
+    ambNodes = nodes;
+  }
+
+  function stopAmbience(fade) {
+    fade = fade || 2;
+    if (!audioCtx) return;
+    var t = audioCtx.currentTime;
+    ambNodes.forEach(function(n) {
+      if (n.gain) {
+        n.gain.setTargetAtTime(0, t, fade * 0.3);
+      }
+      try { n.stop(t + fade + 0.5); } catch(e) {}
+    });
+    ambNodes = [];
+  }
+
+  function startAmbience() {
+    stopAmbience(0.5);
+    ensureCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    switch(currentAmb) {
+      case 0: startOcean(); break;
+      case 1: startRain();  break;
+      case 2: startDrone(); break;
+      case 3: startSpace(); break;
+      case 4: break;
+    }
+  }
+
+  function _drawWave() {
+    var canvas = document.getElementById('med-waveCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    var W = canvas.offsetWidth, H = canvas.offsetHeight;
+    ctx.clearRect(0, 0, W, H);
+
+    var amplitude = running && !paused ? 10 : 4;
+    var speed = running && !paused ? 0.018 : 0.006;
+    waveOffset += speed;
+
+    [[0.8,'rgba(201,168,76,.35)'],[1.2,'rgba(201,168,76,.18)'],[1.6,'rgba(201,168,76,.1)']].forEach(function(pair) {
+      var freq = pair[0], color = pair[1];
+      ctx.beginPath();
+      for (var x = 0; x <= W; x++) {
+        var y = H/2 + Math.sin((x / W) * Math.PI * 4 * freq + waveOffset * freq) * amplitude
+                     + Math.sin((x / W) * Math.PI * 2.5 * freq + waveOffset * 0.7) * (amplitude * 0.5);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    waveRAF = requestAnimationFrame(_drawWave);
+  }
+
+  function updateOrbit() {
+    if (!running || paused) return;
+    var progress = 1 - secondsLeft / totalDur;
+    var angle = -90 + progress * 360;
+    var r = 126;
+    var cx = 140, cy = 140;
+    var rad = angle * Math.PI / 180;
+    var x = cx + r * Math.cos(rad);
+    var y = cy + r * Math.sin(rad);
+    var dot = document.getElementById('med-orbitDot');
+    dot.style.transform = 'translate(' + (x - 140) + 'px, ' + (y - 140) + 'px)';
+    orbitRAF = requestAnimationFrame(updateOrbit);
+  }
+
+  function updateProgress() {
+    var progress = 1 - secondsLeft / totalDur;
+    var offset = CIRCUMFERENCE * (1 - progress);
+    document.getElementById('med-cBar').style.strokeDashoffset = offset;
+  }
+
+  function formatTime(s) {
+    var m = Math.floor(s / 60);
+    var sec = s % 60;
+    return m + ':' + sec.toString().padStart(2, '0');
+  }
+
+  function updateClock(phase) {
+    document.getElementById('med-clockTime').textContent = formatTime(secondsLeft);
+    document.getElementById('med-clockPhase').textContent = phase || '';
+  }
+
+  function renderMilestones() {
+    var total = totalDur;
+    var quarters = [0.25, 0.5, 0.75, 1.0];
+    var labels   = ['¼', '½', '¾', 'Konec'];
+    var el = document.getElementById('med-milestones');
+    var html = '';
+    quarters.forEach(function(q, i) {
+      var passed = (1 - secondsLeft / total) >= q;
+      html += '<div class="ms-line"></div><div class="ms-dot' + (passed ? ' passed' : '') + '" id="med-ms' + i + '"><span class="ms-dot-label">' + labels[i] + '</span></div>';
+    });
+    el.innerHTML = '<div class="ms-line"></div>' + html;
+  }
+
+  function updateMilestones() {
+    var progress = 1 - secondsLeft / totalDur;
+    var quarters = [0.25, 0.5, 0.75, 1.0];
+    quarters.forEach(function(q, i) {
+      var dot = document.getElementById('med-ms' + i);
+      if (dot) dot.classList.toggle('passed', progress >= q);
+    });
+  }
+
+  function startTimer() {
+    mainInterval = setInterval(function() {
+      if (secondsLeft <= 0) {
+        finishMed();
+        return;
+      }
+      secondsLeft--;
+      updateClock(getPhaseLabel());
+      updateProgress();
+      updateMilestones();
+    }, 1000);
+  }
+
+  function getPhaseLabel() {
+    var progress = 1 - secondsLeft / totalDur;
+    if (progress < 0.05) return 'Usazuj se...';
+    if (progress < 0.15) return 'Uvolňuj tělo...';
+    if (progress < 0.5)  return 'Pozoruj dech...';
+    if (progress < 0.85) return 'Hluboký klid...';
+    if (progress < 0.95) return 'Pomalu se vracej...';
+    return 'Závěrečný oddech...';
+  }
+
+  function _toggle() {
+    ensureCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    if (!running) {
+      running = true;
+      paused = false;
+      document.getElementById('med-btnLabel').textContent = 'Pozastavit';
+      document.getElementById('med-completion').classList.remove('show');
+      _setVolume(document.getElementById('med-volSlider').value);
+      playBowl(174, 6);
+      setTimeout(function() { startAmbience(); }, 1200);
+      setTimeout(function() { startTimer(); updateOrbit(); }, 500);
+      updateClock('Začínáme...');
+      sessionStartTime = Date.now();
+      _drawWave();
+    } else if (!paused) {
+      paused = true;
+      clearInterval(mainInterval);
+      cancelAnimationFrame(orbitRAF);
+      stopAmbience(1.5);
+      document.getElementById('med-btnLabel').textContent = 'Pokračovat';
+      updateClock('Pauza');
+    } else {
+      paused = false;
+      document.getElementById('med-btnLabel').textContent = 'Pozastavit';
+      startAmbience();
+      startTimer();
+      updateOrbit();
+      updateClock(getPhaseLabel());
+    }
+  }
+
+  function _reset() {
+    running = false;
+    paused = false;
+    clearInterval(mainInterval);
+    cancelAnimationFrame(orbitRAF);
+    cancelAnimationFrame(waveRAF);
+    stopAmbience(1);
+    var mins = parseInt(document.getElementById('med-durSlider').value);
+    secondsLeft = mins * 60;
+    totalDur    = mins * 60;
+    document.getElementById('med-btnLabel').textContent = 'Začít meditaci';
+    document.getElementById('med-cBar').style.strokeDashoffset = CIRCUMFERENCE;
+    document.getElementById('med-orbitDot').style.transform = 'translate(0px, -126px)';
+    document.getElementById('med-completion').classList.remove('show');
+    updateClock('Připraveno');
+    renderMilestones();
+  }
+
+  function finishMed() {
+    running = false;
+    clearInterval(mainInterval);
+    cancelAnimationFrame(orbitRAF);
+
+    stopAmbience(3);
+    setTimeout(function() { playBowl(210, 7); }, 500);
+    setTimeout(function() { playBowl(174, 8); }, 2000);
+
+    var mins = Math.round(totalDur / 60);
+    document.getElementById('med-compSub').textContent = mins + ' minut klidu';
+    document.getElementById('med-compStat').textContent =
+      'Čas zahájení: ' + new Date(sessionStartTime).toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'});
+    document.getElementById('med-completion').classList.add('show');
+    document.getElementById('med-btnLabel').textContent = 'Znovu';
+    updateClock('Hotovo ✦');
+    renderMilestones();
+    secondsLeft = 0;
+    updateProgress();
+  }
+
+  function _onDurSlider(val) {
+    if (running) _reset();
+    var mins = parseInt(val);
+    var fill = ((mins - 10) / 50) * 100;
+    document.getElementById('med-durSlider').style.setProperty('--fill', fill + '%');
+    document.getElementById('med-durNumber').textContent = mins;
+    secondsLeft = mins * 60;
+    totalDur    = mins * 60;
+    updateClock('Připraveno');
+    renderMilestones();
+    rotateTip();
+    [10,20,30,40,50,60].forEach(function(t) {
+      var el = document.getElementById('med-tick' + t);
+      if (el) el.classList.toggle('near', Math.abs(t - mins) <= 4);
+    });
+  }
+
+  function _selectAmbience(idx) {
+    currentAmb = idx;
+    document.querySelectorAll('#med-ambienceRow .amb-btn').forEach(function(b, i) {
+      b.classList.toggle('active', i === idx);
+    });
+    if (running) {
+      _reset();
+    }
+  }
+
+  function rotateTip() {
+    var el = document.getElementById('med-medTip');
+    el.style.opacity = '0';
+    setTimeout(function() {
+      tipIdx = (tipIdx + Math.floor(Math.random() * TIPS.length)) % TIPS.length;
+      el.innerHTML = TIPS[tipIdx];
+      el.style.opacity = '1';
+    }, 400);
+  }
+
+  // Init
+  _onDurSlider(10);
+  rotateTip();
+  // Don't draw wave on init if panel is hidden — will be drawn on tab switch
+  document.getElementById('med-orbitDot').style.transform = 'translate(0px, -126px)';
+
+  return {
+    toggle: _toggle,
+    reset: _reset,
+    selectAmbience: _selectAmbience,
+    onDurSlider: _onDurSlider,
+    setVolume: _setVolume,
+    drawWave: _drawWave,
+    get _running() { return running; }
+  };
+
+})();
+</script>
+</body>
+</html>
