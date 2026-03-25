@@ -29,10 +29,13 @@ body {
   font-family:'Montserrat',sans-serif;
   font-weight:300;
   overflow-x:hidden;
-  cursor:none;
+  opacity:1;
+  transition:opacity .3s ease;
 }
-.cursor { width:6px;height:6px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999; }
-.cursor-ring { width:30px;height:30px;border:1px solid rgba(201,168,76,.65);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s; }
+body.fade-out { opacity:0; }
+@media (pointer:fine) { body { cursor:none; } }
+.cursor { width:5px;height:5px;background:rgba(201,168,76,.6);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:opacity .3s; }
+.cursor-ring { display:none; }
 
 /* NAV */
 nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,9,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gold-border); }
@@ -124,30 +127,57 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:
 .pillar-name { font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--white);margin-bottom:5px; }
 .pillar-sub { font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,.65); }
 
-/* HERO */
-.hero { min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 60px;position:relative;overflow:hidden; }
-.hero-bg { position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(140,100,200,.07) 0%,transparent 55%),radial-gradient(ellipse at 20% 80%,rgba(201,168,76,.04) 0%,transparent 40%); }
-.ring { position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,.055);top:50%;left:50%;transform:translate(-50%,-50%);animation:pulse 8s ease-in-out infinite; }
-.ring:nth-child(1){width:180px;height:180px}
-.ring:nth-child(2){width:340px;height:340px;animation-delay:2s;border-color:rgba(201,168,76,.035)}
-.ring:nth-child(3){width:520px;height:520px;animation-delay:4s;border-color:rgba(160,100,220,.035)}
-.ring:nth-child(4){width:720px;height:720px;animation-delay:6s;border-color:rgba(160,100,220,.02)}
-@keyframes pulse { 0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.03)} }
-.hero-eyebrow { font-size:12px;letter-spacing:5px;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:22px; }
-.hero-title { font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,90px);font-weight:300;line-height:.95;color:var(--white);margin-bottom:10px; }
-.hero-title em { font-style:italic;color:var(--gold); }
-.hero-sub { font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.2vw,26px);font-weight:300;font-style:italic;color:rgba(240,237,232,.65);margin-bottom:28px; }
-.hero-desc { font-size:18px;line-height:2;color:rgba(240,237,232,.75);max-width:560px;margin:0 auto 44px;font-weight:300; }
-.btn-gold { display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#000;padding:14px 34px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:600;transition:all .3s;position:relative;overflow:hidden;cursor:none; }
+/* PAGE HEADER */
+.page-header { padding:140px 60px 60px; border-bottom:1px solid rgba(201,168,76,0.1); }
+.page-header-inner { max-width:720px; }
+.page-eyebrow { display:inline-flex;align-items:center;gap:12px;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:16px; }
+.page-eyebrow::before { content:'';width:28px;height:1px;background:var(--gold); }
+.page-title { font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-weight:300;color:var(--white);line-height:1.05;margin-bottom:18px; }
+.page-title em { font-style:italic;color:var(--gold); }
+.page-lead { font-size:17px;line-height:1.85;color:rgba(240,237,232,0.65);font-weight:300; }
+
+/* BUTTONS */
+.btn-gold { display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#000;padding:14px 34px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:600;transition:all .3s;position:relative;overflow:hidden; }
 .btn-gold::before { content:'';position:absolute;inset:0;background:#fff;transform:translateX(-100%);transition:transform .3s; }
 .btn-gold:hover::before { transform:translateX(0); }
 .btn-gold span,.btn-gold em { position:relative;z-index:1; }
-.btn-outline { display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(201,168,76,.6);color:rgba(201,168,76,.65);padding:14px 30px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:'Montserrat',sans-serif;transition:all .3s;cursor:none; }
+.btn-outline { display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(201,168,76,.6);color:rgba(201,168,76,.65);padding:14px 30px;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;font-family:'Montserrat',sans-serif;transition:all .3s; }
 .btn-outline:hover { border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.05); }
-.scroll-hint { position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px; }
-.scroll-hint span { font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,237,232,.4); }
-.scroll-line { width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sl 2.5s ease-in-out infinite; }
-@keyframes sl { 0%,100%{opacity:.3} 50%{opacity:.8} }
+.nav-links a.active-link { color:var(--gold); }
+
+/* SECTION CTA BRIDGE */
+.sec-cta { display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:48px;padding-top:36px;border-top:1px solid var(--gold-border); }
+.sec-cta .btn-gold, .sec-cta .btn-outline { font-size:12px;padding:12px 28px; }
+
+/* QUIZ */
+.quiz-wrap { background:var(--dark3);border:1px solid var(--gold-border);padding:40px;max-width:640px; }
+.quiz-q { font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--white);margin-bottom:20px; }
+.quiz-q em { color:var(--gold);font-style:italic; }
+.quiz-opts { display:flex;flex-direction:column;gap:6px;margin-bottom:28px; }
+.quiz-opt { padding:14px 20px;background:var(--dark2);border:1px solid rgba(201,168,76,.1);color:rgba(240,237,232,.65);font-size:15px;cursor:pointer;transition:all .2s;text-align:left;font-family:'Montserrat',sans-serif;font-weight:300; }
+.quiz-opt:hover { border-color:rgba(201,168,76,.3);color:var(--white); }
+.quiz-opt.selected { border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06); }
+.quiz-nav { display:flex;gap:12px; }
+.quiz-btn { padding:12px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:600;border:none;cursor:pointer;transition:all .3s; }
+.quiz-btn-next { background:var(--gold);color:#000; }
+.quiz-btn-next:hover { background:var(--gold-light); }
+.quiz-btn-back { background:transparent;border:1px solid rgba(201,168,76,.3);color:rgba(201,168,76,.6); }
+.quiz-result { display:none; }
+.quiz-result-title { font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--white);margin-bottom:8px; }
+.quiz-result-title em { color:var(--gold);font-style:italic; }
+.quiz-result-text { font-size:16px;line-height:1.85;color:rgba(240,237,232,.65);margin-bottom:20px; }
+.quiz-result-link { display:inline-flex;align-items:center;gap:8px;color:var(--gold);text-decoration:none;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:opacity .3s; }
+.quiz-result-link:hover { opacity:.7; }
+
+/* FAIL REASONS */
+.fail-list { display:flex;flex-direction:column;gap:2px; }
+.fail-item { padding:22px 24px;background:var(--dark3);display:flex;align-items:flex-start;gap:16px;transition:background .3s; }
+.fail-item:hover { background:rgba(201,168,76,.03); }
+.fail-num { font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:rgba(201,168,76,.4);line-height:1;min-width:32px; }
+.fail-item:hover .fail-num { color:var(--gold); }
+.fail-title { font-size:17px;font-weight:500;color:var(--white);margin-bottom:4px; }
+.fail-text { font-size:15px;line-height:1.75;color:rgba(240,237,232,.6); }
+.fail-text strong { color:var(--gold);font-weight:400; }
 
 /* SPORT LINK */
 .sport-link { margin-top:20px;padding:20px 24px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);display:flex;align-items:center;justify-content:space-between;gap:20px; }
@@ -170,104 +200,58 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
 .label-do { font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(76,175,80,.65);margin-bottom:12px;display:block; }
 .label-dont { font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(220,80,80,.55);margin-bottom:12px;display:block; }
 
+@media (pointer:coarse) { body { cursor:auto !important; } .cursor,.cursor-ring { display:none !important; } }
+
 /* MOBILE */
-@media (max-width:768px){
-  body { cursor:auto !important; }
+@media (max-width:768px) {
+  /* Layout */
+  body { cursor:auto !important; font-size:16px !important; }
   .cursor,.cursor-ring { display:none !important; }
   nav { padding:14px 20px !important; }
   .nav-links { display:none !important; }
   .hamburger { display:flex !important; }
-  .hero { padding:0 22px !important; }
-  .hero-desc { font-size:13px !important; }
-  .pillars { grid-template-columns:1fr 1fr !important;padding:40px 20px !important; }
+  .page-header { padding:100px 22px 44px !important; }
+  .page-lead { font-size:16px !important; line-height:1.9 !important; }
+  .pillars { grid-template-columns:1fr 1fr !important; padding:40px 20px !important; }
   .section { padding:56px 22px !important; }
-  .two-col { grid-template-columns:1fr !important;gap:36px !important; }
+  .two-col { grid-template-columns:1fr !important; gap:36px !important; }
   .three-col,.four-col { grid-template-columns:1fr !important; }
   .day-arc { grid-template-columns:1fr 1fr !important; }
   .day-arc::before { display:none !important; }
   .cta { padding:60px 22px !important; }
-  footer { padding:36px 22px !important;flex-direction:column !important;text-align:center !important; }
-  .sport-link { flex-direction:column !important;gap:12px !important; }
-}
-@media (max-width:480px){
-  .pillars { grid-template-columns:1fr !important; }
-}
-
-@media (max-width: 768px) {
-  /* Čitelnější texty na mobilu */
-  .content-desc { font-size:14px !important; line-height:1.9 !important; color:rgba(240,237,232,.82) !important; }
-  .li-text { font-size:13px !important; line-height:1.8 !important; color:rgba(240,237,232,.75) !important; }
-  .li-title { font-size:14px !important; }
-  .card-text { font-size:13px !important; line-height:1.8 !important; color:rgba(240,237,232,.75) !important; }
-  .ni-text { font-size:13px !important; line-height:1.8 !important; color:rgba(240,237,232,.75) !important; }
-  .ni-title { font-size:14px !important; }
-  .quote-text { font-size:18px !important; }
-  .ddetail { font-size:11px !important; color:rgba(201,168,76,.7) !important; }
-  .dname { font-size:12px !important; }
-  .pillar-name { font-size:16px !important; }
-  .hero-desc { font-size:14px !important; color:rgba(240,237,232,.8) !important; }
-  .sport-link p { font-size:13px !important; color:rgba(240,237,232,.7) !important; }
-  /* Větší padding pro lepší dotykové ovládání */
+  footer { padding:36px 22px !important; flex-direction:column !important; text-align:center !important; }
+  .sport-link { flex-direction:column !important; gap:12px !important; }
+  .sec-cta { flex-direction:column !important; gap:12px !important; margin-top:32px !important; padding-top:24px !important; }
+  .sec-cta .btn-gold, .sec-cta .btn-outline { width:100% !important; text-align:center !important; justify-content:center !important; }
+  /* Typography */
+  .content-desc { font-size:18px !important; line-height:2 !important; color:rgba(240,237,232,0.88) !important; }
+  .li-title { font-size:17px !important; color:rgba(240,237,232,0.96) !important; }
+  .li-text { font-size:16px !important; line-height:1.9 !important; color:rgba(240,237,232,0.88) !important; }
+  .ni-title { font-size:17px !important; color:rgba(240,237,232,0.96) !important; }
+  .ni-text { font-size:16px !important; line-height:1.9 !important; color:rgba(240,237,232,0.88) !important; }
+  .card-title { font-size:17px !important; color:rgba(240,237,232,0.96) !important; }
+  .card-text { font-size:16px !important; line-height:1.85 !important; color:rgba(240,237,232,0.86) !important; }
+  .quote-text { font-size:23px !important; color:rgba(240,237,232,0.92) !important; }
+  .quote-by { font-size:11px !important; color:rgba(201,168,76,0.7) !important; }
+  .dname { font-size:15px !important; color:rgba(240,237,232,0.95) !important; }
+  .ddetail { font-size:14px !important; color:rgba(201,168,76,0.85) !important; }
+  .dtime { font-size:11px !important; color:rgba(201,168,76,0.85) !important; }
+  .pillar-name { font-size:19px !important; color:rgba(240,237,232,0.95) !important; }
+  .pillar-sub { font-size:10px !important; color:rgba(201,168,76,0.65) !important; }
+  .sport-link p { font-size:16px !important; color:rgba(240,237,232,0.82) !important; }
+  .cta-desc { font-size:18px !important; color:rgba(240,237,232,0.85) !important; }
+  p, li { font-size:16px !important; color:rgba(240,237,232,0.86) !important; }
+  /* Touch */
   .list-item { padding:20px 18px !important; }
   .num-item { padding:20px 16px !important; }
   .card { padding:28px 22px !important; }
-  /* Větší tlačítka */
   .btn-gold, .btn-outline { padding:16px 28px !important; font-size:11px !important; }
+  /* No-social sekce */
+  section:last-of-type > p:first-of-type { font-size:clamp(28px,3.5vw,42px) !important; color:rgba(240,237,232,0.88) !important; line-height:1.4 !important; }
+  section:last-of-type > p:last-of-type { font-size:16px !important; color:rgba(201,168,76,0.6) !important; letter-spacing:2.5px !important; }
 }
-
-
-@media (max-width: 768px) {
-  /* ═══ MAXIMÁLNÍ ČITELNOST — MIND ═══ */
-  body { font-size: 16px !important; }
-
-  .content-desc { font-size: 18px !important; line-height: 2 !important; color: rgba(240,237,232,0.88) !important; }
-  .hero-desc { font-size: 18px !important; line-height: 2 !important; color: rgba(240,237,232,0.88) !important; }
-
-  /* List items */
-  .li-title { font-size: 17px !important; color: rgba(240,237,232,0.96) !important; }
-  .li-text  { font-size: 16px !important; line-height: 1.9 !important; color: rgba(240,237,232,0.88) !important; }
-
-  /* Num items */
-  .ni-title { font-size: 17px !important; color: rgba(240,237,232,0.96) !important; }
-  .ni-text  { font-size: 16px !important; line-height: 1.9 !important; color: rgba(240,237,232,0.88) !important; }
-
-  /* Cards */
-  .card-title { font-size: 17px !important; color: rgba(240,237,232,0.96) !important; }
-  .card-text  { font-size: 16px !important; line-height: 1.85 !important; color: rgba(240,237,232,0.86) !important; }
-
-  /* Day arc */
-  .dname   { font-size: 15px !important; color: rgba(240,237,232,0.95) !important; }
-  .ddetail { font-size: 14px !important; color: rgba(201,168,76,0.85) !important; }
-  .dtime   { font-size: 11px !important; color: rgba(201,168,76,0.85) !important; }
-
-  /* Quote */
-  .quote-text { font-size: 23px !important; color: rgba(240,237,232,0.92) !important; }
-  .quote-by   { font-size: 11px !important; color: rgba(201,168,76,0.7) !important; }
-
-  /* Pillar boxes */
-  .pillar-name { font-size: 19px !important; color: rgba(240,237,232,0.95) !important; }
-  .pillar-sub  { font-size: 10px !important; color: rgba(201,168,76,0.65) !important; }
-
-  /* Sport link */
-  .sport-link p { font-size: 16px !important; color: rgba(240,237,232,0.82) !important; }
-
-  /* CTA */
-  .cta-desc { font-size: 18px !important; color: rgba(240,237,232,0.85) !important; }
-
-  /* General p and li */
-  p, li { font-size: 16px !important; color: rgba(240,237,232,0.86) !important; }
-
-  /* No-social sekce — velký text */
-  section:last-of-type > p:first-of-type {
-    font-size: clamp(28px, 3.5vw, 42px) !important;
-    color: rgba(240,237,232,0.88) !important;
-    line-height: 1.4 !important;
-  }
-  section:last-of-type > p:last-of-type {
-    font-size: 16px !important;
-    color: rgba(201,168,76,0.6) !important;
-    letter-spacing: 2.5px !important;
-  }
+@media (max-width:480px) {
+  .pillars { grid-template-columns:1fr !important; }
 }
 
 </style>
@@ -275,56 +259,38 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
 <body>
 
 <div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#" onclick="closeMenu('#mindset'); return false;">Mindset</a><div class="ml"></div>
-  <a href="#" onclick="closeMenu('#jidlo'); return false;">Jídlo</a><div class="ml"></div>
-  <a href="#" onclick="closeMenu('#vstupy'); return false;">Vstupy</a><div class="ml"></div>
-  <a href="#" onclick="closeMenu('#lide'); return false;">Lidé</a><div class="ml"></div>
-  <a href="#" onclick="closeMenu('#den'); return false;">Denní rituál</a><div class="ml"></div>
-  <a href="zasebe-mind-vyzvy-cile.html">Výzvy & Cíle</a><div class="ml"></div>
-  <a href="zasebe-klid.html">Klid mysli</a><div class="ml"></div>
-  <a href="zasebe-landing.html">Zasebe</a>
+  <a href="zasebe-mind.html" onclick="return fadeNav(this)" style="color:var(--gold);">Průvodce</a><div class="ml"></div>
+  <a href="zasebe-klid.html" onclick="return fadeNav(this)">Klid mysli</a><div class="ml"></div>
+  <a href="zasebe-mind-vyzvy-cile.html" onclick="return fadeNav(this)">Výzvy & Cíle</a>
 </div>
 
 <nav>
-  <a href="zasebe-landing.html" class="logo-wrap">
-    <img src="ZASEBE MIND - LOGO.png" alt="Zasebe Mind logo" style="height:40px;width:auto;">
+  <a href="index.html" class="logo-wrap" onclick="return fadeNav(this)">
     <div class="logo-text">
       <span>zasebe mind</span>
       <span>Klid · Mysl · Rovnováha</span>
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="#mindset">Mindset</a></li>
-    <li><a href="#jidlo">Jídlo</a></li>
-    <li><a href="#vstupy">Vstupy</a></li>
-    <li><a href="#lide">Lidé</a></li>
-    <li><a href="#den">Den</a></li>
-    <li><a href="zasebe-mind-vyzvy-cile.html">Výzvy & Cíle</a></li>
-    <li><a href="zasebe-klid.html">Klid mysli</a></li>
+    <li><a href="zasebe-mind.html" class="active-link">Průvodce</a></li>
+    <li><a href="zasebe-klid.html" onclick="return fadeNav(this)">Klid mysli</a></li>
+    <li><a href="zasebe-mind-vyzvy-cile.html" onclick="return fadeNav(this)">Výzvy & Cíle</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
-  <div style="position:relative;z-index:2;max-width:740px;">
-    <p class="hero-eyebrow">Zasebe Mind — Komplexní průvodce</p>
-    <h1 class="hero-title">Nastav svou<br><em>mysl správně</em></h1>
-    <p class="hero-sub">— a zbytek přijde sám</p>
-    <p class="hero-desc">Vše začíná v hlavě. Co jíš, sleduješ, posloucháš a s kým trávíš čas — tvoří kdo jsi. Zde jsou konkrétní nástroje pro každý den.</p>
-    <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
-      <a href="#mindset" class="btn-gold"><span>Začít číst</span><em>↓</em></a>
-    </div>
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <span class="page-eyebrow">Zasebe Mind</span>
+    <h1 class="page-title">Průvodce <em>myslí</em></h1>
+    <p class="page-lead">Co jíš, sleduješ, posloucháš a s kým trávíš čas — tvoří kdo jsi. Kompletní průvodce pěti pilíři mentálního nastavení.</p>
   </div>
-  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
-</section>
+</div>
 
 <!-- 5 PILÍŘŮ -->
 <div class="pillars">
@@ -342,8 +308,7 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     <div>
       <div class="sec-tag"><span>01 — Základ všeho</span></div>
       <h2 class="sec-title">Mindset —<br><em>jak to celé funguje</em></h2>
-      <p class="content-desc">Tvá mysl je zahrada — bez péče zaroste plevelem. <strong>60 000 myšlenek denně, 80 % negativních.</strong> To není slabost, to je biologie. A tu lze přeprogramovat.</p>
-      <p class="content-desc">Nejde o toxickou pozitivitu. Jde o to vědomě si vybírat reakci na to, co přichází. <strong>Mezi podnět a reakcí je prostor. V tom prostoru je tvá svoboda.</strong></p>
+      <p class="content-desc"><strong>60 000 myšlenek denně, 80 % negativních.</strong> To není slabost — to je biologie. A tu lze přeprogramovat. <strong>Mezi podnětem a reakcí je prostor. V tom prostoru je tvá svoboda.</strong></p>
       <div class="quote" style="margin-top:28px;">
         <p class="quote-text">„Nejsi to, co si myslíš, že jsi. Jsi to, o čem přemýšlíš celý den."</p>
         <span class="quote-by">Earl Nightingale</span>
@@ -351,11 +316,11 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     </div>
     <div>
       <div class="num-list" style="margin-top:0;">
-        <div class="num-item"><span class="ni-num">01</span><div><div class="ni-title">Odpovědnost — přestaň čekat</div><div class="ni-text">Vše co máš a nemáš je výsledek tvých rozhodnutí. Není to odsouzení — je to osvobození. Kdo přijme odpovědnost, získá moc změnit věci.</div></div></div>
-        <div class="num-item"><span class="ni-num">02</span><div><div class="ni-title">Growth vs. fixed mindset</div><div class="ni-text">Mozek je plastický — mění se celý život. Lidé s growth mindsetem se zlepšují. Lidé s fixed mindsetem stagnují. Volba je tvá.</div></div></div>
-        <div class="num-item"><span class="ni-num">03</span><div><div class="ni-title">Soustřeď se jen na to, co ovlivníš</div><div class="ni-text">Stoici to věděli před 2000 lety. Energie do toho, co ovlivníš. Přijetí toho, co ne. Jinak je to jen plýtvání silou.</div></div></div>
-        <div class="num-item"><span class="ni-num">04</span><div><div class="ni-title">Identita předchází chování</div><div class="ni-text">Neříkej „chci přestat kouřit". Říkej „jsem člověk, který nekouří". Začni tím, kým chceš být — chování přijde samo.</div></div></div>
-        <div class="num-item"><span class="ni-num">05</span><div><div class="ni-title">Vděčnost každý den — 3 věci ráno</div><div class="ni-text">Neurověda to potvrzuje. Mozek se naučí hledat to dobré, pokud ho k tomu trénuješ. 21 dní a změní se nastavení.</div></div></div>
+        <div class="num-item"><span class="ni-num">01</span><div><div class="ni-title">Odpovědnost — přestaň čekat</div><div class="ni-text">Kdo přijme odpovědnost, získá moc změnit věci.</div></div></div>
+        <div class="num-item"><span class="ni-num">02</span><div><div class="ni-title">Growth vs. fixed mindset</div><div class="ni-text">Mozek je plastický — mění se celý život. Volba je tvá.</div></div></div>
+        <div class="num-item"><span class="ni-num">03</span><div><div class="ni-title">Soustřeď se jen na to, co ovlivníš</div><div class="ni-text">Energie do toho, co ovlivníš. Přijetí toho, co ne.</div></div></div>
+        <div class="num-item"><span class="ni-num">04</span><div><div class="ni-title">Identita předchází chování</div><div class="ni-text">Neříkej „chci přestat kouřit". Říkej „jsem člověk, který nekouří".</div></div></div>
+        <div class="num-item"><span class="ni-num">05</span><div><div class="ni-title">Vděčnost — 3 věci každé ráno</div><div class="ni-text">21 dní trénování a mozek se naučí hledat to dobré.</div></div></div>
       </div>
     </div>
   </div>
@@ -365,24 +330,28 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
       <div>
         <span class="label-do">✓ Dělej toto</span>
         <div class="do-list">
-          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Ráno bez telefonu — prvních 30 minut</div><div class="li-text">Nedávej svou pozornost hned cizím lidem a jejich agendě. První myšlenky dne jsou nejdůležitější.</div></div></div>
-          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">3 priority každý den — a dělej je první</div><div class="li-text">Co jsou 3 věci, které kdyby se staly, byl by den úspěšný? Dělej ty před čímkoliv jiným.</div></div></div>
-          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Meditace nebo ticho — 10 minut denně</div><div class="li-text">Nemusíš být buddha. Stačí sedět, dýchat a pozorovat myšlenky bez jejich následování. <a href="zasebe-klid.html" style="color:var(--gold);text-decoration:none;font-weight:400;">Vyzkoušej meditaci →</a></div></div></div>
-          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Čti — alespoň 10 stran denně</div><div class="li-text">10 stran = 12 knih ročně. Osobní rozvoj, biografie, filozofie — nejlepší investice s nejlepším ROI.</div></div></div>
-          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Pohyb každý den — bez výjimky</div><div class="li-text">Nejlepší antidepresivum bez vedlejších účinků. Nejen pro tělo — pro mysl a hormonální rovnováhu.</div></div></div>
+          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Ráno bez telefonu — prvních 30 minut</div><div class="li-text">První myšlenky dne jsou nejdůležitější. Nedávej je cizím agendám.</div></div></div>
+          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">3 priority každý den — dělej je první</div><div class="li-text">Co kdyby se stalo, by den byl úspěšný? Dělej to před čímkoliv jiným.</div></div></div>
+          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Meditace nebo ticho — 10 minut denně</div><div class="li-text">Stačí sedět, dýchat a pozorovat myšlenky.</div></div></div>
+          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Čti — alespoň 10 stran denně</div><div class="li-text">10 stran = 12 knih ročně. Nejlepší investice s nejlepším ROI.</div></div></div>
+          <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Pohyb každý den — bez výjimky</div><div class="li-text">Nejlepší antidepresivum bez vedlejších účinků.</div></div></div>
         </div>
       </div>
       <div>
         <span class="label-dont">✗ Přestaň toto</span>
         <div class="dont-list">
-          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Doomscrolling před spaním</div><div class="li-text">Mozek zpracovává informace i v noci. Čím končíš den, tím začínáš noc. Zprávy a sítě = stres a špatný spánek.</div></div></div>
-          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Srovnávat se s ostatními</div><div class="li-text">Srovnáváš svůj záběr s cizím highlight reelem. Jediné smysluplné srovnání: ty dnes vs. ty včera.</div></div></div>
-          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Stěžovat si bez akce</div><div class="li-text">Každá stížnost bez akce tě zanechá na stejném místě, ale s horší náladou. Buď řeš, nebo pusť.</div></div></div>
-          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Multitasking jako způsob života</div><div class="li-text">Mozek neumí multitasking — přepíná kontexty a každé přepnutí stojí energii. Jedna věc, naplno.</div></div></div>
-          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Čekat na „správný čas"</div><div class="li-text">Správný čas neexistuje. Existuje jen teď. Začni se 20 % informací — zbytek přijde za pochodu.</div></div></div>
+          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Doomscrolling před spaním</div><div class="li-text">Čím končíš den, tím začínáš noc. Sítě = stres a špatný spánek.</div></div></div>
+          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Srovnávat se s ostatními</div><div class="li-text">Srovnáváš svůj záběr s cizím highlight reelem. Ty dnes vs. ty včera.</div></div></div>
+          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Stěžovat si bez akce</div><div class="li-text">Buď řeš, nebo pusť.</div></div></div>
+          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Multitasking jako způsob života</div><div class="li-text">Mozek přepíná kontexty — každé přepnutí stojí energii. Jedna věc, naplno.</div></div></div>
+          <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Čekat na „správný čas"</div><div class="li-text">Správný čas neexistuje. Existuje jen teď.</div></div></div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="sec-cta">
+    <a href="zasebe-mind-vyzvy-cile.html" class="btn-gold"><span>Vytvořit první výzvu</span><em>→</em></a>
+    <a href="#jidlo" class="btn-outline">Pokračovat: Jídlo ↓</a>
   </div>
 </section>
 
@@ -392,8 +361,7 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     <div>
       <div class="sec-tag"><span>02 — Palivo pro mysl</span></div>
       <h2 class="sec-title">Jídlo <em>dělá</em><br>strašně moc</h2>
-      <p class="content-desc">To, co jíš, přímo ovlivňuje energii, soustředění, náladu a spánek. <strong>90 % serotoninu vzniká ve střevech</strong> — ne v mozku. Gut-brain axis je vědecky prokázané propojení.</p>
-      <p class="content-desc">Nejde o dietní dogma. Jde o to být si vědomý, <strong>co do těla dáváš a jak se po tom cítíš</strong>. Jídlo může být lékem nebo jedem.</p>
+      <p class="content-desc"><strong>90 % serotoninu vzniká ve střevech</strong>, ne v mozku. Co jíš, přímo ovlivňuje energii, soustředění a náladu. Jídlo může být lékem nebo jedem.</p>
       <div class="quote">
         <p class="quote-text">„Let food be thy medicine and medicine be thy food."</p>
         <span class="quote-by">Hippokrates, 460 př. n. l.</span>
@@ -419,20 +387,23 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     <div>
       <span class="label-do">✓ Přidej do jídelníčku</span>
       <div class="do-list">
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Mastné ryby 2–3× týdně</div><div class="li-text">Losos, sardinky, makrela — omega-3 a DHA pro mozek. Nejlepší protizánětlivé jídlo.</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Hořká čokoláda (85 %+)</div><div class="li-text">Flavonoidy zlepšují průtok krve mozkem. Magnesium snižuje stres. 2–3 čtverečky denně.</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Zelená listová zelenina denně</div><div class="li-text">Špenát, rukola, kale — vitamín K, folát, lutein. Zpomalují kognitivní pokles.</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Ořechy — hrst denně</div><div class="li-text">Vlašské (omega-3), dýňová semínka (zinek, hořčík), mandle (vitamin E).</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">2–3 litry vody denně</div><div class="li-text">Dehydratace o 2 % snižuje výkon mozku o 20 %. Ráno sklenice vody hned po probuzení.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Mastné ryby 2–3× týdně</div><div class="li-text">Omega-3 a DHA pro mozek. Nejlepší protizánětlivé jídlo.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Hořká čokoláda (85 %+)</div><div class="li-text">Flavonoidy + magnesium. 2–3 čtverečky denně.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Zelená listová zelenina denně</div><div class="li-text">Vitamín K, folát, lutein — zpomalují kognitivní pokles.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Ořechy — hrst denně</div><div class="li-text">Vlašské, dýňová semínka, mandle — omega-3, zinek, vitamin E.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">2–3 litry vody denně</div><div class="li-text">Dehydratace o 2 % = pokles výkonu mozku o 20 %.</div></div></div>
       </div>
       <span class="label-dont" style="margin-top:20px;">✗ Omez nebo vyřaď</span>
       <div class="dont-list">
-        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Ultra-processed food</div><div class="li-text">Průmyslové potraviny s ingrediencemi, které neznáš. Záněty, výkyvy cukru, špatný spánek.</div></div></div>
-        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Alkohol ve větším množství</div><div class="li-text">Ničí REM spánek, narušuje serotonin a dopamin, dehydratuje. Střídmě — OK. Každodenně — ne.</div></div></div>
-        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Káva po 14:00</div><div class="li-text">Kofein má poločas 5–7 hodin. Espresso ve 14:00 = polovina kofeinu stále v těle v 21:00.</div></div></div>
-        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Jídlo u obrazovky</div><div class="li-text">Roztržitost snižuje sytost a trávení. Jez vědomě — bez telefonu, bez TV.</div></div></div>
+        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Ultra-processed food</div><div class="li-text">Záněty, výkyvy cukru, špatný spánek.</div></div></div>
+        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Alkohol ve větším množství</div><div class="li-text">Ničí REM spánek. Střídmě — OK. Každodenně — ne.</div></div></div>
+        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Káva po 14:00</div><div class="li-text">Poločas kofeinu 5–7 h. Espresso ve 14:00 = stále v těle v 21:00.</div></div></div>
+        <div class="list-item"><div class="dot-red"></div><div><div class="li-title">Jídlo u obrazovky</div><div class="li-text">Jez vědomě — bez telefonu, bez TV.</div></div></div>
       </div>
     </div>
+  </div>
+  <div class="sec-cta">
+    <a href="#vstupy" class="btn-outline">Pokračovat: Vstupy ↓</a>
   </div>
 </section>
 
@@ -440,7 +411,7 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
 <section class="section dark" id="vstupy">
   <div class="sec-tag"><span>03 — Co sleduješ & posloucháš</span></div>
   <h2 class="sec-title" style="margin-bottom:14px;">Vstupy tvoří <em>výstupy</em></h2>
-  <p class="content-desc" style="max-width:660px;margin-bottom:50px;"><strong>7 hodin denně před obrazovkou</strong> — to je 7 hodin programování mysli. Algoritmy tě chtějí udržet co nejdéle. Ty rozhoduješ, co pustíš dovnitř.</p>
+  <p class="content-desc" style="max-width:660px;margin-bottom:50px;"><strong>7 hodin denně před obrazovkou</strong> = 7 hodin programování mysli. Ty rozhoduješ, co pustíš dovnitř.</p>
   <div class="two-col">
     <div>
       <h3 class="sec-title" style="font-size:24px;margin-bottom:20px;">Co <em>poslouchat</em></h3>
@@ -469,9 +440,13 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
         <span class="quote-by">Adaptace Jim Rohn pro digitální věk</span>
       </div>
       <div class="num-list" style="margin-top:20px;">
-        <div class="num-item"><span class="ni-num">💡</span><div><div class="ni-title">7denní detox — zkus to</div><div class="ni-text">Odinstaluj sociální sítě na 7 dní. Zapiš co se stane s náladou, produktivitou a spánkem. Výsledky tě překvapí.</div></div></div>
+        <div class="num-item"><span class="ni-num">💡</span><div><div class="ni-title">7denní detox — zkus to</div><div class="ni-text">Odinstaluj sítě na 7 dní. Zapiš co se stane s náladou a spánkem.</div></div></div>
       </div>
     </div>
+  </div>
+  <div class="sec-cta">
+    <a href="zasebe-mind-vyzvy-cile.html" class="btn-gold"><span>Vytvořit 7denní výzvu</span><em>→</em></a>
+    <a href="#lide" class="btn-outline">Pokračovat: Lidé ↓</a>
   </div>
 </section>
 
@@ -481,7 +456,7 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     <div>
       <div class="sec-tag"><span>04 — Tvé okolí</span></div>
       <h2 class="sec-title">S kým trávíš čas,<br><em>tím se stáváš</em></h2>
-      <p class="content-desc"><strong>Zrcadlové neurony</strong> způsobují, že přejímáme chování a standardy lidí kolem nás. Nejde o vyhazování lidí — jde o <strong>vědomý výběr, komu dáváš svůj čas a pozornost.</strong></p>
+      <p class="content-desc"><strong>Zrcadlové neurony</strong> = přejímáme chování lidí kolem nás. Vědomě si vyber, komu dáváš svůj čas.</p>
       <div class="quote">
         <p class="quote-text">„Jsi průměrem pěti lidí, se kterými trávíš nejvíce času."</p>
         <span class="quote-by">Jim Rohn</span>
@@ -489,13 +464,16 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     </div>
     <div>
       <div class="num-list" style="margin-top:0;">
-        <div class="num-item"><span class="ni-num">01</span><div><div class="ni-title">Hledej mentory a lidi před tebou</div><div class="ni-text">Lidi, kteří jsou tam, kde chceš být za 5 let. Sleduj je, čti je, mluv s nimi. Zkracuješ svou křivku učení o roky.</div></div></div>
-        <div class="num-item"><span class="ni-num">02</span><div><div class="ni-title">Chraň energii před energetickými vampíry</div><div class="ni-text">Lidé, kteří neustále stěžují, dramatizují, sráží nápady. Omez čas s nimi. Není to krutost — je to přežití.</div></div></div>
-        <div class="num-item"><span class="ni-num">03</span><div><div class="ni-title">Buduj vztahy aktivně, ne pasivně</div><div class="ni-text">Pošli zprávu. Zajdi na kávu. Zavolej bez důvodu. Investuj do vztahů dřív, než je potřebuješ.</div></div></div>
-        <div class="num-item"><span class="ni-num">04</span><div><div class="ni-title">Najdi svou komunitu</div><div class="ni-text">Člověk potřebuje tribal connection. Sport, koníčky, práce — najdi skupinu, kde cítíš, že patříš.</div></div></div>
-        <div class="num-item"><span class="ni-num">05</span><div><div class="ni-title">Buď člověkem, kterého hledáš</div><div class="ni-text">Chceš být obklopen motivovanými, upřímnými lidmi? Začni tím být sám. Přitahujeme, co jsme.</div></div></div>
+        <div class="num-item"><span class="ni-num">01</span><div><div class="ni-title">Hledej mentory a lidi před tebou</div><div class="ni-text">Zkracuješ svou křivku učení o roky.</div></div></div>
+        <div class="num-item"><span class="ni-num">02</span><div><div class="ni-title">Chraň energii před energetickými vampíry</div><div class="ni-text">Omez čas s lidmi, kteří sráží. Není to krutost — je to přežití.</div></div></div>
+        <div class="num-item"><span class="ni-num">03</span><div><div class="ni-title">Buduj vztahy aktivně</div><div class="ni-text">Pošli zprávu. Zajdi na kávu. Investuj dřív, než potřebuješ.</div></div></div>
+        <div class="num-item"><span class="ni-num">04</span><div><div class="ni-title">Najdi svou komunitu</div><div class="ni-text">Sport, koníčky, práce — najdi skupinu, kde cítíš, že patříš.</div></div></div>
+        <div class="num-item"><span class="ni-num">05</span><div><div class="ni-title">Buď člověkem, kterého hledáš</div><div class="ni-text">Přitahujeme, co jsme. Začni tím být sám.</div></div></div>
       </div>
     </div>
+  </div>
+  <div class="sec-cta">
+    <a href="#den" class="btn-outline">Pokračovat: Denní rituál ↓</a>
   </div>
 </section>
 
@@ -503,29 +481,60 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
 <section class="section dark" id="den">
   <div class="sec-tag"><span>05 — Struktura dne</span></div>
   <h2 class="sec-title" style="margin-bottom:14px;">Denní rituál —<br><em>záměrný den</em></h2>
-  <p class="content-desc" style="max-width:620px;margin-bottom:44px;">Úspěšní lidé nemají více vůle — mají <strong>rituály</strong>. Vůle se vyčerpá, rituály jsou automatické. Postav den jako architekt, ne jako pasažér.</p>
+  <p class="content-desc" style="max-width:620px;margin-bottom:44px;">Úspěšní lidé nemají více vůle — mají <strong>rituály</strong>. Vůle se vyčerpá, rituály jsou automatické.</p>
 
   <div class="two-col" style="margin-top:60px;">
     <div>
       <h3 class="sec-title" style="font-size:24px;margin-bottom:20px;">Spánek —<br><em>nejdůležitější aktivita dne</em></h3>
-      <p class="content-desc">Matthew Walker (Why We Sleep): <strong>spánek je základní biologická potřeba</strong>, ne luxus. Chronický nedostatek vede k depresi, úzkosti i Alzheimeru.</p>
+      <p class="content-desc"><strong>Spánek je základní biologická potřeba</strong>, ne luxus. Chronický nedostatek vede k depresi a úzkosti.</p>
       <div class="do-list" style="margin-top:20px;">
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">7–9 hodin každou noc</div><div class="li-text">Není slabost. Je to výkon. Po přečtení Why We Sleep to budeš prioritizovat jinak.</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Stejný čas usínání a probouzení</div><div class="li-text">Cirkadiánní rytmus je jako vnitřní hodiny. Pravidelnost = klíč k hluboké regeneraci.</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Chladno, tma, ticho — 18–20 °C</div><div class="li-text">Blackout závěsy. Žádné modré světlo hodinu před spaním. Telefon mimo ložnici.</div></div></div>
-        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Magnesium bisglycinát před spaním</div><div class="li-text">Uvolní svaly, zklidní nervový systém, prohloubí spánek.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">7–9 hodin každou noc</div><div class="li-text">Není slabost. Je to výkon.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Stejný čas usínání a probouzení</div><div class="li-text">Pravidelnost = klíč k hluboké regeneraci.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Chladno, tma, ticho — 18–20 °C</div><div class="li-text">Blackout závěsy. Telefon mimo ložnici.</div></div></div>
+        <div class="list-item"><div class="dot-green"></div><div><div class="li-title">Magnesium bisglycinát před spaním</div><div class="li-text">Uvolní svaly a prohloubí spánek.</div></div></div>
       </div>
     </div>
     <div>
       <h3 class="sec-title" style="font-size:24px;margin-bottom:20px;">Stres —<br><em>přítel nebo nepřítel</em></h3>
-      <p class="content-desc"><strong>Chronický stres bez regenerace je problém.</strong> Kortizol v malých dávkách je životně důležitý. V chronické podobě ničí imunitu, paměť a zdraví.</p>
+      <p class="content-desc"><strong>Chronický stres bez regenerace</strong> ničí imunitu, paměť a zdraví. V malých dávkách je kortizol důležitý — v chronické podobě je jed.</p>
       <div class="num-list" style="margin-top:20px;">
-        <div class="num-item"><span class="ni-num">1.</span><div><div class="ni-title">Box breathing — 4-4-4-4</div><div class="ni-text">Nádech 4s, zadržení 4s, výdech 4s, zadržení 4s. 5 kol. Aktivuje parasympatický systém okamžitě. Používají to elitní vojáci. <a href="zasebe-klid.html" style="color:var(--gold);text-decoration:none;font-weight:400;">Vyzkoušej zde →</a></div></div></div>
-        <div class="num-item"><span class="ni-num">2.</span><div><div class="ni-title">Studená sprcha ráno — 30 sekund</div><div class="ni-text">Zvyšuje norepinefrin o 300 %, zlepšuje náladu a odolnost vůči stresu. Nemusíš to milovat — stačí to dělat.</div></div></div>
-        <div class="num-item"><span class="ni-num">3.</span><div><div class="ni-title">Příroda — 20 minut denně</div><div class="ni-text">Pobyt v přírodě snižuje kortizol o 12 %. Japonci to nazývají Shinrin-yoku — koupel v lese.</div></div></div>
-        <div class="num-item"><span class="ni-num">4.</span><div><div class="ni-title">Zapiš — a pusť</div><div class="ni-text">Nevyřešené problémy krouží v hlavě protože mozek se bojí ztratit. Zapiš → pusť → vracej se vědomě.</div></div></div>
+        <div class="num-item"><span class="ni-num">1.</span><div><div class="ni-title">Box breathing — 4-4-4-4</div><div class="ni-text">Nádech 4s, zadržení 4s, výdech 4s, zadržení 4s. Aktivuje parasympatický systém okamžitě.</div></div></div>
+        <div class="num-item"><span class="ni-num">2.</span><div><div class="ni-title">Studená sprcha ráno — 30 sekund</div><div class="ni-text">+300 % norepinefrin, lepší nálada a odolnost vůči stresu.</div></div></div>
+        <div class="num-item"><span class="ni-num">3.</span><div><div class="ni-title">Příroda — 20 minut denně</div><div class="ni-text">Snižuje kortizol o 12 %. Shinrin-yoku — koupel v lese.</div></div></div>
+        <div class="num-item"><span class="ni-num">4.</span><div><div class="ni-title">Zapiš — a pusť</div><div class="ni-text">Zapiš → pusť → vracej se vědomě.</div></div></div>
       </div>
     </div>
+  </div>
+  <div class="sec-cta">
+    <a href="zasebe-klid.html" class="btn-gold"><span>Otevřít dechové cvičení</span><em>→</em></a>
+    <a href="zasebe-mind-vyzvy-cile.html" class="btn-outline">Vytvořit první výzvu</a>
+  </div>
+</section>
+
+<!-- ═══ PROČ TO NEFUNGUJE ═══ -->
+<section class="section dark">
+  <div class="two-col">
+    <div>
+      <div class="sec-tag"><span>Věda o selhání</span></div>
+      <h2 class="sec-title">Proč to <em>nefunguje</em></h2>
+      <p class="content-desc">Problém nejsi ty. <strong>95 % lidí selže v budování návyků</strong> — ne proto, že jsou líní, ale protože jdou proti vlastní biologii. Pochopení proč selhávame je první krok k tomu, abychom neselhali.</p>
+      <div class="quote">
+        <p class="quote-text">„Nemáš problém s motivací. Máš problém s designem prostředí."</p>
+        <span class="quote-by">James Clear, Atomic Habits</span>
+      </div>
+    </div>
+    <div>
+      <div class="fail-list">
+        <div class="fail-item"><div class="fail-num">1</div><div><div class="fail-title">Příliš velký skok</div><div class="fail-text">Mozek vnímá velkou změnu jako ohrožení. <strong>Začni tak malým krokem, že je nemožné selhat.</strong> 1 klik, 1 strana, 1 minuta.</div></div></div>
+        <div class="fail-item"><div class="fail-num">2</div><div><div class="fail-title">Spoléháš na motivaci</div><div class="fail-text">Motivace je emoce — přichází a odchází. <strong>Systém a prostředí fungují i bez motivace.</strong> Polož si knihu na polštář.</div></div></div>
+        <div class="fail-item"><div class="fail-num">3</div><div><div class="fail-title">Chybí identita</div><div class="fail-text">„Chci meditovat" vs. „Jsem člověk, který medituje". <strong>Změna identity předchází změně chování.</strong></div></div></div>
+        <div class="fail-item"><div class="fail-num">4</div><div><div class="fail-title">Jeden špatný den = konec</div><div class="fail-text">Vynechat 1 den je lidské. Vynechat 2 dny je nový vzorec. <strong>Nikdy nevynechej dvakrát za sebou.</strong></div></div></div>
+        <div class="fail-item"><div class="fail-num">5</div><div><div class="fail-title">Žádná zpětná vazba</div><div class="fail-text">Co neměříš, neexistuje. <strong>Heatmapa, streak counter, zápisky</strong> — zpětná vazba je palivo pro pokračování.</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-cta">
+    <a href="zasebe-mind-vyzvy-cile.html" class="btn-gold" onclick="return fadeNav(this)"><span>Začít s výzvou — malý krok</span><em>→</em></a>
   </div>
 </section>
 
@@ -549,11 +558,11 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
 <section class="cta">
   <div class="sec-tag" style="justify-content:center;"><span>Jeden krok. Dnes.</span></div>
   <h2 class="cta-title">Začni s <em>jednou věcí</em>.<br>Ne se vším najednou.</h2>
-  <p class="cta-desc">Vyber jeden pilíř. Aplikuj ho 21 dní. Pak přidej další. Tak se staví životní styl — ne přes noc, ale přes vědomé rozhodnutí každý den.</p>
+  <p class="cta-desc">Vyber jeden pilíř. Aplikuj ho 21 dní. Pak přidej další.</p>
   <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;">
-    <a href="ZASEBE-MIND-21dnítracker.html" class="btn-gold"><span>Začni 21denní výzvu</span><em>→</em></a>
+    <a href="zasebe-mind-vyzvy-cile.html" class="btn-gold"><span>Začni 21denní výzvu</span><em>→</em></a>
     <a href="zasebe-klid.html" class="btn-outline">Klid mysli</a>
-    <a href="zasebe-landing.html" class="btn-outline">Zpět na Zasebe</a>
+    <a href="index.html" class="btn-outline">Zpět na Zasebe</a>
   </div>
 </section>
 
@@ -596,40 +605,29 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
   <div class="fl">
     <a href="#">Cookies</a>
     <a href="#">Ochrana soukromí</a>
-    <a href="zasebe-landing.html">Zasebe ekosystém</a>
+    <a href="index.html">Zasebe ekosystém</a>
   </div>
 </footer>
 
 <script>
-  if (window.innerWidth > 768) {
-    const c = document.getElementById('cursor'), r = document.getElementById('cursorRing');
-    if (c && r) {
-      let mx=0,my=0,rx=0,ry=0;
-      document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-      (function a(){ c.style.transform=`translate(${mx-3}px,${my-3}px)`; rx+=(mx-rx)*.1; ry+=(my-ry)*.1; r.style.transform=`translate(${rx-15}px,${ry-15}px)`; requestAnimationFrame(a); })();
-    }
+  if (matchMedia('(pointer:fine)').matches) {
+    const c = document.getElementById('cursor');
+    if (c) document.addEventListener('mousemove', e => { c.style.transform='translate('+(e.clientX-2.5)+'px,'+(e.clientY-2.5)+'px)'; });
   }
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
     document.getElementById('hamburger').classList.toggle('open');
     document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('open') ? 'hidden' : '';
   }
-  function closeMenu(anchor) {
-    const menu = document.getElementById('mobileMenu');
-    const burger = document.getElementById('hamburger');
-    menu.classList.remove('open');
-    burger.classList.remove('open');
-    document.body.style.overflow = '';
-    if (anchor) {
-      setTimeout(() => {
-        const target = document.querySelector(anchor);
-        if (target) {
-          const offset = target.getBoundingClientRect().top + window.pageYOffset - 70;
-          window.scrollTo({ top: offset, behavior: 'smooth' });
-        }
-      }, 300);
-    }
+  function fadeNav(el) {
+    const href = el.getAttribute('href');
+    if (!href || href.startsWith('#')) return true;
+    document.body.classList.add('fade-out');
+    setTimeout(() => { window.location.href = href; }, 300);
+    return false;
   }
+  window.addEventListener('pageshow', () => { document.body.classList.remove('fade-out'); });
+
 </script>
 </body>
 </html>

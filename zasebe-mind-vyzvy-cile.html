@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Zasebe Mind — Výzvy & Cíle</title>
 <link rel="icon" type="image/png" href="favicon.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -31,10 +32,14 @@ body {
   font-family:'Montserrat',sans-serif;
   font-weight:300;
   overflow-x:hidden;
-  cursor:none;
+  opacity:1;
+  transition:opacity .3s ease;
 }
-.cursor { width:6px;height:6px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999; }
-.cursor-ring { width:30px;height:30px;border:1px solid rgba(201,168,76,.65);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .3s,height .3s; }
+body.fade-out { opacity:0; }
+@media (pointer:fine) { body { cursor:none; } }
+.cursor { width:5px;height:5px;background:rgba(201,168,76,.6);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:opacity .3s; }
+.cursor-ring { display:none; }
+@media (pointer:coarse) { .cursor { display:none; } }
 
 /* NAV */
 nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,9,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gold-border); }
@@ -58,195 +63,104 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:
 .mobile-menu a:hover { color:var(--gold); }
 .ml { width:40px;height:1px;background:rgba(201,168,76,.15); }
 
-/* === PAGE HEADER === */
-.page-header {
-  text-align:center;
-  padding:140px 24px 0;
-}
-.page-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(42px,6vw,72px);
-  font-weight:300;
-  color:var(--white);
-  line-height:1.1;
-}
+/* PAGE HEADER */
+.page-header { text-align:center; padding:140px 24px 0; }
+.page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(42px,6vw,72px); font-weight:300; color:var(--white); line-height:1.1; }
 .page-title em { font-style:italic; color:var(--gold); }
 
-/* === TABS === */
-.tabs {
-  display:flex;
-  max-width:900px;
-  margin:36px auto 0;
-  border-bottom:1px solid rgba(201,168,76,0.2);
-}
-.tab {
-  flex:1;
-  padding:18px 0;
-  text-align:center;
-  font-size:14px;
-  letter-spacing:2.5px;
-  text-transform:uppercase;
-  font-weight:500;
-  color:rgba(240,237,232,0.5);
-  cursor:pointer;
-  border-bottom:2px solid transparent;
-  transition:color .3s, border-color .3s;
-  user-select:none;
-}
+/* TABS */
+.tabs { display:flex; max-width:900px; margin:36px auto 0; border-bottom:1px solid rgba(201,168,76,0.2); }
+.tab { flex:1; padding:18px 0; text-align:center; font-size:14px; letter-spacing:2.5px; text-transform:uppercase; font-weight:500; color:rgba(240,237,232,0.5); cursor:pointer; border-bottom:2px solid transparent; transition:color .3s, border-color .3s; user-select:none; }
 .tab:hover { color:rgba(240,237,232,0.8); }
 .tab.active { color:var(--gold); border-bottom-color:var(--gold); }
 
-/* === CONTENT === */
-.content {
-  max-width:900px;
-  margin:0 auto;
-  padding:40px 24px 100px;
-}
+/* CONTENT */
+.content { max-width:900px; margin:0 auto; padding:40px 24px 100px; }
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
 
-/* === EMPTY STATE === */
-.empty {
-  text-align:center;
-  padding:48px 20px;
-  color:rgba(240,237,232,0.5);
-  font-size:16px;
-  font-weight:300;
-}
+/* CONCEPT BANNER */
+.concept-banner { background:var(--dark2); border:1px solid var(--gold-border); padding:20px 28px; margin-bottom:28px; display:flex; align-items:center; gap:16px; }
+.concept-icon { font-size:28px; flex-shrink:0; }
+.concept-text { font-size:14px; color:rgba(240,237,232,.6); line-height:1.7; }
+.concept-text strong { color:var(--gold); font-weight:500; }
 
-/* === FORM CARD === */
-.form-card {
-  background:var(--dark2);
-  border:1px solid rgba(201,168,76,0.12);
-  padding:44px;
-  margin-top:36px;
-}
-.form-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:30px;
-  font-weight:400;
-  color:var(--white);
-  margin-bottom:28px;
-}
+/* EMPTY */
+.empty { text-align:center; padding:48px 20px; color:rgba(240,237,232,0.5); font-size:16px; font-weight:300; }
+
+/* FORM */
+.form-card { background:var(--dark2); border:1px solid rgba(201,168,76,0.12); padding:44px; margin-top:36px; }
+.form-title { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:400; color:var(--white); margin-bottom:28px; }
 .form-title em { font-style:italic; color:var(--gold); }
-
-.form-label {
-  display:block;
-  font-size:12px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:rgba(201,168,76,0.6);
-  font-weight:500;
-  margin-bottom:8px;
-  margin-top:22px;
-}
+.form-label { display:block; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(201,168,76,0.6); font-weight:500; margin-bottom:8px; margin-top:22px; }
 .form-label:first-of-type { margin-top:0; }
-
-.form-input, .form-textarea {
-  width:100%;
-  background:var(--dark3);
-  border:1px solid rgba(201,168,76,0.1);
-  color:var(--white);
-  font-family:'Montserrat',sans-serif;
-  font-size:16px;
-  font-weight:300;
-  padding:16px 20px;
-  outline:none;
-  transition:border-color .3s;
-}
+.form-input, .form-textarea, .form-select { width:100%; background:var(--dark3); border:1px solid rgba(201,168,76,0.1); color:var(--white); font-family:'Montserrat',sans-serif; font-size:16px; font-weight:300; padding:16px 20px; outline:none; transition:border-color .3s; }
+.form-select { appearance:none; cursor:pointer; }
 .form-input::placeholder, .form-textarea::placeholder { color:rgba(240,237,232,0.25); }
-.form-input:focus, .form-textarea:focus { border-color:rgba(201,168,76,0.4); }
+.form-input:focus, .form-textarea:focus, .form-select:focus { border-color:rgba(201,168,76,0.4); }
 .form-textarea { resize:vertical; min-height:60px; }
-
-.form-row {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-
-.btn-submit {
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  background:var(--gold);
-  color:#000;
-  padding:16px 36px;
-  font-size:12px;
-  letter-spacing:2.5px;
-  text-transform:uppercase;
-  font-family:'Montserrat',sans-serif;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-  transition:all .3s;
-  margin-top:28px;
-}
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+.form-hint { font-size:12px; color:rgba(240,237,232,.3); margin-top:6px; }
+.day-select-row { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.day-toggle { width:40px; height:36px; display:flex; align-items:center; justify-content:center; background:var(--dark3); border:1px solid rgba(201,168,76,.12); color:rgba(240,237,232,.4); font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; user-select:none; }
+.day-toggle.on { background:rgba(201,168,76,.15); border-color:var(--gold); color:var(--gold); }
+.btn-submit { display:inline-flex; align-items:center; gap:10px; background:var(--gold); color:#000; padding:16px 36px; font-size:12px; letter-spacing:2.5px; text-transform:uppercase; font-family:'Montserrat',sans-serif; font-weight:600; border:none; cursor:pointer; transition:all .3s; margin-top:28px; }
 .btn-submit:hover { background:var(--gold-light); }
 
-/* === ITEM CARDS === */
-.item-card {
-  background:var(--dark2);
-  border:1px solid rgba(201,168,76,0.1);
-  padding:32px;
-  margin-bottom:14px;
-  position:relative;
-  transition:border-color .3s;
-}
+/* ITEM CARDS */
+.item-card { background:var(--dark2); border:1px solid rgba(201,168,76,0.1); padding:32px; margin-bottom:14px; position:relative; transition:border-color .3s; }
 .item-card:hover { border-color:rgba(201,168,76,0.25); }
-
-.item-header {
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:16px;
-  margin-bottom:12px;
-}
+.item-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:12px; }
 .item-name { font-size:19px; font-weight:500; color:var(--white); }
 .item-desc { font-size:15px; color:rgba(240,237,232,0.5); font-weight:300; margin-bottom:16px; line-height:1.6; }
-.item-meta {
-  display:flex;
-  align-items:center;
-  gap:20px;
-  font-size:13px;
-  color:rgba(201,168,76,0.65);
-  letter-spacing:1px;
-  margin-bottom:16px;
-}
+.item-meta { display:flex; align-items:center; gap:20px; font-size:13px; color:rgba(201,168,76,0.65); letter-spacing:1px; margin-bottom:16px; flex-wrap:wrap; }
 
 /* Progress bar */
 .progress-wrap { margin-top:8px; }
-.progress-bar { width:100%; height:4px; background:var(--dark3); overflow:hidden; }
+.progress-bar { width:100%; height:4px; background:var(--dark3); overflow:hidden; position:relative; }
 .progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); transition:width .4s ease; }
 .progress-text { display:flex; justify-content:space-between; margin-top:10px; font-size:13px; color:rgba(240,237,232,0.5); }
 .progress-text .done { color:var(--gold); font-weight:500; }
 
-/* Day grid */
-.day-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(40px, 1fr));
-  gap:4px;
-  margin-top:18px;
-}
-.day-cell {
-  aspect-ratio:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:500;
-  color:rgba(240,237,232,0.4);
-  background:var(--dark3);
-  border:1px solid rgba(201,168,76,0.06);
-  cursor:pointer;
-  transition:all .2s;
-  user-select:none;
-}
-.day-cell:hover { border-color:rgba(201,168,76,0.3); }
-.day-cell.checked {
-  background:rgba(201,168,76,0.15);
-  border-color:var(--gold);
-  color:var(--gold);
-}
+/* Milestones on progress bar */
+.milestone-markers { position:relative; height:12px; margin-top:2px; }
+.milestone-mark { position:absolute; top:0; transform:translateX(-50%); text-align:center; }
+.milestone-mark::before { content:''; display:block; width:2px; height:6px; background:rgba(201,168,76,.4); margin:0 auto 2px; }
+.milestone-label { font-size:9px; color:rgba(201,168,76,.5); letter-spacing:1px; }
+.milestone-mark.reached .milestone-label { color:var(--gold); }
+.milestone-mark.reached::before { background:var(--gold); }
+
+/* HEATMAP — GitHub style */
+.heatmap-wrap { margin-top:18px; overflow-x:auto; }
+.heatmap-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(201,168,76,.5); margin-bottom:10px; }
+.heatmap { display:flex; gap:3px; padding:16px; background:var(--dark3); border:1px solid var(--gold-border); min-width:min-content; }
+.heatmap-col { display:flex; flex-direction:column; gap:3px; }
+.heatmap-cell { width:24px; height:24px; background:rgba(201,168,76,.08); border-radius:2px; transition:background .2s; position:relative; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:transparent; }
+.heatmap-cell:hover { outline:1px solid rgba(201,168,76,.6); background:rgba(201,168,76,.15); }
+.heatmap-cell.checked { background:var(--gold); }
+.heatmap-cell.has-note { color:rgba(7,7,9,.7); }
+.heatmap-cell.has-note:not(.checked) { color:var(--gold); }
+.heatmap-cell.today { outline:2px solid rgba(201,168,76,.6); outline-offset:-1px; }
+.heatmap-cell.future { opacity:.2; pointer-events:none; }
+.heatmap-months { display:flex; gap:2px; margin-bottom:4px; }
+.heatmap-month-label { font-size:9px; color:rgba(240,237,232,.3); letter-spacing:1px; }
+.heatmap-tooltip { position:fixed; background:var(--dark2); border:1px solid var(--gold-border); color:var(--white); font-size:12px; padding:6px 12px; pointer-events:none; z-index:500; display:none; white-space:nowrap; }
+
+/* Day note */
+.day-note-overlay { position:fixed; inset:0; background:rgba(7,7,9,.85); z-index:200; display:flex; align-items:center; justify-content:center; }
+.day-note-card { background:var(--dark2); border:1px solid rgba(201,168,76,.2); padding:36px; max-width:440px; width:90%; }
+.day-note-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:var(--white); margin-bottom:6px; }
+.day-note-date { font-size:12px; color:rgba(201,168,76,.6); letter-spacing:2px; margin-bottom:20px; }
+.day-note-textarea { width:100%; min-height:100px; background:var(--dark3); border:1px solid rgba(201,168,76,.12); color:var(--white); font-family:'Montserrat',sans-serif; font-size:14px; font-weight:300; padding:14px; outline:none; resize:vertical; }
+.day-note-textarea:focus { border-color:rgba(201,168,76,.4); }
+.day-note-actions { display:flex; gap:10px; margin-top:16px; }
+.day-note-actions button { padding:10px 24px; font-size:11px; letter-spacing:2px; text-transform:uppercase; font-family:'Montserrat',sans-serif; font-weight:600; border:none; cursor:pointer; transition:all .3s; }
+.btn-note-save { background:var(--gold); color:#000; }
+.btn-note-save:hover { background:var(--gold-light); }
+.btn-note-cancel { background:transparent; border:1px solid rgba(240,237,232,.15); color:rgba(240,237,232,.5); }
+.btn-note-cancel:hover { border-color:rgba(240,237,232,.3); color:var(--white); }
+/* note-indicator replaced by .has-note class with "P" text */
 
 /* Goal progress */
 .goal-progress-row { display:flex; align-items:center; gap:12px; margin-top:12px; }
@@ -254,121 +168,104 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:
 .goal-target { font-size:15px; color:rgba(240,237,232,0.45); }
 .goal-unit { font-size:14px; color:rgba(201,168,76,0.6); font-style:italic; }
 .goal-btn-row { display:flex; gap:8px; margin-top:14px; }
-.goal-btn {
-  width:40px; height:40px;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--dark3);
-  border:1px solid rgba(201,168,76,0.15);
-  color:var(--gold);
-  font-size:20px;
-  cursor:pointer;
-  transition:all .2s;
-  font-family:'Montserrat',sans-serif;
-}
+.goal-btn { width:40px; height:40px; display:flex; align-items:center; justify-content:center; background:var(--dark3); border:1px solid rgba(201,168,76,0.15); color:var(--gold); font-size:20px; cursor:pointer; transition:all .2s; font-family:'Montserrat',sans-serif; }
 .goal-btn:hover { background:rgba(201,168,76,0.1); border-color:var(--gold); }
-.goal-input-small {
-  width:80px;
-  background:var(--dark3);
-  border:1px solid rgba(201,168,76,0.15);
-  color:var(--white);
-  font-family:'Montserrat',sans-serif;
-  font-size:15px;
-  padding:8px 12px;
-  text-align:center;
-  outline:none;
-}
+.goal-input-small { width:80px; background:var(--dark3); border:1px solid rgba(201,168,76,0.15); color:var(--white); font-family:'Montserrat',sans-serif; font-size:15px; padding:8px 12px; text-align:center; outline:none; }
 .goal-input-small:focus { border-color:var(--gold); }
+.goal-deadline { font-size:13px; color:rgba(201,168,76,.55); font-style:italic; }
 
-/* Item actions */
-.item-actions { display:flex; gap:8px; }
-.btn-icon {
-  width:34px; height:34px;
-  display:flex; align-items:center; justify-content:center;
-  background:transparent;
-  border:1px solid rgba(240,237,232,0.1);
-  color:rgba(240,237,232,0.35);
-  font-size:16px;
-  cursor:pointer;
-  transition:all .2s;
-}
+/* Actions */
+.item-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.btn-icon { width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:transparent; border:1px solid rgba(240,237,232,0.1); color:rgba(240,237,232,0.35); font-size:16px; cursor:pointer; transition:all .2s; }
 .btn-icon:hover { border-color:var(--red); color:var(--red); }
+.btn-export { padding:6px 14px; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; background:rgba(201,168,76,.1); border:1px solid rgba(201,168,76,.25); color:var(--gold); cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:500; transition:all .2s; }
+.btn-export:hover { background:rgba(201,168,76,.2); border-color:var(--gold); }
 
 /* Badges */
-.badge-completed {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(76,175,80,0.1);
-  border:1px solid rgba(76,175,80,0.25);
-  color:var(--green);
-  font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500;
-  padding:5px 14px;
-}
-.badge-active {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(201,168,76,0.08);
-  border:1px solid rgba(201,168,76,0.2);
-  color:var(--gold);
-  font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500;
-  padding:5px 14px;
-}
+.badge-completed { display:inline-flex; align-items:center; gap:6px; background:rgba(76,175,80,0.1); border:1px solid rgba(76,175,80,0.25); color:var(--green); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500; padding:5px 14px; }
+.badge-active { display:inline-flex; align-items:center; gap:6px; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.2); color:var(--gold); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500; padding:5px 14px; }
 
-/* === STATS === */
-.stats-section-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:30px;
-  font-weight:300;
-  color:var(--white);
-  margin-bottom:16px;
-  margin-top:36px;
-}
+/* STATS */
+.stats-section-title { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:var(--white); margin-bottom:16px; margin-top:36px; }
 .stats-section-title:first-child { margin-top:0; }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:2px; }
+.stat-box { background:var(--dark2); border:1px solid rgba(201,168,76,0.08); padding:28px 18px; text-align:center; }
+.stat-num { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:300; color:var(--gold); line-height:1; margin-bottom:8px; }
+.stat-label { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(240,237,232,0.45); font-weight:500; }
 
-.stats-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
-  gap:2px;
-}
-.stat-box {
-  background:var(--dark2);
-  border:1px solid rgba(201,168,76,0.08);
-  padding:28px 18px;
-  text-align:center;
-}
-.stat-num {
-  font-family:'Cormorant Garamond',serif;
-  font-size:38px;
-  font-weight:300;
-  color:var(--gold);
-  line-height:1;
-  margin-bottom:8px;
-}
-.stat-label {
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:rgba(240,237,232,0.45);
-  font-weight:500;
-}
+/* Streak animation */
+.streak-box { background:var(--dark2); border:1px solid rgba(201,168,76,.15); padding:28px; text-align:center; margin-top:16px; }
+.streak-num { font-family:'Cormorant Garamond',serif; font-size:64px; font-weight:300; color:var(--gold); line-height:1; }
+.streak-label { font-size:12px; letter-spacing:2.5px; text-transform:uppercase; color:rgba(201,168,76,.6); margin-top:6px; }
+.streak-fire { display:inline-block; font-size:28px; animation:firePulse 1s ease-in-out infinite; }
+@keyframes firePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+
+/* Year progress */
+.year-progress-wrap { margin-top:24px; }
+.year-bar { width:100%; height:8px; background:var(--dark3); overflow:hidden; border-radius:4px; }
+.year-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:4px; transition:width .5s; }
+.year-text { display:flex; justify-content:space-between; margin-top:8px; font-size:12px; color:rgba(240,237,232,.45); }
+
+/* Motivation */
+.motivation { background:var(--dark2); border-left:2px solid var(--gold); padding:20px 28px; margin-top:24px; font-size:15px; color:rgba(240,237,232,.7); font-style:italic; line-height:1.7; }
+.motivation strong { color:var(--gold); font-weight:500; font-style:normal; }
+
+/* Year Heatmap */
+/* Year heatmap — single grid */
+.year-heatmap-wrap { margin-top:24px; background:var(--dark3); border:1px solid var(--gold-border); padding:20px 20px 16px; overflow-x:auto; }
+.ym-months-row { display:flex; margin-bottom:6px; }
+.ym-month-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(201,168,76,.45); text-align:center; }
+.ym-row { display:flex; gap:6px; }
+.ym-block { display:flex; gap:2px; }
+.ym-col { display:flex; flex-direction:column; gap:2px; }
+.ym-cell { width:11px; height:11px; border-radius:1px; flex-shrink:0; }
+.ym-cell.past { background:rgba(240,237,232,.07); }
+.ym-cell.active { background:var(--gold); }
+.ym-cell.today { outline:2px solid rgba(201,168,76,.7); outline-offset:-1px; z-index:1; }
+.ym-cell.future { background:rgba(240,237,232,.025); }
+.ym-cell:not(.future):hover { outline:1px solid rgba(201,168,76,.4); }
 
 /* Timeline */
 .timeline { margin-top:36px; }
-.timeline-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:30px;
-  font-weight:300;
-  color:var(--white);
-  margin-bottom:16px;
-}
-.timeline-item {
-  padding:20px 26px;
-  background:var(--dark2);
-  border:1px solid rgba(201,168,76,0.06);
-  border-left:2px solid rgba(201,168,76,0.25);
-  margin-bottom:2px;
-}
+.timeline-title { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:var(--white); margin-bottom:16px; }
+.timeline-item { padding:20px 26px; background:var(--dark2); border:1px solid rgba(201,168,76,0.06); border-left:2px solid rgba(201,168,76,0.25); margin-bottom:2px; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+.timeline-content { flex:1; }
+.timeline-del { flex-shrink:0; width:28px; height:28px; display:flex; align-items:center; justify-content:center; background:transparent; border:1px solid rgba(240,237,232,.08); color:rgba(240,237,232,.2); font-size:14px; cursor:pointer; transition:all .2s; margin-top:2px; }
+.timeline-del:hover { border-color:var(--red); color:var(--red); }
 .timeline-date { font-size:13px; color:rgba(201,168,76,0.6); margin-bottom:4px; }
 .timeline-text { font-size:15px; color:rgba(240,237,232,0.7); font-weight:300; }
 
-/* === RESPONSIVE === */
+/* DIPLOMA OVERLAY */
+.diploma-overlay { position:fixed; inset:0; background:rgba(7,7,9,.92); z-index:300; display:flex; align-items:center; justify-content:center; overflow-y:auto; padding:40px 20px; }
+.diploma { background:var(--black); border:none; max-width:600px; width:100%; padding:0; text-align:center; position:relative; }
+.diploma-tag { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(201,168,76,.6); margin-bottom:8px; }
+.diploma-title { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; color:var(--white); margin-bottom:4px; }
+.diploma-title em { font-style:italic; color:var(--gold); }
+.diploma-name { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:400; color:var(--gold); margin:20px 0 8px; }
+.diploma-dates { font-size:13px; color:rgba(240,237,232,.5); letter-spacing:1px; margin-bottom:24px; }
+.diploma-big-num { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:var(--gold); line-height:1; }
+.diploma-big-label { font-size:13px; letter-spacing:2px; text-transform:uppercase; color:rgba(240,237,232,.5); margin-bottom:24px; }
+.diploma-heatmap { display:flex; gap:2px; justify-content:center; flex-wrap:wrap; margin:20px 0; }
+.diploma-heatmap-cell { width:10px; height:10px; border-radius:2px; }
+.diploma-quote-input { width:100%; background:transparent; border:none; border-bottom:1px solid rgba(201,168,76,.2); color:var(--white); font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; text-align:center; padding:12px 0; outline:none; margin:16px 0; }
+.diploma-quote-input::placeholder { color:rgba(240,237,232,.25); }
+.diploma-actions { display:flex; gap:12px; justify-content:center; margin-top:28px; }
+.diploma-actions button { padding:12px 28px; font-size:11px; letter-spacing:2px; text-transform:uppercase; font-family:'Montserrat',sans-serif; font-weight:600; border:none; cursor:pointer; transition:all .3s; }
+.diploma-brand { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(201,168,76,.35); margin-top:28px; }
+#cert-overlay-inner { background:var(--black); padding:60px 50px; border:2px solid var(--gold); position:relative; }
+#cert-overlay-inner::before { content:''; position:absolute; inset:8px; border:1px solid rgba(201,168,76,.2); pointer-events:none; }
+
+/* PRINT */
+@media print {
+  body { background:#070709 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  nav,.cursor,.cursor-ring,.mobile-menu,.tabs,.content,.page-header { display:none !important; }
+  .diploma-overlay { position:static; background:var(--black); padding:0; }
+  .diploma { max-width:100%; }
+  #cert-overlay-inner { border:2px solid var(--gold); }
+  .diploma-actions { display:none; }
+}
+
+/* RESPONSIVE */
 @media (max-width:768px) {
   body { cursor:auto !important; }
   .cursor,.cursor-ring { display:none !important; }
@@ -377,45 +274,79 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:
   .hamburger { display:flex !important; }
   .page-header { padding-top:100px; }
   .form-card { padding:28px 20px; }
-  .form-row { grid-template-columns:1fr; }
+  .form-row,.form-row-3 { grid-template-columns:1fr; }
   .item-card { padding:22px 18px; }
   .stats-grid { grid-template-columns:repeat(2,1fr); }
-  .day-grid { grid-template-columns:repeat(7,1fr); }
   .tab { font-size:12px; letter-spacing:1.5px; padding:14px 0; }
+  .heatmap-cell { width:18px; height:18px; font-size:8px; }
+  .year-heatmap-wrap { padding:12px !important; }
+  .ym-cell { width:8px; height:8px; }
+  .ym-month-label { font-size:8px !important; }
+  .ym-row { gap:4px !important; }
+  .ym-block { gap:1px; }
+  .ym-col { gap:1px; }
+  .heatmap { gap:2px; padding:10px; }
+  .heatmap-col { gap:2px; }
+  #cert-overlay-inner { padding:40px 24px !important; }
+  .diploma-big-num { font-size:56px; }
 }
 @media (max-width:480px) {
   .stats-grid { grid-template-columns:1fr 1fr; }
+  .template-grid { grid-template-columns:1fr !important; }
 }
+
+/* Templates */
+.templates-wrap { margin-bottom:28px; }
+.templates-title { font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(201,168,76,.5);margin-bottom:12px; }
+.template-grid { display:grid;grid-template-columns:1fr 1fr;gap:2px; }
+.template-card { background:var(--dark3);border:1px solid rgba(201,168,76,.06);padding:20px;cursor:pointer;transition:border-color .3s,background .3s;text-align:left;width:100%;font-family:'Montserrat',sans-serif; }
+.template-card:hover { border-color:rgba(201,168,76,.25);background:rgba(201,168,76,.02); }
+.template-name { font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px; }
+.template-meta { font-size:12px;color:rgba(201,168,76,.5);margin-bottom:6px; }
+.template-desc { font-size:13px;color:rgba(240,237,232,.45);line-height:1.6; }
+.template-use { font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-top:10px;opacity:0;transition:opacity .3s; }
+.template-card:hover .template-use { opacity:1; }
+
+/* Toast */
+#toast { position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark2);border:1px solid rgba(201,168,76,0.3);color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;letter-spacing:1.5px;padding:14px 28px;z-index:9000;opacity:0;transition:all .3s ease;pointer-events:none;white-space:nowrap; }
+#toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+#toast.success { border-color:rgba(201,168,76,0.6); }
+#toast.error { border-color:rgba(220,80,80,0.5);color:#DC5050; }
+
+/* Confirm modal */
+#confirm-modal { display:none;position:fixed;inset:0;background:rgba(7,7,9,0.85);z-index:8000;align-items:center;justify-content:center; }
+#confirm-modal.show { display:flex; }
+#confirm-modal-inner { background:var(--dark2);border:1px solid rgba(201,168,76,0.2);padding:36px;max-width:400px;width:90%;text-align:center; }
+#confirm-modal-text { font-size:16px;color:rgba(240,237,232,0.8);margin-bottom:28px;line-height:1.7; }
+.confirm-btns { display:flex;gap:10px;justify-content:center; }
+.confirm-btn-no { background:transparent;border:1px solid rgba(201,168,76,.2);color:rgba(240,237,232,.5);padding:14px 28px;font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer; }
 </style>
 </head>
 <body>
 
+<a href="#main-content" style="position:absolute;top:-40px;left:0;background:var(--gold);color:#000;padding:8px 16px;font-size:13px;font-weight:600;z-index:9999;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Přeskočit na obsah</a>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="zasebe-mind.html">Mind</a><div class="ml"></div>
-  <a href="ZASEBE-MIND-21dnítracker.html">21 dní Tracker</a><div class="ml"></div>
-  <a href="zasebe-klid.html">Klid mysli</a><div class="ml"></div>
-  <a href="#" style="color:var(--gold);">Výzvy & Cíle</a><div class="ml"></div>
-  <a href="zasebe-landing.html">Zasebe</a>
+  <a href="zasebe-mind.html" onclick="return fadeNav(this)">Průvodce</a><div class="ml"></div>
+  <a href="zasebe-klid.html" onclick="return fadeNav(this)">Klid mysli</a><div class="ml"></div>
+  <a href="zasebe-mind-vyzvy-cile.html" onclick="return fadeNav(this)" style="color:var(--gold);">Výzvy & Cíle</a>
 </div>
 
 <!-- NAV -->
 <nav>
-  <a href="zasebe-mind.html" class="logo-wrap">
-    <img src="ZASEBE MIND - LOGO.png" alt="Zasebe Mind logo" style="height:40px;width:auto;">
+  <a href="index.html" class="logo-wrap" onclick="return fadeNav(this)">
     <div class="logo-text">
       <span>zasebe mind</span>
       <span>Klid · Mysl · Rovnováha</span>
     </div>
   </a>
   <ul class="nav-links">
-    <li><a href="zasebe-mind.html">Mind</a></li>
-    <li><a href="ZASEBE-MIND-21dnítracker.html">21 dní</a></li>
-    <li><a href="zasebe-klid.html">Klid mysli</a></li>
-    <li><a href="#" class="active-link">Výzvy & Cíle</a></li>
+    <li><a href="zasebe-mind.html" onclick="return fadeNav(this)">Průvodce</a></li>
+    <li><a href="zasebe-klid.html" onclick="return fadeNav(this)">Klid mysli</a></li>
+    <li><a href="zasebe-mind-vyzvy-cile.html" class="active-link">Výzvy & Cíle</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -428,65 +359,173 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:
 </div>
 
 <!-- TABS -->
-<div class="tabs">
-  <div class="tab active" data-tab="vyzvy">Výzvy</div>
-  <div class="tab" data-tab="cile">Cíle</div>
-  <div class="tab" data-tab="statistiky">Statistiky</div>
+<div class="tabs" role="tablist">
+  <div class="tab active" data-tab="vyzvy" role="tab" tabindex="0" aria-selected="true">Výzvy</div>
+  <div class="tab" data-tab="cile" role="tab" tabindex="0" aria-selected="false">Cíle</div>
+  <div class="tab" data-tab="statistiky" role="tab" tabindex="0" aria-selected="false">Statistiky</div>
 </div>
 
 <!-- CONTENT -->
-<div class="content">
+<div class="content" id="main-content">
 
   <!-- ═══ TAB: VÝZVY ═══ -->
-  <div class="tab-panel active" id="panel-vyzvy">
+  <div class="tab-panel active" id="panel-vyzvy" role="tabpanel">
+    <div id="today-box" style="display:none;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);padding:20px 24px;margin-bottom:24px;">
+      <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:12px;">Dnes je potřeba</div>
+      <div id="today-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+    <div class="concept-banner">
+      <div class="concept-icon">&#x1F525;</div>
+      <div class="concept-text"><strong>Výzva = disciplína v čase.</strong> Každý den něco udělat. Měří se dny, série, konzistence. Není to o výsledku — je to o tom nevynechat.</div>
+    </div>
+    <!-- TEMPLATES -->
+    <div class="templates-wrap">
+      <div class="templates-title">Připravené výzvy — začni jedním klikem</div>
+      <div class="template-grid">
+        <button class="template-card" type="button" onclick="useTemplate('Bez sociálních sítí po 20:00','Žádný Instagram, TikTok, X po osmé večer. Místo toho kniha, dýchání nebo klid.',21,'daily')">
+          <div class="template-name">📵 21 dní bez sítí po 20:00</div>
+          <div class="template-meta">21 dní · Každý den</div>
+          <div class="template-desc">Večerní detox od sociálních sítí. Lepší spánek, klidnější mysl.</div>
+          <div class="template-use">Použít →</div>
+        </button>
+        <button class="template-card" type="button" onclick="useTemplate('Ranní rutina — 5 minut','5 minut ráno: 3 věci za které jsem vděčný, 1 minuta dýchání, 1 priorita dne.',30,'daily')">
+          <div class="template-name">☀️ 30 dní ranní rutina</div>
+          <div class="template-meta">30 dní · Každý den</div>
+          <div class="template-desc">5 minut které změní celý den. Vděčnost, dech, priorita.</div>
+          <div class="template-use">Použít →</div>
+        </button>
+        <button class="template-card" type="button" onclick="useTemplate('Kvalitní spánek — před půlnocí','V posteli před půlnocí. Telefon mimo ložnici. Blackout závěsy.',14,'daily')">
+          <div class="template-name">🌙 14 dní kvalitní spánek</div>
+          <div class="template-meta">14 dní · Každý den</div>
+          <div class="template-desc">Spánek před půlnocí, telefon pryč. Základy regenerace.</div>
+          <div class="template-use">Použít →</div>
+        </button>
+        <button class="template-card" type="button" onclick="useTemplate('Vděčnost — 1 věc denně','Každý den zapiš 1 věc, za kterou jsi vděčný/á. Může být malá. Trénuješ mozek hledat dobré.',21,'daily')">
+          <div class="template-name">🙏 21 dní vděčnosti</div>
+          <div class="template-meta">21 dní · Každý den</div>
+          <div class="template-desc">Jedna věc denně. Mozek se naučí hledat to dobré.</div>
+          <div class="template-use">Použít →</div>
+        </button>
+      </div>
+    </div>
+
     <div id="vyzvy-list"></div>
-    <div class="empty" id="vyzvy-empty">Žádné aktivní výzvy. Vytvoř si novou níže.</div>
+    <div class="empty" id="vyzvy-empty">Žádné aktivní výzvy. Vyber šablonu výše nebo vytvoř vlastní níže.</div>
+    <div id="vyzvy-archive-wrap" style="margin-top:32px;display:none;">
+      <div onclick="toggleArchive('vyzvy')" style="cursor:pointer;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,.4);padding:12px 0;border-top:1px solid rgba(201,168,76,.08);display:flex;align-items:center;gap:8px;">
+        <span id="vyzvy-archive-label">&#9656; Archiv dokončených</span>
+      </div>
+      <div id="vyzvy-archive-list" style="display:none;"></div>
+    </div>
 
     <div class="form-card">
       <h2 class="form-title">Vytvořit <em>výzvu</em></h2>
-      <label class="form-label">Název výzvy</label>
+      <label class="form-label" for="v-name">Název výzvy</label>
       <input class="form-input" id="v-name" type="text" placeholder="Např. Meditace, Studená sprcha, Čtení...">
-      <label class="form-label">Popis (volitelný)</label>
-      <input class="form-input" id="v-desc" type="text" placeholder="Co chceš dosáhnout?">
-      <label class="form-label">Počet dní</label>
+      <label class="form-label" for="v-desc">Popis (volitelný)</label>
+      <input class="form-input" id="v-desc" type="text" placeholder="Proč to děláš?">
+
+      <label class="form-label" for="v-repeat">Typ opakování</label>
+      <select class="form-input form-select" id="v-repeat" onchange="updateRepeatUI()">
+        <option value="daily">Každý den</option>
+        <option value="selected">Vybrané dny v týdnu</option>
+        <option value="weekly">X-krát týdně</option>
+      </select>
+
+      <div id="repeat-selected" style="display:none;">
+        <label class="form-label">Vyber dny</label>
+        <div class="day-select-row" id="day-toggles">
+          <button class="day-toggle" type="button" data-day="1" onclick="toggleDaySelect(this)">Po</button>
+          <button class="day-toggle" type="button" data-day="2" onclick="toggleDaySelect(this)">Út</button>
+          <button class="day-toggle" type="button" data-day="3" onclick="toggleDaySelect(this)">St</button>
+          <button class="day-toggle" type="button" data-day="4" onclick="toggleDaySelect(this)">Čt</button>
+          <button class="day-toggle" type="button" data-day="5" onclick="toggleDaySelect(this)">Pá</button>
+          <button class="day-toggle" type="button" data-day="6" onclick="toggleDaySelect(this)">So</button>
+          <button class="day-toggle" type="button" data-day="0" onclick="toggleDaySelect(this)">Ne</button>
+        </div>
+      </div>
+      <div id="repeat-weekly" style="display:none;">
+        <label class="form-label">Kolikrát týdně</label>
+        <input class="form-input" id="v-weekly-count" type="number" value="3" min="1" max="7">
+      </div>
+
+      <label class="form-label" for="v-days">Počet dní</label>
       <input class="form-input" id="v-days" type="number" value="21" min="1" max="365">
+      <div class="form-hint">Délka trvání výzvy (např. 21, 30, 66, 365).</div>
+
+      <label class="form-label" for="v-username">Tvoje jméno (volitelné — pro certifikát)</label>
+      <input class="form-input" id="v-username" type="text" placeholder="Např. Jan">
       <button class="btn-submit" onclick="addChallenge()">Zahájit výzvu</button>
     </div>
   </div>
 
   <!-- ═══ TAB: CÍLE ═══ -->
-  <div class="tab-panel" id="panel-cile">
+  <div class="tab-panel" id="panel-cile" role="tabpanel">
+    <div class="concept-banner">
+      <div class="concept-icon">&#x1F3AF;</div>
+      <div class="concept-text"><strong>Cíl = dosáhnout výsledku.</strong> Měří se progress k cílové hodnotě. Má termín a milníky. Není to o každodenním tikání — je to o směru.</div>
+    </div>
     <div id="cile-list"></div>
     <div class="empty" id="cile-empty">Žádné aktivní cíle. Přidej svůj první.</div>
+    <div id="cile-archive-wrap" style="margin-top:32px;display:none;">
+      <div onclick="toggleArchive('cile')" style="cursor:pointer;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,.4);padding:12px 0;border-top:1px solid rgba(201,168,76,.08);display:flex;align-items:center;gap:8px;">
+        <span id="cile-archive-label">&#9656; Archiv splněných</span>
+      </div>
+      <div id="cile-archive-list" style="display:none;"></div>
+    </div>
 
     <div class="form-card">
       <h2 class="form-title">Přidat <em>cíl</em></h2>
-      <label class="form-label">Název cíle</label>
+      <label class="form-label" for="c-name">Název cíle</label>
       <input class="form-input" id="c-name" type="text" placeholder="Např. Přečíst 12 knih">
-      <div class="form-row">
+      <div class="form-row-3">
         <div>
-          <label class="form-label">Cílový počet</label>
+          <label class="form-label" for="c-target">Cílový počet</label>
           <input class="form-input" id="c-target" type="number" placeholder="12" min="1">
         </div>
         <div>
-          <label class="form-label">Jednotka</label>
+          <label class="form-label" for="c-unit">Jednotka</label>
           <input class="form-input" id="c-unit" type="text" placeholder="knih, km, hodin...">
         </div>
+        <div>
+          <label class="form-label" for="c-deadline">Termín (deadline)</label>
+          <input class="form-input" id="c-deadline" type="date">
+        </div>
       </div>
-      <label class="form-label">Poznámky (volitelné)</label>
+      <label class="form-label" for="c-notes">Poznámky (volitelné)</label>
       <input class="form-input" id="c-notes" type="text" placeholder="Další detaily k cíli...">
       <button class="btn-submit" onclick="addGoal()">Přidat cíl</button>
     </div>
   </div>
 
   <!-- ═══ TAB: STATISTIKY ═══ -->
-  <div class="tab-panel" id="panel-statistiky">
+  <div class="tab-panel" id="panel-statistiky" role="tabpanel">
+
+    <!-- Streak -->
+    <div class="streak-box">
+      <div><span class="streak-fire" id="streak-fire"></span></div>
+      <div class="streak-num" id="s-current-streak">0</div>
+      <div class="streak-label">Aktuální série (dní v řadě)</div>
+    </div>
+
+    <div id="motivation-box"></div>
+
+    <!-- Year progress -->
+    <h2 class="stats-section-title">Roční přehled</h2>
+    <div class="year-progress-wrap">
+      <div class="year-bar"><div class="year-fill" id="year-fill"></div></div>
+      <div class="year-text"><span id="year-active-days">0 aktivních dní</span><span id="year-label">2026</span></div>
+    </div>
+    <div class="year-heatmap-wrap">
+      <div id="year-heatmap"></div>
+    </div>
+
     <h2 class="stats-section-title">Výzvy</h2>
     <div class="stats-grid">
       <div class="stat-box"><div class="stat-num" id="s-v-total">0</div><div class="stat-label">Celkem</div></div>
       <div class="stat-box"><div class="stat-num" id="s-v-done">0</div><div class="stat-label">Dokončeno</div></div>
       <div class="stat-box"><div class="stat-num" id="s-v-active">0</div><div class="stat-label">Aktivní</div></div>
-      <div class="stat-box"><div class="stat-num" id="s-v-days">0</div><div class="stat-label">Dní celkem</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-v-days">0</div><div class="stat-label">Dní odškrtnuto</div></div>
       <div class="stat-box"><div class="stat-num" id="s-v-streak">0</div><div class="stat-label">Nejdelší série</div></div>
     </div>
 
@@ -501,84 +540,163 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:
       <h2 class="timeline-title">Časová osa</h2>
       <div id="timeline-list"></div>
     </div>
+
+    <!-- BACKUP -->
+    <h2 class="stats-section-title">Záloha dat</h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn-submit" style="margin-top:0;" onclick="exportData()">Exportovat data (JSON)</button>
+      <label class="btn-submit" style="margin-top:0;background:var(--dark3);color:var(--gold);border:1px solid rgba(201,168,76,.25);cursor:pointer;">
+        Importovat data (JSON)
+        <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
+      </label>
+    </div>
   </div>
 
 </div>
 
+<!-- TOOLTIP -->
+<div class="heatmap-tooltip" id="heatmap-tooltip"></div>
+
 <script>
-// ===== DATA =====
-const STORAGE_KEY = 'zasebe_mind_vyzvy_cile';
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+const STORAGE_KEY = 'zasebe_mind_vc2';
 
 function loadData() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { challenges: [], goals: [], timeline: [] };
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (d && d.challenges) return d;
+    // Migrate from old format
+    const old = JSON.parse(localStorage.getItem('zasebe_mind_vyzvy_cile'));
+    if (old) {
+      old.challenges = (old.challenges || []).map(ch => {
+        if (ch.checkedDays && ch.checkedDays.length && typeof ch.checkedDays[0] === 'number') {
+          const start = new Date(ch.startDate);
+          ch.checkedDays = ch.checkedDays.map(n => {
+            const d = new Date(start); d.setDate(d.getDate() + n - 1); return isoDate(d);
+          });
+        }
+        if (!ch.repeatType) ch.repeatType = 'daily';
+        if (!ch.repeatConfig) ch.repeatConfig = {};
+        if (!ch.dayNotes) ch.dayNotes = [];
+        return ch;
+      });
+      old.goals = (old.goals || []).map(g => {
+        if (!g.deadline) g.deadline = '';
+        return g;
+      });
+      saveData(old);
+      return old;
+    }
+    return { challenges: [], goals: [], timeline: [] };
   } catch { return { challenges: [], goals: [], timeline: [] }; }
 }
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
+function saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-// ===== NAV =====
+function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function today() { return isoDate(new Date()); }
+function parseDate(s) { const p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function formatDate(s) { const d = parseDate(s); return d.toLocaleDateString('cs-CZ'); }
+const DAY_NAMES = ['Ne','Po','Út','St','Čt','Pá','So'];
+const MONTH_NAMES = ['Led','Úno','Bře','Dub','Kvě','Čvn','Čvc','Srp','Zář','Říj','Lis','Pro'];
+
+// ═══════════════════════════════════
+// NAV
+// ═══════════════════════════════════
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
   document.getElementById('hamburger').classList.toggle('open');
   document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('open') ? 'hidden' : '';
 }
 
-// ===== TABS =====
+// ═══════════════════════════════════
+// TABS
+// ═══════════════════════════════════
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
+    tab.setAttribute('aria-selected','true');
     document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
     if (tab.dataset.tab === 'statistiky') renderStats();
   });
 });
 
-// ===== CHALLENGES =====
+// ═══════════════════════════════════
+// REPEAT TYPE UI
+// ═══════════════════════════════════
+function updateRepeatUI() {
+  const val = document.getElementById('v-repeat').value;
+  document.getElementById('repeat-selected').style.display = val === 'selected' ? 'block' : 'none';
+  document.getElementById('repeat-weekly').style.display = val === 'weekly' ? 'block' : 'none';
+}
+function toggleDaySelect(el) { el.classList.toggle('on'); }
+
+// ═══════════════════════════════════
+// CHALLENGES
+// ═══════════════════════════════════
+function useTemplate(name, desc, days, repeatType) {
+  const userName = (document.getElementById('v-username') && document.getElementById('v-username').value.trim()) || '';
+  const data = loadData();
+  data.challenges.push({
+    id: Date.now(), name, desc, days, repeatType, repeatConfig: {},
+    checkedDays: [], dayNotes: [], userName,
+    startDate: new Date().toISOString(), completed: false
+  });
+  data.timeline.unshift({ date: today(), text: 'Zahájena výzva: ' + name });
+  saveData(data);
+  renderChallenges();
+  document.getElementById('vyzvy-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function addChallenge() {
   const name = document.getElementById('v-name').value.trim();
   const desc = document.getElementById('v-desc').value.trim();
   const days = parseInt(document.getElementById('v-days').value) || 21;
+  const repeatType = document.getElementById('v-repeat').value;
+  const userName = document.getElementById('v-username').value.trim();
   if (!name) return;
 
+  let repeatConfig = {};
+  if (repeatType === 'selected') {
+    repeatConfig.days = [...document.querySelectorAll('#day-toggles .day-toggle.on')].map(el => parseInt(el.dataset.day));
+    if (repeatConfig.days.length === 0) { showToast('Vyber alespoň jeden den.', 'error'); return; }
+  } else if (repeatType === 'weekly') {
+    repeatConfig.count = parseInt(document.getElementById('v-weekly-count').value) || 3;
+  }
+
   const data = loadData();
-  const challenge = {
-    id: Date.now(),
-    name,
-    desc,
-    days,
-    checkedDays: [],
-    startDate: new Date().toISOString(),
-    completed: false
-  };
-  data.challenges.push(challenge);
-  data.timeline.unshift({
-    date: new Date().toLocaleDateString('cs-CZ'),
-    text: 'Zahájena výzva: ' + name
+  data.challenges.push({
+    id: Date.now(), name, desc, days, repeatType, repeatConfig,
+    checkedDays: [], dayNotes: [], userName,
+    startDate: new Date().toISOString(), completed: false
   });
+  data.timeline.unshift({ date: today(), text: 'Zahájena výzva: ' + name });
   saveData(data);
 
   document.getElementById('v-name').value = '';
   document.getElementById('v-desc').value = '';
   document.getElementById('v-days').value = '21';
+  document.getElementById('v-username').value = '';
+  document.querySelectorAll('#day-toggles .day-toggle').forEach(el => el.classList.remove('on'));
   renderChallenges();
 }
 
-function toggleDay(challengeId, day) {
+function toggleDay(chId, dateStr) {
   const data = loadData();
-  const ch = data.challenges.find(c => c.id === challengeId);
+  const ch = data.challenges.find(c => c.id === chId);
   if (!ch) return;
 
-  const idx = ch.checkedDays.indexOf(day);
+  const idx = ch.checkedDays.indexOf(dateStr);
   if (idx >= 0) ch.checkedDays.splice(idx, 1);
-  else ch.checkedDays.push(day);
+  else ch.checkedDays.push(dateStr);
 
-  if (ch.checkedDays.length === ch.days && !ch.completed) {
+  if (ch.checkedDays.length >= ch.days && !ch.completed) {
     ch.completed = true;
     ch.completedDate = new Date().toISOString();
-    data.timeline.unshift({ date: new Date().toLocaleDateString('cs-CZ'), text: 'Dokončena výzva: ' + ch.name + ' (' + ch.days + ' dní)' });
+    data.timeline.unshift({ date: today(), text: 'Dokončena výzva: ' + ch.name + ' (' + ch.days + ' dní)' });
   } else if (ch.checkedDays.length < ch.days) {
     ch.completed = false;
     delete ch.completedDate;
@@ -588,61 +706,322 @@ function toggleDay(challengeId, day) {
 }
 
 function deleteChallenge(id) {
+  showConfirm('Opravdu smazat tuto výzvu?', function() {
+    const data = loadData();
+    data.challenges = data.challenges.filter(c => c.id !== id);
+    saveData(data);
+    renderChallenges();
+  });
+}
+
+// ─── Heatmap for challenge ───
+function buildChallengeHeatmap(ch) {
+  const start = new Date(ch.startDate);
+  const end = new Date(start);
+  end.setDate(end.getDate() + ch.days - 1);
+  const todayStr = today();
+  const todayDate = new Date();
+
+  // Find first Monday on or before start
+  const gridStart = new Date(start);
+  while (gridStart.getDay() !== 1) gridStart.setDate(gridStart.getDate() - 1);
+
+  let html = '<div class="heatmap">';
+  let d = new Date(gridStart);
+  let currentWeek = [];
+  let weeks = [];
+
+  // Build weeks until we pass end date + fill last week
+  while (d <= end || d.getDay() !== 1) {
+    currentWeek.push(new Date(d));
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+      if (d > end) break;
+    }
+    d.setDate(d.getDate() + 1);
+  }
+
+  weeks.forEach(week => {
+    html += '<div class="heatmap-col">';
+    week.forEach(day => {
+      const ds = isoDate(day);
+      const inRange = day >= start && day <= end;
+      const checked = ch.checkedDays.includes(ds);
+      const isToday = ds === todayStr;
+      const isFuture = day > todayDate;
+      const hasNote = ch.dayNotes && ch.dayNotes.some(n => n.day === ds);
+
+      let cls = 'heatmap-cell';
+      if (!inRange) cls += ' future';
+      else if (isFuture) cls += ' future';
+      else if (checked) cls += ' checked';
+      if (isToday && inRange) cls += ' today';
+      if (hasNote) cls += ' has-note';
+
+      const onclick = inRange && !isFuture ? ' onclick="onHeatmapClick(' + ch.id + ',\'' + ds + '\')"' : '';
+      const ariaLabel = ' aria-label="' + formatDate(ds) + (checked ? ', splněno' : ', nesplněno') + (hasNote ? ', má poznámku' : '') + '"';
+      html += '<div class="' + cls + '" data-date="' + ds + '"' + onclick + ariaLabel + '>' + (hasNote ? 'P' : '') + '</div>';
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function onHeatmapClick(chId, dateStr) {
+  toggleDay(chId, dateStr);
+}
+
+// ─── Day Note ───
+let activeNoteChId = null, activeNoteDate = null;
+
+function openDayNote(chId, dateStr) {
+  activeNoteChId = chId;
+  activeNoteDate = dateStr;
   const data = loadData();
-  const ch = data.challenges.find(c => c.id === id);
-  data.challenges = data.challenges.filter(c => c.id !== id);
-  if (ch) data.timeline.unshift({ date: new Date().toLocaleDateString('cs-CZ'), text: 'Smazána výzva: ' + ch.name });
+  const ch = data.challenges.find(c => c.id === chId);
+  const existing = ch && ch.dayNotes ? ch.dayNotes.find(n => n.day === dateStr) : null;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'day-note-overlay';
+  overlay.id = 'note-overlay';
+  overlay.innerHTML =
+    '<div class="day-note-card">' +
+      '<div class="day-note-title">Poznámka ke dni</div>' +
+      '<div class="day-note-date">' + formatDate(dateStr) + (ch ? ' — ' + esc(ch.name) : '') + '</div>' +
+      '<textarea class="day-note-textarea" id="note-textarea" placeholder="Co se dnes stalo? Jak ses cítil/a?">' + (existing ? esc(existing.note) : '') + '</textarea>' +
+      '<div class="day-note-actions">' +
+        '<button class="btn-note-save" onclick="saveDayNote()">Uložit</button>' +
+        '<button class="btn-note-cancel" onclick="closeDayNote()">Zavřít</button>' +
+      '</div>' +
+    '</div>';
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeDayNote(); });
+  document.body.appendChild(overlay);
+  document.getElementById('note-textarea').focus();
+}
+
+function saveDayNote() {
+  const text = document.getElementById('note-textarea').value.trim();
+  const data = loadData();
+  const ch = data.challenges.find(c => c.id === activeNoteChId);
+  if (!ch) return;
+  if (!ch.dayNotes) ch.dayNotes = [];
+  const idx = ch.dayNotes.findIndex(n => n.day === activeNoteDate);
+  if (text) {
+    if (idx >= 0) ch.dayNotes[idx].note = text;
+    else ch.dayNotes.push({ day: activeNoteDate, note: text });
+  } else if (idx >= 0) {
+    ch.dayNotes.splice(idx, 1);
+  }
   saveData(data);
+  closeDayNote();
   renderChallenges();
+}
+
+function closeDayNote() {
+  const el = document.getElementById('note-overlay');
+  if (el) el.remove();
+  activeNoteChId = null;
+  activeNoteDate = null;
+}
+
+function repeatLabel(ch) {
+  if (ch.repeatType === 'daily') return 'Každý den';
+  if (ch.repeatType === 'selected') return (ch.repeatConfig.days || []).map(d => DAY_NAMES[d]).join(', ');
+  if (ch.repeatType === 'weekly') return (ch.repeatConfig.count || 3) + '× týdně';
+  return '';
+}
+
+function challengeStreak(ch) {
+  if (!ch.checkedDays.length) return 0;
+  const sorted = [...ch.checkedDays].sort().reverse();
+  const todayStr = today();
+  let streak = 0;
+  let expected = new Date();
+  // If today not checked, start from yesterday
+  if (!ch.checkedDays.includes(todayStr)) {
+    expected.setDate(expected.getDate() - 1);
+  }
+  for (let i = 0; i < 400; i++) {
+    const ds = isoDate(expected);
+    if (sorted.includes(ds)) {
+      streak++;
+      expected.setDate(expected.getDate() - 1);
+    } else break;
+  }
+  return streak;
+}
+
+function renderChallengeCard(ch) {
+  const pct = ch.days > 0 ? Math.round((ch.checkedDays.length / ch.days) * 100) : 0;
+  const streak = ch.paused ? 0 : challengeStreak(ch);
+  const heatmap = buildChallengeHeatmap(ch);
+  const statusBadge = ch.completed ? '<span class="badge-completed">Dokončeno</span>' :
+    ch.paused ? '<span class="badge-active" style="color:rgba(240,237,232,.4);border-color:rgba(240,237,232,.15);">Pozastaveno</span>' :
+    '<span class="badge-active">Aktivní</span>';
+
+  return '<div class="item-card">' +
+    '<div class="item-header"><div>' +
+      '<div class="item-name">' + esc(ch.name) + '</div>' +
+      (ch.desc ? '<div class="item-desc">' + esc(ch.desc) + '</div>' : '') +
+    '</div><div class="item-actions">' +
+      '<button class="btn-export" onclick="showDiploma(' + ch.id + ')">' + (ch.completed ? 'Exportovat diplom' : 'Certifikát') + '</button>' +
+      statusBadge +
+      (!ch.completed ? '<button class="btn-icon" onclick="togglePause(' + ch.id + ')" title="' + (ch.paused ? 'Pokračovat' : 'Pozastavit') + '" style="' + (ch.paused ? 'border-color:var(--gold);color:var(--gold)' : '') + '">&#x23F8;</button>' : '') +
+      '<button class="btn-icon" onclick="deleteChallenge(' + ch.id + ')" title="Smazat">&times;</button>' +
+    '</div></div>' +
+    '<div class="item-meta">' +
+      '<span>' + repeatLabel(ch) + '</span>' +
+      '<span>' + ch.days + ' dní</span>' +
+      '<span>Od ' + formatDate(isoDate(new Date(ch.startDate))) + '</span>' +
+      (streak > 0 ? '<span style="color:var(--gold);">&#x1F525; ' + streak + ' dní v řadě</span>' : '') +
+    '</div>' +
+    '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+    '<div class="progress-text"><span class="done">' + ch.checkedDays.length + ' / ' + ch.days + '</span><span>' + pct + '%</span></div></div>' +
+    '<div class="heatmap-wrap">' +
+      '<div class="heatmap-label">Klikni = splnění · Dvojklik/podržení = poznámka</div>' +
+      heatmap +
+    '</div>' +
+  '</div>';
 }
 
 function renderChallenges() {
   const data = loadData();
   const list = document.getElementById('vyzvy-list');
   const empty = document.getElementById('vyzvy-empty');
+  const archiveWrap = document.getElementById('vyzvy-archive-wrap');
+  const archiveList = document.getElementById('vyzvy-archive-list');
 
-  if (data.challenges.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
+  const active = data.challenges.filter(c => !c.completed);
+  const done = data.challenges.filter(c => c.completed);
 
-  list.innerHTML = data.challenges.map(ch => {
-    const pct = ch.days > 0 ? Math.round((ch.checkedDays.length / ch.days) * 100) : 0;
-    let daysCells = '';
-    for (let i = 1; i <= ch.days; i++) {
-      const checked = ch.checkedDays.includes(i) ? ' checked' : '';
-      daysCells += '<div class="day-cell' + checked + '" onclick="toggleDay(' + ch.id + ',' + i + ')">' + i + '</div>';
-    }
-    return '<div class="item-card">' +
-      '<div class="item-header"><div>' +
-        '<div class="item-name">' + esc(ch.name) + '</div>' +
-        (ch.desc ? '<div class="item-desc">' + esc(ch.desc) + '</div>' : '') +
-      '</div><div class="item-actions">' +
-        (ch.completed ? '<span class="badge-completed">Dokončeno</span>' : '<span class="badge-active">Aktivní</span>') +
-        '<button class="btn-icon" onclick="deleteChallenge(' + ch.id + ')" title="Smazat">&times;</button>' +
-      '</div></div>' +
-      '<div class="item-meta"><span>' + ch.days + ' dní</span><span>Zahájeno: ' + new Date(ch.startDate).toLocaleDateString('cs-CZ') + '</span></div>' +
-      '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
-      '<div class="progress-text"><span class="done">' + ch.checkedDays.length + ' / ' + ch.days + '</span><span>' + pct + '%</span></div></div>' +
-      '<div class="day-grid">' + daysCells + '</div></div>';
-  }).join('');
+  if (data.challenges.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; archiveWrap.style.display = 'none'; }
+  else { empty.style.display = 'none'; }
+
+  list.innerHTML = active.map(renderChallengeCard).join('');
+
+  if (done.length > 0) {
+    archiveWrap.style.display = '';
+    archiveList.innerHTML = done.map(renderChallengeCard).join('');
+  } else {
+    archiveWrap.style.display = 'none';
+  }
+
+  setupHeatmapInteractions();
+  renderTodayBox();
 }
 
-// ===== GOALS =====
+function toggleArchive(type) {
+  const list = document.getElementById(type + '-archive-list');
+  const label = document.getElementById(type + '-archive-label');
+  const open = list.style.display === 'none';
+  list.style.display = open ? '' : 'none';
+  label.innerHTML = (open ? '&#9662; ' : '&#9656; ') + (type === 'vyzvy' ? 'Archiv dokončených' : 'Archiv splněných');
+}
+
+function togglePause(id) {
+  const data = loadData();
+  const ch = data.challenges.find(c => c.id === id);
+  if (!ch) return;
+  ch.paused = !ch.paused;
+  saveData(data);
+  renderChallenges();
+}
+
+function renderTodayBox() {
+  const data = loadData();
+  const box = document.getElementById('today-box');
+  const list = document.getElementById('today-list');
+  const todayStr = today();
+  const active = data.challenges.filter(c => !c.completed && !c.paused);
+  if (active.length === 0) { box.style.display = 'none'; return; }
+
+  let html = '';
+  active.forEach(ch => {
+    const done = ch.checkedDays.includes(todayStr);
+    html += '<label style="display:flex;align-items:center;gap:12px;cursor:pointer;padding:6px 0;">' +
+      '<input type="checkbox" ' + (done ? 'checked' : '') + ' onchange="toggleDay(' + ch.id + ',\'' + todayStr + '\')" style="accent-color:var(--gold);width:18px;height:18px;">' +
+      '<span style="font-size:15px;color:' + (done ? 'var(--gold)' : 'rgba(240,237,232,.7)') + ';' + (done ? 'text-decoration:line-through;' : '') + '">' + esc(ch.name) + '</span>' +
+    '</label>';
+  });
+  list.innerHTML = html;
+  box.style.display = '';
+}
+
+function setupHeatmapInteractions() {
+  const tooltip = document.getElementById('heatmap-tooltip');
+
+  document.querySelectorAll('.heatmap-cell[data-date]').forEach(cell => {
+    // Tooltip
+    cell.addEventListener('mouseenter', e => {
+      const d = cell.dataset.date;
+      if (!d) return;
+      tooltip.textContent = formatDate(d);
+      tooltip.style.display = 'block';
+      tooltip.style.left = e.clientX + 12 + 'px';
+      tooltip.style.top = e.clientY - 30 + 'px';
+    });
+    cell.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    cell.addEventListener('mousemove', e => {
+      tooltip.style.left = e.clientX + 12 + 'px';
+      tooltip.style.top = e.clientY - 30 + 'px';
+    });
+
+    // Double-click for note (desktop)
+    cell.addEventListener('dblclick', e => {
+      e.preventDefault();
+      const chCard = cell.closest('.item-card');
+      if (!chCard) return;
+      const chId = getChIdFromCard(chCard);
+      if (chId) openDayNote(chId, cell.dataset.date);
+    });
+
+    // Long press for note (mobile)
+    let pressTimer = null;
+    cell.addEventListener('touchstart', e => {
+      pressTimer = setTimeout(() => {
+        pressTimer = null;
+        const chCard = cell.closest('.item-card');
+        if (!chCard) return;
+        const chId = getChIdFromCard(chCard);
+        if (chId) openDayNote(chId, cell.dataset.date);
+      }, 500);
+    }, { passive: true });
+    cell.addEventListener('touchend', () => { if (pressTimer) clearTimeout(pressTimer); });
+    cell.addEventListener('touchmove', () => { if (pressTimer) clearTimeout(pressTimer); });
+  });
+}
+
+function getChIdFromCard(card) {
+  // Extract challenge ID from onclick of delete button
+  const btn = card.querySelector('.btn-icon[onclick*="deleteChallenge"]');
+  if (!btn) return null;
+  const match = btn.getAttribute('onclick').match(/deleteChallenge\((\d+)\)/);
+  return match ? parseInt(match[1]) : null;
+}
+
+// ═══════════════════════════════════
+// GOALS
+// ═══════════════════════════════════
 function addGoal() {
   const name = document.getElementById('c-name').value.trim();
   const target = parseInt(document.getElementById('c-target').value) || 0;
   const unit = document.getElementById('c-unit').value.trim();
   const notes = document.getElementById('c-notes').value.trim();
+  const deadline = document.getElementById('c-deadline').value || '';
   if (!name || target <= 0) return;
 
   const data = loadData();
-  data.goals.push({ id: Date.now(), name, target, unit, notes, current: 0, completed: false, createdDate: new Date().toISOString() });
-  data.timeline.unshift({ date: new Date().toLocaleDateString('cs-CZ'), text: 'Přidán cíl: ' + name + ' ' + target + (unit ? ' ' + unit : '') });
+  data.goals.push({ id: Date.now(), name, target, unit, notes, deadline, current: 0, completed: false, createdDate: new Date().toISOString(), log: [] });
+  data.timeline.unshift({ date: today(), text: 'Přidán cíl: ' + name + ' ' + target + (unit ? ' ' + unit : '') });
   saveData(data);
 
   document.getElementById('c-name').value = '';
   document.getElementById('c-target').value = '';
   document.getElementById('c-unit').value = '';
   document.getElementById('c-notes').value = '';
+  document.getElementById('c-deadline').value = '';
   renderGoals();
 }
 
@@ -651,11 +1030,9 @@ function updateGoal(id, delta) {
   const g = data.goals.find(g => g.id === id);
   if (!g) return;
   g.current = Math.max(0, g.current + delta);
-  if (g.current >= g.target && !g.completed) {
-    g.completed = true;
-    g.completedDate = new Date().toISOString();
-    data.timeline.unshift({ date: new Date().toLocaleDateString('cs-CZ'), text: 'Splněn cíl: ' + g.name });
-  } else if (g.current < g.target) { g.completed = false; delete g.completedDate; }
+  if (!g.log) g.log = [];
+  g.log.push({ date: today(), delta: delta, value: g.current });
+  checkGoalCompletion(g, data);
   saveData(data);
   renderGoals();
 }
@@ -668,118 +1045,597 @@ function setGoalValue(id) {
   const data = loadData();
   const g = data.goals.find(g => g.id === id);
   if (!g) return;
+  const delta = val - g.current;
   g.current = val;
-  if (g.current >= g.target && !g.completed) {
-    g.completed = true;
-    g.completedDate = new Date().toISOString();
-    data.timeline.unshift({ date: new Date().toLocaleDateString('cs-CZ'), text: 'Splněn cíl: ' + g.name });
-  } else if (g.current < g.target) { g.completed = false; delete g.completedDate; }
+  if (!g.log) g.log = [];
+  g.log.push({ date: today(), delta: delta, value: g.current });
+  checkGoalCompletion(g, data);
   saveData(data);
   renderGoals();
 }
 
+function checkGoalCompletion(g, data) {
+  if (g.current >= g.target && !g.completed) {
+    g.completed = true;
+    g.completedDate = new Date().toISOString();
+    data.timeline.unshift({ date: today(), text: 'Splněn cíl: ' + g.name });
+  } else if (g.current < g.target) { g.completed = false; delete g.completedDate; }
+}
+
 function deleteGoal(id) {
-  const data = loadData();
-  const g = data.goals.find(g => g.id === id);
-  data.goals = data.goals.filter(g => g.id !== id);
-  if (g) data.timeline.unshift({ date: new Date().toLocaleDateString('cs-CZ'), text: 'Smazán cíl: ' + g.name });
-  saveData(data);
-  renderGoals();
+  showConfirm('Opravdu smazat tento cíl?', function() {
+    const data = loadData();
+    data.goals = data.goals.filter(g => g.id !== id);
+    saveData(data);
+    renderGoals();
+  });
+}
+
+function renderGoalCard(g) {
+  const pct = g.target > 0 ? Math.min(100, Math.round((g.current / g.target) * 100)) : 0;
+  const milestones = [25, 50, 75, 100];
+  const daysSince = Math.floor((new Date() - new Date(g.createdDate)) / 86400000);
+
+  let deadlineHtml = '';
+  if (g.deadline) {
+    const dl = parseDate(g.deadline);
+    const daysLeft = Math.ceil((dl - new Date()) / 86400000);
+    deadlineHtml = '<div class="goal-deadline">Termín: ' + formatDate(g.deadline) +
+      (daysLeft > 0 ? ' (' + daysLeft + ' dní zbývá)' : daysLeft === 0 ? ' (dnes!)' : ' (po termínu!)') + '</div>';
+  }
+
+  let milestonesHtml = '<div class="milestone-markers">';
+  milestones.forEach(m => {
+    const reached = pct >= m;
+    milestonesHtml += '<div class="milestone-mark' + (reached ? ' reached' : '') + '" style="left:' + m + '%"><div class="milestone-label">' + m + '%</div></div>';
+  });
+  milestonesHtml += '</div>';
+
+  const hasLog = g.log && g.log.length > 0;
+
+  return '<div class="item-card">' +
+    '<div class="item-header"><div>' +
+      '<div class="item-name">' + esc(g.name) + '</div>' +
+      (g.notes ? '<div class="item-desc">' + esc(g.notes) + '</div>' : '') +
+    '</div><div class="item-actions">' +
+      (g.completed ? '<span class="badge-completed">Splněno</span>' : '<span class="badge-active">Aktivní</span>') +
+      '<button class="btn-icon" onclick="deleteGoal(' + g.id + ')" title="Smazat">&times;</button>' +
+    '</div></div>' +
+    deadlineHtml +
+    '<div style="font-size:12px;color:rgba(240,237,232,.3);margin-top:4px;">Pracuješ na tom ' + daysSince + ' dní</div>' +
+    '<div class="goal-progress-row">' +
+      '<div class="goal-current">' + g.current + '</div>' +
+      '<div class="goal-target">/ ' + g.target + '</div>' +
+      (g.unit ? '<div class="goal-unit">' + esc(g.unit) + '</div>' : '') +
+    '</div>' +
+    '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+    milestonesHtml +
+    '<div class="progress-text"><span class="done">' + pct + '%</span><span>' + g.current + ' / ' + g.target + (g.unit ? ' ' + esc(g.unit) : '') + '</span></div></div>' +
+    '<div class="goal-btn-row">' +
+      '<button class="goal-btn" onclick="updateGoal(' + g.id + ',-1)">&minus;</button>' +
+      '<input class="goal-input-small" id="goal-input-' + g.id + '" type="number" value="' + g.current + '" min="0" onkeydown="if(event.key===\'Enter\')setGoalValue(' + g.id + ')">' +
+      '<button class="goal-btn" onclick="updateGoal(' + g.id + ',1)">+</button>' +
+      (hasLog ? '<button class="goal-btn" onclick="openGoalLog(' + g.id + ')" title="Historie" style="font-size:13px;width:auto;padding:0 12px;">Historie</button>' : '') +
+    '</div></div>';
 }
 
 function renderGoals() {
   const data = loadData();
   const list = document.getElementById('cile-list');
   const empty = document.getElementById('cile-empty');
+  const archiveWrap = document.getElementById('cile-archive-wrap');
+  const archiveList = document.getElementById('cile-archive-list');
 
-  if (data.goals.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  const active = data.goals.filter(g => !g.completed);
+  const done = data.goals.filter(g => g.completed);
+
+  if (data.goals.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; archiveWrap.style.display = 'none'; return; }
   empty.style.display = 'none';
 
-  list.innerHTML = data.goals.map(g => {
-    const pct = g.target > 0 ? Math.min(100, Math.round((g.current / g.target) * 100)) : 0;
-    return '<div class="item-card">' +
-      '<div class="item-header"><div>' +
-        '<div class="item-name">' + esc(g.name) + '</div>' +
-        (g.notes ? '<div class="item-desc">' + esc(g.notes) + '</div>' : '') +
-      '</div><div class="item-actions">' +
-        (g.completed ? '<span class="badge-completed">Splněno</span>' : '<span class="badge-active">Aktivní</span>') +
-        '<button class="btn-icon" onclick="deleteGoal(' + g.id + ')" title="Smazat">&times;</button>' +
-      '</div></div>' +
-      '<div class="goal-progress-row">' +
-        '<div class="goal-current">' + g.current + '</div>' +
-        '<div class="goal-target">/ ' + g.target + '</div>' +
-        (g.unit ? '<div class="goal-unit">' + esc(g.unit) + '</div>' : '') +
-      '</div>' +
-      '<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
-      '<div class="progress-text"><span class="done">' + pct + '%</span><span>' + g.current + ' / ' + g.target + (g.unit ? ' ' + esc(g.unit) : '') + '</span></div></div>' +
-      '<div class="goal-btn-row">' +
-        '<button class="goal-btn" onclick="updateGoal(' + g.id + ',-1)">&minus;</button>' +
-        '<input class="goal-input-small" id="goal-input-' + g.id + '" type="number" value="' + g.current + '" min="0" onkeydown="if(event.key===\'Enter\')setGoalValue(' + g.id + ')">' +
-        '<button class="goal-btn" onclick="updateGoal(' + g.id + ',1)">+</button>' +
-      '</div></div>';
-  }).join('');
+  list.innerHTML = active.map(renderGoalCard).join('');
+
+  if (done.length > 0) {
+    archiveWrap.style.display = '';
+    archiveList.innerHTML = done.map(renderGoalCard).join('');
+  } else {
+    archiveWrap.style.display = 'none';
+  }
 }
 
-// ===== STATS =====
+function openGoalLog(id) {
+  const data = loadData();
+  const g = data.goals.find(g => g.id === id);
+  if (!g || !g.log || !g.log.length) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'day-note-overlay';
+  overlay.id = 'note-overlay';
+  overlay.innerHTML =
+    '<div class="day-note-card" style="max-width:500px;">' +
+      '<div class="day-note-title">Historie — ' + esc(g.name) + '</div>' +
+      '<div style="max-height:400px;overflow-y:auto;margin-top:16px;">' +
+        g.log.slice().reverse().map(l =>
+          '<div style="padding:10px 0;border-bottom:1px solid rgba(201,168,76,.06);display:flex;justify-content:space-between;font-size:14px;">' +
+            '<span style="color:rgba(240,237,232,.5);">' + formatDate(l.date) + '</span>' +
+            '<span style="color:' + (l.delta >= 0 ? 'var(--gold)' : 'var(--red)') + ';">' + (l.delta >= 0 ? '+' : '') + l.delta + '</span>' +
+            '<span style="color:var(--white);">' + l.value + (g.unit ? ' ' + esc(g.unit) : '') + '</span>' +
+          '</div>'
+        ).join('') +
+      '</div>' +
+      '<div class="day-note-actions"><button class="btn-note-cancel" onclick="document.getElementById(\'note-overlay\').remove()">Zavřít</button></div>' +
+    '</div>';
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+// ═══════════════════════════════════
+// DIPLOMA
+// ═══════════════════════════════════
+function showDiploma(chId) {
+  const data = loadData();
+  const ch = data.challenges.find(c => c.id === chId);
+  if (!ch) return;
+
+  const pct = ch.days > 0 ? Math.round((ch.checkedDays.length / ch.days) * 100) : 0;
+  const startD = formatDate(isoDate(new Date(ch.startDate)));
+  const endD = ch.completedDate ? formatDate(isoDate(new Date(ch.completedDate))) : '—';
+
+  // Build mini heatmap
+  const start = new Date(ch.startDate);
+  let hmHtml = '';
+  for (let i = 0; i < ch.days; i++) {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    const ds = isoDate(d);
+    const checked = ch.checkedDays.includes(ds);
+    hmHtml += '<div class="diploma-heatmap-cell" style="background:' + (checked ? 'var(--gold)' : 'var(--dark3)') + '"></div>';
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'diploma-overlay';
+  overlay.id = 'diploma-overlay';
+  overlay.innerHTML =
+    '<div class="diploma" id="diploma-content">' +
+      '<div id="cert-overlay-inner">' +
+        '<div class="diploma-tag">Zasebe Mind — Certifikát</div>' +
+        '<div class="diploma-title">Výzva <em>' + (ch.completed ? 'dokončena' : 'v průběhu') + '</em></div>' +
+        (ch.userName ? '<div class="diploma-dates" style="margin-bottom:4px;font-size:15px;color:rgba(240,237,232,.7);letter-spacing:1px;">' + esc(ch.userName) + '</div>' : '') +
+        '<div class="diploma-name">' + esc(ch.name) + '</div>' +
+        '<div class="diploma-dates">' + startD + ' → ' + endD + '  ·  ' + ch.days + ' dní</div>' +
+        '<div class="diploma-big-num">' + pct + '%</div>' +
+        '<div class="diploma-big-label">' + (ch.completed ? 'dní splněno' : ch.checkedDays.length + ' dní z ' + ch.days + ' · ' + pct + '% cesty') + '</div>' +
+        '<div class="diploma-heatmap">' + hmHtml + '</div>' +
+        '<input class="diploma-quote-input" id="diploma-quote" placeholder="Tvůj citát nebo zpráva sobě...">' +
+        '<div class="diploma-brand">Zasebe Mind</div>' +
+      '</div>' +
+      '<div class="diploma-actions">' +
+        '<button class="btn-note-save" onclick="printDiploma()">Tisk / PDF</button>' +
+        '<button class="btn-note-save" onclick="shareCertificate()">Sdílet výsledek</button>' +
+        '<button class="btn-note-cancel" onclick="closeDiploma()">Zavřít</button>' +
+      '</div>' +
+    '</div>';
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeDiploma(); });
+  document.body.appendChild(overlay);
+}
+
+function printDiploma() {
+  // Freeze quote into visible text for print
+  const input = document.getElementById('diploma-quote');
+  if (input && input.value.trim()) {
+    const p = document.createElement('p');
+    p.style.cssText = 'font-family:Cormorant Garamond,serif;font-size:18px;font-style:italic;color:var(--white);text-align:center;margin:16px 0;';
+    p.textContent = '„' + input.value.trim() + '"';
+    input.replaceWith(p);
+  }
+  window.print();
+}
+
+function closeDiploma() {
+  const el = document.getElementById('diploma-overlay');
+  if (el) el.remove();
+}
+
+async function shareCertificate() {
+  const el = document.getElementById('cert-overlay-inner');
+  if (!el) return;
+  // Freeze quote input into text for render
+  const input = el.querySelector('.diploma-quote-input');
+  let restored = null;
+  if (input && input.value.trim()) {
+    const p = document.createElement('p');
+    p.style.cssText = 'font-family:Cormorant Garamond,serif;font-size:18px;font-style:italic;color:#F0EDE8;text-align:center;margin:16px 0;';
+    p.textContent = '\u201E' + input.value.trim() + '\u201C';
+    p.className = '_quote-frozen';
+    input.parentNode.insertBefore(p, input);
+    input.style.display = 'none';
+    restored = function() { p.remove(); input.style.display = ''; };
+  }
+  try {
+    const canvas = await html2canvas(el, { backgroundColor: '#070709', scale: 2, useCORS: true });
+    if (restored) restored();
+    canvas.toBlob(async function(blob) {
+      if (!blob) return;
+      var file = new File([blob], 'zasebe-vyzva.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Výzva splněna — Zasebe Mind',
+          text: 'Právě jsem dokončil/a svou výzvu. #zasebemind'
+        });
+      } else {
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'zasebe-vyzva.png';
+        a.click();
+      }
+    }, 'image/png');
+  } catch (err) {
+    if (restored) restored();
+    // Fallback — download from canvas
+    try {
+      var canvas2 = await html2canvas(el, { backgroundColor: '#070709', scale: 2 });
+      var a2 = document.createElement('a');
+      a2.href = canvas2.toDataURL('image/png');
+      a2.download = 'zasebe-vyzva.png';
+      a2.click();
+    } catch(e) {}
+  }
+}
+
+// ═══════════════════════════════════
+// STATS
+// ═══════════════════════════════════
 function renderStats() {
   const data = loadData();
+
+  // Challenge stats
   const totalCh = data.challenges.length;
   const doneCh = data.challenges.filter(c => c.completed).length;
   const activeCh = totalCh - doneCh;
   const totalDays = data.challenges.reduce((s, c) => s + c.checkedDays.length, 0);
 
+  // Longest streak (historical, across all challenges)
   let longestStreak = 0;
   data.challenges.forEach(ch => {
-    const sorted = [...ch.checkedDays].sort((a, b) => a - b);
+    const sorted = [...ch.checkedDays].sort();
     let streak = 0, maxS = 0;
     for (let i = 0; i < sorted.length; i++) {
-      streak = (i === 0 || sorted[i] === sorted[i-1] + 1) ? streak + 1 : 1;
+      if (i === 0) { streak = 1; }
+      else {
+        const prev = parseDate(sorted[i-1]);
+        const curr = parseDate(sorted[i]);
+        const diff = Math.round((curr - prev) / 86400000);
+        streak = diff === 1 ? streak + 1 : 1;
+      }
       maxS = Math.max(maxS, streak);
     }
     longestStreak = Math.max(longestStreak, maxS);
   });
 
-  document.getElementById('s-v-total').textContent = totalCh;
-  document.getElementById('s-v-done').textContent = doneCh;
-  document.getElementById('s-v-active').textContent = activeCh;
-  document.getElementById('s-v-days').textContent = totalDays;
-  document.getElementById('s-v-streak').textContent = longestStreak;
+  // Current streak (across all challenges — any check today/yesterday continues)
+  let currentStreak = 0;
+  const allDays = new Set();
+  data.challenges.forEach(ch => ch.checkedDays.forEach(d => allDays.add(d)));
+  const sortedAll = [...allDays].sort().reverse();
+  if (sortedAll.length) {
+    let expected = new Date();
+    if (!allDays.has(today())) expected.setDate(expected.getDate() - 1);
+    for (let i = 0; i < 400; i++) {
+      if (allDays.has(isoDate(expected))) {
+        currentStreak++;
+        expected.setDate(expected.getDate() - 1);
+      } else break;
+    }
+  }
 
+  // Current streak display
+  document.getElementById('streak-fire').textContent = currentStreak > 0 ? '\u{1F525}' : '';
+
+  // Goal stats
   const totalG = data.goals.length;
   const doneG = data.goals.filter(g => g.completed).length;
   const rate = totalG > 0 ? Math.round((doneG / totalG) * 100) : 0;
-  document.getElementById('s-c-total').textContent = totalG;
-  document.getElementById('s-c-done').textContent = doneG;
-  document.getElementById('s-c-rate').textContent = rate + '%';
 
+  // Count-up animations
+  countUpAll([
+    { id: 's-v-total', val: totalCh },
+    { id: 's-v-done', val: doneCh },
+    { id: 's-v-active', val: activeCh },
+    { id: 's-v-days', val: totalDays },
+    { id: 's-v-streak', val: longestStreak },
+    { id: 's-current-streak', val: currentStreak },
+    { id: 's-c-total', val: totalG },
+    { id: 's-c-done', val: doneG },
+    { id: 's-c-rate', val: rate, suffix: '%' }
+  ]);
+
+  // Motivation
+  const motBox = document.getElementById('motivation-box');
+  if (longestStreak > 0 || currentStreak > 0) {
+    let msg = '';
+    if (currentStreak > 0 && currentStreak < longestStreak) {
+      msg = 'Tvoje aktuální série je <strong>' + currentStreak + ' dní</strong>. Rekord je ' + longestStreak + '. Zkus ho překonat.';
+    } else if (currentStreak >= longestStreak && currentStreak > 0) {
+      msg = 'Jsi na rekordu! <strong>' + currentStreak + ' dní</strong> v řadě. Nepřestávej.';
+    } else {
+      msg = 'Tvoje nejsilnější série je <strong>' + longestStreak + ' dní</strong>. Začni novou a překonej ji.';
+    }
+    motBox.innerHTML = '<div class="motivation">' + msg + '</div>';
+  } else {
+    motBox.innerHTML = '<div class="motivation">Začni první výzvu a buduj svou sérii. Každý den se počítá.</div>';
+  }
+
+  // Year heatmap
+  renderYearHeatmap(allDays);
+
+  // Year progress
+  const year = new Date().getFullYear();
+  const dayOfYear = Math.ceil((new Date() - new Date(year, 0, 1)) / 86400000);
+  let yearActiveDays = 0;
+  allDays.forEach(d => { if (d.startsWith(year + '-')) yearActiveDays++; });
+  document.getElementById('year-fill').style.width = Math.round((yearActiveDays / dayOfYear) * 100) + '%';
+  document.getElementById('year-active-days').textContent = yearActiveDays + ' aktivních dní z ' + dayOfYear;
+  document.getElementById('year-label').textContent = year;
+
+  // Timeline
   const tl = document.getElementById('timeline-list');
   if (data.timeline.length === 0) {
     tl.innerHTML = '<div class="empty">Zatím žádná aktivita.</div>';
   } else {
-    tl.innerHTML = data.timeline.slice(0, 50).map(t =>
-      '<div class="timeline-item"><div class="timeline-date">' + esc(t.date) + '</div><div class="timeline-text">' + esc(t.text) + '</div></div>'
+    tl.innerHTML = data.timeline.slice(0, 50).map((t, i) =>
+      '<div class="timeline-item"><div class="timeline-content"><div class="timeline-date">' + esc(t.date) + '</div><div class="timeline-text">' + esc(t.text) + '</div></div>' +
+      '<button class="timeline-del" onclick="deleteTimelineItem(' + i + ')" title="Smazat">&times;</button></div>'
     ).join('');
   }
 }
 
-// ===== HELPERS =====
-function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+function renderYearHeatmap(allDays) {
+  var container = document.getElementById('year-heatmap');
+  var year = new Date().getFullYear();
+  var todayStr = today();
+  var todayDate = new Date();
 
-// ===== CURSOR =====
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-if (cursor && ring) {
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX - 3 + 'px';
-    cursor.style.top = e.clientY - 3 + 'px';
-    ring.style.left = e.clientX - 15 + 'px';
-    ring.style.top = e.clientY - 15 + 'px';
+  // Find first Monday on or before Jan 1
+  var jan1 = new Date(year, 0, 1);
+  var gridStart = new Date(jan1);
+  while (gridStart.getDay() !== 1) gridStart.setDate(gridStart.getDate() - 1);
+
+  // Build flat array of 53×7 = 371 days
+  var cells = [];
+  var d = new Date(gridStart);
+  for (var i = 0; i < 53 * 7; i++) {
+    cells.push(new Date(d));
+    d.setDate(d.getDate() + 1);
+  }
+
+  // Find which week each month starts in
+  var weekMonth = []; // weekMonth[w] = month of first in-year day in that week
+  for (var wi2 = 0; wi2 < 53; wi2++) {
+    for (var ri2 = 0; ri2 < 7; ri2++) {
+      var c2 = cells[wi2 * 7 + ri2];
+      if (c2.getFullYear() === year) { weekMonth[wi2] = c2.getMonth(); break; }
+    }
+  }
+  // Which weeks start a new month
+  var monthStartWeeks = {};
+  for (var w2 = 0; w2 < 53; w2++) {
+    if (weekMonth[w2] !== undefined && (w2 === 0 || weekMonth[w2] !== weekMonth[w2 - 1])) {
+      monthStartWeeks[w2] = weekMonth[w2];
+    }
+  }
+
+  // Group weeks into month blocks
+  var blocks = []; // [{month, weeks: [[cells...]]}]
+  var curMonth = -1;
+  for (var wi = 0; wi < 53; wi++) {
+    var m = weekMonth[wi];
+    if (m === undefined) m = curMonth;
+    if (m !== curMonth) {
+      blocks.push({ month: m, weeks: [] });
+      curMonth = m;
+    }
+    var week = [];
+    for (var ri = 0; ri < 7; ri++) week.push(cells[wi * 7 + ri]);
+    blocks[blocks.length - 1].weeks.push(week);
+  }
+
+  // Month labels
+  var labelsHtml = '<div class="ym-months-row">';
+  blocks.forEach(function(b) {
+    var bw = b.weeks.length * 13; // approx width per week (11+2)
+    labelsHtml += '<div class="ym-month-label" style="width:' + bw + 'px;flex-shrink:0;text-align:left;">' + MONTH_NAMES[b.month] + '</div>';
+  });
+  labelsHtml += '</div>';
+
+  // Grid
+  var gridHtml = '<div class="ym-row">';
+  blocks.forEach(function(b) {
+    gridHtml += '<div class="ym-block">';
+    b.weeks.forEach(function(week) {
+      gridHtml += '<div class="ym-col">';
+      week.forEach(function(c) {
+        var ds = isoDate(c);
+        var inYear = c.getFullYear() === year;
+        var active = allDays.has(ds);
+        var isToday = ds === todayStr;
+        var isFuture = c > todayDate;
+        var cls = 'ym-cell';
+        if (!inYear) cls += ' future';
+        else if (isFuture) cls += ' future';
+        else if (active) cls += ' active';
+        else cls += ' past';
+        if (isToday) cls += ' today';
+        gridHtml += '<div class="' + cls + '" data-date="' + ds + '"></div>';
+      });
+      gridHtml += '</div>';
+    });
+    gridHtml += '</div>';
+  });
+  gridHtml += '</div>';
+
+  container.innerHTML = labelsHtml + gridHtml;
+
+  // Tooltip
+  var tooltip = document.getElementById('heatmap-tooltip');
+  container.querySelectorAll('.ym-cell[data-date]').forEach(function(cell) {
+    cell.addEventListener('mouseenter', function(e) {
+      tooltip.textContent = formatDate(cell.dataset.date);
+      tooltip.style.display = 'block';
+      tooltip.style.left = e.clientX + 12 + 'px';
+      tooltip.style.top = e.clientY - 30 + 'px';
+    });
+    cell.addEventListener('mouseleave', function() { tooltip.style.display = 'none'; });
+    cell.addEventListener('mousemove', function(e) {
+      tooltip.style.left = e.clientX + 12 + 'px';
+      tooltip.style.top = e.clientY - 30 + 'px';
+    });
   });
 }
 
-// ===== INIT =====
+// ═══════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════
+function deleteTimelineItem(index) {
+  const data = loadData();
+  if (index >= 0 && index < data.timeline.length) {
+    data.timeline.splice(index, 1);
+    saveData(data);
+    renderStats();
+  }
+}
+
+function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+// ═══════════════════════════════════
+// COUNT-UP ANIMATION
+// ═══════════════════════════════════
+function animateCountUp(el, target, suffix) {
+  suffix = suffix || '';
+  const duration = 600;
+  const start = performance.now();
+  const from = 0;
+  function frame(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (target - from) * eased) + suffix;
+    if (progress < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function countUpAll(pairs) {
+  pairs.forEach(function(p) {
+    var el = document.getElementById(p.id);
+    if (el) animateCountUp(el, p.val, p.suffix || '');
+  });
+}
+
+// ═══════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════
+function exportData() {
+  const data = loadData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'zasebe-mind-backup-' + today() + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!imported.challenges && !imported.goals) {
+        showToast('Neplatný soubor — chybí data výzev nebo cílů.', 'error');
+        return;
+      }
+      showConfirm('Importovat data? Stávající data budou přepsána.', function() {
+        saveData(imported);
+        renderChallenges();
+        renderGoals();
+        renderStats();
+        showToast('Data úspěšně importována.');
+      });
+    } catch (err) {
+      showToast('Chyba při čtení souboru.', 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ═══════════════════════════════════
+// FADE NAVIGATION
+// ═══════════════════════════════════
+function fadeNav(el) {
+  var href = el.getAttribute('href');
+  if (!href || href.startsWith('#')) return true;
+  document.body.classList.add('fade-out');
+  setTimeout(function(){ window.location.href = href; }, 300);
+  return false;
+}
+window.addEventListener('pageshow', function(){ document.body.classList.remove('fade-out'); });
+
+// ═══════════════════════════════════
+// CURSOR
+// ═══════════════════════════════════
+if (matchMedia('(pointer:fine)').matches) {
+  const c = document.getElementById('cursor');
+  if (c) document.addEventListener('mousemove', e => { c.style.transform='translate('+(e.clientX-2.5)+'px,'+(e.clientY-2.5)+'px)'; });
+}
+
+// ═══════════════════════════════════
+// TOAST & CONFIRM
+// ═══════════════════════════════════
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + (type || 'success');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function() { t.className = ''; }, 3000);
+}
+
+function showConfirm(msg, onYes) {
+  var modal = document.getElementById('confirm-modal');
+  document.getElementById('confirm-modal-text').textContent = msg;
+  modal.classList.add('show');
+  document.getElementById('confirm-yes').onclick = function() { modal.classList.remove('show'); onYes(); };
+  document.getElementById('confirm-no').onclick = function() { modal.classList.remove('show'); };
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
 renderChallenges();
 renderGoals();
+
+// Keyboard nav for tabs
+document.querySelectorAll('.tab').forEach(function(tab, i, tabs) {
+  tab.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') { tabs[(i+1) % tabs.length].click(); tabs[(i+1) % tabs.length].focus(); }
+    if (e.key === 'ArrowLeft') { tabs[(i-1+tabs.length) % tabs.length].click(); tabs[(i-1+tabs.length) % tabs.length].focus(); }
+  });
+});
 </script>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="confirm-modal" role="dialog" aria-modal="true">
+  <div id="confirm-modal-inner">
+    <div id="confirm-modal-text"></div>
+    <div class="confirm-btns">
+      <button id="confirm-yes" class="btn-submit" style="margin-top:0;">Potvrdit</button>
+      <button id="confirm-no" class="confirm-btn-no">Zrušit</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
