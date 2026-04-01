@@ -254,6 +254,22 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
   .pillars { grid-template-columns:1fr !important; }
 }
 
+/* Scroll reveal */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* Cookie consent */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:10000;background:var(--dark2);border-top:1px solid rgba(201,168,76,.18);padding:22px 60px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;animation:cbSlide .4s ease}
+@keyframes cbSlide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.cookie-banner p{font-size:13px;color:rgba(240,237,232,.7);line-height:1.7;max-width:720px;flex:1}
+.cookie-banner a{color:var(--gold);text-decoration:underline}
+.cookie-btns{display:flex;gap:10px;flex-shrink:0}
+.cookie-btn-accept{background:var(--gold);color:#000;border:none;padding:12px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:600;cursor:pointer;transition:background .3s}
+.cookie-btn-accept:hover{background:#E8C96A}
+.cookie-btn-decline{background:transparent;border:1px solid rgba(201,168,76,.35);color:rgba(201,168,76,.7);padding:12px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .3s}
+.cookie-btn-decline:hover{border-color:var(--gold);color:var(--gold)}
+@media(max-width:768px){.cookie-banner{padding:18px 22px;flex-direction:column;text-align:center}.cookie-btns{justify-content:center}}
+
 </style>
 </head>
 <body>
@@ -403,6 +419,7 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     </div>
   </div>
   <div class="sec-cta">
+    <a href="zasebe-mind-vyzvy-cile.html" class="btn-gold" onclick="return fadeNav(this)"><span>Výzva: Vědomé stravování</span><em>→</em></a>
     <a href="#vstupy" class="btn-outline">Pokračovat: Vstupy ↓</a>
   </div>
 </section>
@@ -473,6 +490,7 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
     </div>
   </div>
   <div class="sec-cta">
+    <a href="zasebe-klid.html" class="btn-gold" onclick="return fadeNav(this)"><span>Zkus meditaci nebo dech</span><em>→</em></a>
     <a href="#den" class="btn-outline">Pokračovat: Denní rituál ↓</a>
   </div>
 </section>
@@ -603,17 +621,12 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
 <footer>
   <div class="fc">© 2026 Zasebe Mind. Všechna práva vyhrazena.</div>
   <div class="fl">
-    <a href="#">Cookies</a>
-    <a href="#">Ochrana soukromí</a>
-    <a href="index.html">Zasebe ekosystém</a>
+    <a href="index.html" onclick="return fadeNav(this)">Zasebe ekosystém</a>
+    <a href="zasady-ochrany-udaju.html">Ochrana údajů</a>
   </div>
 </footer>
 
 <script>
-  if (matchMedia('(pointer:fine)').matches) {
-    const c = document.getElementById('cursor');
-    if (c) document.addEventListener('mousemove', e => { c.style.transform='translate('+(e.clientX-2.5)+'px,'+(e.clientY-2.5)+'px)'; });
-  }
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
     document.getElementById('hamburger').classList.toggle('open');
@@ -628,6 +641,36 @@ footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--go
   }
   window.addEventListener('pageshow', () => { document.body.classList.remove('fade-out'); });
 
+  // Scroll reveal
+  document.querySelectorAll('.section .sec-tag, .section .sec-title, .section .content-desc, .section .sec-cta, .section .num-list, .section .do-list, .section .dont-list, .section .day-arc, .section .quote, .pillars').forEach(function(el) {
+    el.classList.add('reveal');
+  });
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+  // Cursor
+  if (matchMedia('(pointer:fine)').matches) {
+    var c = document.getElementById('cursor');
+    if (c) document.addEventListener('mousemove', function(e) { c.style.transform='translate('+(e.clientX-2.5)+'px,'+(e.clientY-2.5)+'px)'; });
+  }
+
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('zm_cookie_consent')) return;
+  var b=document.createElement('div');
+  b.className='cookie-banner';
+  b.id='cookieBanner';
+  b.innerHTML='<p>Tento web používá localStorage pro ukládání tvých dat (nastavení, pokrok) a načítá písma z Google Fonts, což odesílá tvou IP adresu na servery Google. Žádné sledovací cookies nepoužíváme. <a href="zasady-ochrany-udaju.html">Zásady ochrany osobních údajů</a></p><div class="cookie-btns"><button class="cookie-btn-accept" onclick="localStorage.setItem(\'zm_cookie_consent\',\'accepted\');document.getElementById(\'cookieBanner\').remove()">Rozumím</button><button class="cookie-btn-decline" onclick="localStorage.setItem(\'zm_cookie_consent\',\'declined\');document.getElementById(\'cookieBanner\').remove()">Odmítnout</button></div>';
+  document.body.appendChild(b);
+})();
 </script>
 </body>
 </html>

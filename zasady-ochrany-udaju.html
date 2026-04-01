@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070709">
+<title>Zasebe Mind — Zásady ochrany osobních údajů</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --black: #070709;
+  --dark2: #0E0E12;
+  --dark3: #141418;
+  --white: #F0EDE8;
+  --gold-border: rgba(201,168,76,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+html,body { background:#070709 !important; }
+body {
+  background:var(--black);
+  color:var(--white);
+  font-family:'Montserrat',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+
+nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,9,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gold-border); }
+.logo-wrap { display:flex;align-items:center;gap:12px;text-decoration:none; }
+.logo-text span:first-child { font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;display:block; }
+.logo-text span:last-child { font-size:12px;font-weight:400;letter-spacing:4px;color:rgba(201,168,76,.5);text-transform:uppercase;display:block;margin-top:4px; }
+
+.privacy-page {
+  max-width:760px;
+  margin:0 auto;
+  padding:140px 60px 80px;
+}
+.privacy-page h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,5vw,48px);
+  font-weight:300;
+  color:var(--white);
+  margin-bottom:8px;
+}
+.privacy-page h1 em { font-style:italic;color:var(--gold); }
+.privacy-page .updated {
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:rgba(201,168,76,.5);
+  margin-bottom:40px;
+  display:block;
+}
+.privacy-page h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;
+  font-weight:400;
+  color:var(--gold);
+  margin:36px 0 14px;
+  padding-top:20px;
+  border-top:1px solid rgba(201,168,76,.08);
+}
+.privacy-page h2:first-of-type { border-top:none;padding-top:0; }
+.privacy-page p, .privacy-page li {
+  font-size:15px;
+  line-height:1.85;
+  color:rgba(240,237,232,.7);
+  margin-bottom:12px;
+}
+.privacy-page ul {
+  list-style:none;
+  margin-bottom:16px;
+}
+.privacy-page li {
+  padding:6px 0;
+  padding-left:16px;
+  position:relative;
+}
+.privacy-page li::before {
+  content:'';
+  width:5px;height:5px;
+  background:var(--gold);
+  border-radius:50%;
+  position:absolute;
+  left:0;top:14px;
+}
+.privacy-page strong { color:var(--white);font-weight:500; }
+.privacy-page a { color:var(--gold);text-decoration:underline; }
+
+footer { background:var(--black);padding:46px 60px;border-top:1px solid var(--gold-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px; }
+.fc { font-size:15px;color:rgba(240,237,232,.45); }
+.fl { display:flex;gap:22px; }
+.fl a { font-size:13px;color:rgba(240,237,232,.45);text-decoration:none;transition:color .3s; }
+.fl a:hover { color:var(--gold); }
+
+@media (max-width:768px) {
+  nav { padding:14px 20px !important; }
+  .privacy-page { padding:110px 22px 60px; }
+  footer { padding:36px 22px !important;flex-direction:column !important;text-align:center !important; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-wrap">
+    <div class="logo-text">
+      <span>zasebe mind</span>
+      <span>Klid · Mysl · Rovnováha</span>
+    </div>
+  </a>
+</nav>
+
+<main class="privacy-page">
+  <h1>Zásady ochrany <em>osobních údajů</em></h1>
+  <span class="updated">Poslední aktualizace: 31. března 2026</span>
+
+  <h2>1. Správce</h2>
+  <p>Provozovatelem webu <strong>Zasebe Mind</strong> (dále jen „web") je fyzická osoba. Kontaktní e-mail pro dotazy ohledně ochrany údajů: <strong>zasebe@zasebe.com</strong>.</p>
+
+  <h2>2. Jaká data zpracováváme</h2>
+  <p>Web <strong>nepoužívá</strong> cookies a <strong>nesbírá</strong> žádné osobní údaje prostřednictvím registrace, formulářů ani analytických nástrojů. Zpracování se omezuje na:</p>
+  <ul>
+    <li><strong>localStorage</strong> — data o tvém pokroku, nastavení a výzvách se ukládají výhradně v tvém prohlížeči. Na server se nic neodesílá.</li>
+    <li><strong>Google Fonts</strong> — web načítá písma ze serverů Google (fonts.googleapis.com, fonts.gstatic.com). Při tomto požadavku se na servery Google odesílá tvá IP adresa. Google tyto údaje zpracovává dle svých <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">zásad ochrany soukromí</a>.</li>
+    <li><strong>CDN knihovny</strong> — stránka Výzvy & Cíle načítá knihovnu html2canvas z CDN (cdnjs.cloudflare.com), při čemž se rovněž přenáší IP adresa.</li>
+  </ul>
+
+  <h2>3. Právní základ</h2>
+  <p>Zpracování IP adresy při načítání externích zdrojů (Google Fonts, CDN) probíhá na základě <strong>oprávněného zájmu</strong> (čl. 6 odst. 1 písm. f) GDPR) — zajištění správného zobrazení a funkčnosti webu. localStorage slouží pro <strong>nezbytnou funkčnost</strong> aplikace.</p>
+
+  <h2>4. Sdílení dat s třetími stranami</h2>
+  <ul>
+    <li><strong>Google LLC</strong> (Google Fonts) — sídlo v USA, přenos údajů na základě standardních smluvních doložek (SCC).</li>
+    <li><strong>Cloudflare, Inc.</strong> (CDN) — sídlo v USA, přenos údajů na základě standardních smluvních doložek (SCC).</li>
+  </ul>
+  <p>Žádné další třetí strany data nezpracovávají. Nepoužíváme reklamy, analytiku, sociální pluginy ani sledovací pixely.</p>
+
+  <h2>5. Doba uchovávání</h2>
+  <p>Data v localStorage zůstávají v prohlížeči, dokud je ručně nesmažeš (vymazání dat prohlížeče nebo export/smazání přes funkce webu). IP adresy zpracovávané Google a Cloudflare se řídí jejich vlastními zásadami uchovávání.</p>
+
+  <h2>6. Tvá práva</h2>
+  <p>Podle GDPR máš právo na:</p>
+  <ul>
+    <li><strong>Přístup</strong> — informace o tom, jaká data se zpracovávají</li>
+    <li><strong>Opravu</strong> — úpravu nepřesných údajů</li>
+    <li><strong>Výmaz</strong> — smazání dat (localStorage smažeš přímo v prohlížeči)</li>
+    <li><strong>Omezení zpracování</strong></li>
+    <li><strong>Námitku</strong> proti zpracování na základě oprávněného zájmu</li>
+    <li><strong>Přenositelnost</strong> — export dat (web nabízí funkci exportu)</li>
+    <li><strong>Podání stížnosti</strong> u Úřadu pro ochranu osobních údajů (ÚOOÚ), <a href="https://www.uoou.cz" target="_blank" rel="noopener">www.uoou.cz</a></li>
+  </ul>
+
+  <h2>7. Zabezpečení</h2>
+  <p>Veškerá data zůstávají lokálně v tvém prohlížeči. Neexistuje serverová databáze, do které by se data odesílala. To minimalizuje riziko úniku dat.</p>
+
+  <h2>8. Změny zásad</h2>
+  <p>Tyto zásady mohou být aktualizovány. Datum poslední aktualizace je uvedeno v záhlaví tohoto dokumentu.</p>
+</main>
+
+<footer>
+  <div class="fc">&copy; 2026 Zasebe Mind. Všechna práva vyhrazena.</div>
+  <div class="fl">
+    <a href="index.html">Zasebe Mind</a>
+  </div>
+</footer>
+
+</body>
+</html>

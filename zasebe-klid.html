@@ -230,7 +230,7 @@ nav {
    BREATHING-SPECIFIC CSS
    ══════════════════════════════════════════════════════════════════════ */
 .breath-section {
-  padding: 90px 40px 100px;
+  padding: 50px 40px 60px;
   border-top: 1px solid var(--gold-dim);
   background: var(--dark2);
   display: flex;
@@ -242,7 +242,7 @@ nav {
 .techniques {
   display: flex;
   gap: 2px;
-  margin-bottom: 54px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -251,10 +251,10 @@ nav {
   border: none;
   color: var(--white-dim);
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 12px 22px;
+  padding: 10px 16px;
   cursor: pointer;
   transition: all .3s;
   border-bottom: 2px solid transparent;
@@ -277,9 +277,9 @@ nav {
 /* circle arena */
 .arena {
   position: relative;
-  width: 320px;
-  height: 320px;
-  margin-bottom: 52px;
+  width: 240px;
+  height: 240px;
+  margin-bottom: 28px;
 }
 .ring-outer {
   position: absolute;
@@ -331,8 +331,8 @@ nav {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  width: 140px;
-  height: 140px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: radial-gradient(circle at 40% 38%,
     rgba(201,168,76,.28) 0%,
@@ -367,7 +367,7 @@ nav {
 }
 .phase-label {
   position: absolute;
-  bottom: 28px;
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Cormorant Garamond', serif;
@@ -385,7 +385,7 @@ nav {
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: 'Cormorant Garamond', serif;
-  font-size: 52px;
+  font-size: 38px;
   font-weight: 300;
   color: rgba(240,237,232,.85);
   line-height: 1;
@@ -414,17 +414,17 @@ nav {
 .tech-detail {
   display: flex;
   gap: 2px;
-  margin-bottom: 52px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 520px;
+  max-width: 460px;
   width: 100%;
 }
 .phase-card {
   flex: 1;
-  min-width: 90px;
+  min-width: 80px;
   background: var(--dark3);
-  padding: 18px 14px;
+  padding: 12px 10px;
   text-align: center;
   border-bottom: 2px solid transparent;
   transition: all .3s;
@@ -442,7 +442,7 @@ nav {
 }
 .phase-card-sec {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 300;
   color: var(--white);
 }
@@ -461,16 +461,16 @@ nav {
   max-width: 440px;
   font-style: italic;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
+  font-size: 15px;
   border-top: 1px solid var(--gold-dim);
-  padding-top: 28px;
+  padding-top: 20px;
 }
 .benefit-note strong { color: rgba(201,168,76,.75); font-weight: 400; }
 
 /* completion for breathing */
 .completion-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 300;
   font-style: italic;
   color: var(--white);
@@ -480,6 +480,65 @@ nav {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: rgba(201,168,76,.65);
+}
+
+/* challenge check-off panel */
+/* Toast */
+#klid-toast { position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark2);border:1px solid rgba(201,168,76,0.3);color:var(--white);font-family:'Montserrat',sans-serif;font-size:13px;letter-spacing:1.5px;padding:14px 28px;z-index:9000;opacity:0;transition:all .3s ease;pointer-events:none;white-space:nowrap; }
+#klid-toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+
+.challenge-panel {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 8px;
+  padding: 20px 24px;
+  background: rgba(201,168,76,.04);
+  border: 1px solid rgba(201,168,76,.15);
+  animation: fadeUp .9s ease;
+  display: none;
+}
+.challenge-panel.show { display: block; }
+.challenge-panel-title {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.5);
+  margin-bottom: 12px;
+}
+.challenge-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+.challenge-panel-item input[type="checkbox"] {
+  accent-color: var(--gold);
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+.challenge-panel-item span {
+  font-size: 14px;
+  color: rgba(240,237,232,.7);
+  transition: color .2s;
+}
+.challenge-panel-item.checked span {
+  color: var(--gold);
+  text-decoration: line-through;
+}
+.challenge-panel-empty {
+  font-size: 13px;
+  color: rgba(240,237,232,.3);
+  font-style: italic;
+}
+.session-stat {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(201,168,76,.08);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: rgba(201,168,76,.4);
 }
 
 /* sound toggle */
@@ -504,17 +563,17 @@ nav {
 .top-bar {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 460px;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
    MEDITATION-SPECIFIC CSS
    ══════════════════════════════════════════════════════════════════════ */
 .med-section {
-  padding: 90px 40px 100px;
+  padding: 50px 40px 60px;
   background: var(--black);
   border-top: 1px solid var(--gold-dim);
   display: flex;
@@ -526,7 +585,7 @@ nav {
 .ambience-row {
   display: flex;
   gap: 2px;
-  margin-bottom: 44px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -535,10 +594,10 @@ nav {
   border: none;
   color: var(--white-dim);
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 11px 20px;
+  padding: 9px 14px;
   cursor: pointer;
   transition: all .3s;
   border-bottom: 2px solid transparent;
@@ -555,20 +614,20 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 56px;
+  gap: 12px;
+  margin-bottom: 28px;
   width: 100%;
-  max-width: 420px;
+  max-width: 360px;
 }
-.dur-display { display: flex; align-items: baseline; gap: 8px; }
+.dur-display { display: flex; align-items: baseline; gap: 6px; }
 .dur-number {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 72px;
+  font-size: 48px;
   font-weight: 300;
   color: var(--gold);
   line-height: 1;
   transition: color .3s;
-  min-width: 110px;
+  min-width: 70px;
   text-align: right;
 }
 .dur-unit {
@@ -629,9 +688,9 @@ nav {
 /* clock arena */
 .clock-arena {
   position: relative;
-  width: 280px;
-  height: 280px;
-  margin-bottom: 48px;
+  width: 220px;
+  height: 220px;
+  margin-bottom: 28px;
 }
 .clock-svg {
   position: absolute;
@@ -696,7 +755,7 @@ nav {
 }
 .clock-time {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 52px;
+  font-size: 38px;
   font-weight: 300;
   color: var(--white);
   line-height: 1;
@@ -714,9 +773,9 @@ nav {
 /* wave viz */
 .wave-container {
   width: 100%;
-  max-width: 480px;
-  height: 48px;
-  margin-bottom: 44px;
+  max-width: 360px;
+  height: 36px;
+  margin-bottom: 24px;
   position: relative;
   overflow: hidden;
 }
@@ -726,8 +785,8 @@ nav {
 .vol-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 44px;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 .vol-label {
   font-size: 11px;
@@ -874,16 +933,28 @@ nav {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .breath-section, .med-section { padding: 90px 20px 80px !important; }
-  .sec-desc { font-size: 16px !important; }
-  .tech-btn { padding: 14px 18px !important; font-size: 11px !important; }
-  .amb-btn { padding: 14px 18px !important; font-size: 11px !important; }
+  .breath-section, .med-section { padding: 40px 16px 50px !important; }
+  .sec-desc { font-size: 15px !important; }
+  .tech-btn { padding: 9px 12px !important; font-size: 10px !important; letter-spacing: 1px !important; }
+  .amb-btn { padding: 8px 10px !important; font-size: 10px !important; letter-spacing: 1px !important; }
   .tab-btn { padding: 14px 22px !important; font-size: 10px !important; }
-  .benefit-note { font-size: 16px !important; }
-  .med-tip { font-size: 16px !important; }
-  .phase-card-sec { font-size: 22px !important; }
-  .stat-value { font-size: 28px !important; }
-  .controls { margin-bottom: 32px !important; }
+  .benefit-note { font-size: 14px !important; }
+  .med-tip { font-size: 14px !important; }
+  .phase-card-sec { font-size: 18px !important; }
+  .phase-card { padding: 8px 6px !important; }
+  .stat-value { font-size: 24px !important; }
+  .controls { margin-bottom: 20px !important; }
+  .arena { width: 200px !important; height: 200px !important; margin-bottom: 20px !important; }
+  .breath-core { width: 80px !important; height: 80px !important; }
+  .countdown { font-size: 30px !important; }
+  .clock-arena { width: 190px !important; height: 190px !important; margin-bottom: 20px !important; }
+  .clock-time { font-size: 32px !important; }
+  .dur-number { font-size: 38px !important; min-width: 56px !important; }
+  .duration-wrap { margin-bottom: 20px !important; max-width: 300px !important; }
+  .tech-detail { margin-bottom: 14px !important; }
+  .techniques { margin-bottom: 16px !important; }
+  .ambience-row { margin-bottom: 14px !important; }
+  .top-bar { margin-bottom: 10px !important; }
   .info-grid-4 { grid-template-columns: 1fr 1fr !important; }
   .info-grid-2 { grid-template-columns: 1fr !important; gap: 40px !important; }
   .info-item-title { font-size: 15px !important; }
@@ -899,14 +970,31 @@ nav {
   .cycle-wrap { gap:24px !important; }
 }
 @media (max-width: 480px) {
-  .arena { width: 260px; height: 260px; }
-  .breath-core { width: 110px; height: 110px; }
-  .countdown { font-size: 42px; }
-  .stats-bar { gap: 28px; }
-  .clock-arena { width: 240px; height: 240px; }
-  .clock-time { font-size: 42px; }
+  .arena { width: 180px !important; height: 180px !important; }
+  .breath-core { width: 70px !important; height: 70px !important; }
+  .countdown { font-size: 26px !important; }
+  .stats-bar { gap: 20px; }
+  .clock-arena { width: 170px !important; height: 170px !important; }
+  .clock-time { font-size: 28px !important; }
   .info-grid-4 { grid-template-columns: 1fr !important; }
+  .tech-btn { padding: 8px 10px !important; font-size: 9px !important; }
+  .amb-btn { padding: 7px 8px !important; font-size: 9px !important; }
+  .dur-number { font-size: 32px !important; }
+  .phase-label { font-size: 12px !important; bottom: 12px !important; }
 }
+
+/* Cookie consent */
+.cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:10000;background:var(--dark2);border-top:1px solid rgba(201,168,76,.18);padding:22px 60px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;animation:cbSlide .4s ease}
+@keyframes cbSlide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.cookie-banner p{font-size:13px;color:rgba(240,237,232,.7);line-height:1.7;max-width:720px;flex:1}
+.cookie-banner a{color:var(--gold);text-decoration:underline}
+.cookie-btns{display:flex;gap:10px;flex-shrink:0}
+.cookie-btn-accept{background:var(--gold);color:#000;border:none;padding:12px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:600;cursor:pointer;transition:background .3s}
+.cookie-btn-accept:hover{background:#E8C96A}
+.cookie-btn-decline{background:transparent;border:1px solid rgba(201,168,76,.35);color:rgba(201,168,76,.7);padding:12px 28px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .3s}
+.cookie-btn-decline:hover{border-color:var(--gold);color:var(--gold)}
+@media(max-width:768px){.cookie-banner{padding:18px 22px;flex-direction:column;text-align:center}.cookie-btns{justify-content:center}}
+
 </style>
 </head>
 <body>
@@ -942,6 +1030,15 @@ nav {
   <button class="tab-btn" id="tabMed" onclick="switchTab('med')">Meditace</button>
 </div>
 
+<!-- SESSION STATS BAR -->
+<div id="session-stats-bar" style="display:none;max-width:600px;margin:0 auto;padding:10px 24px 0;">
+  <div style="display:flex;justify-content:center;gap:28px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(201,168,76,.4);">
+    <span>Tento týden: <strong style="color:var(--gold);font-weight:500;" id="ss-week-count">0</strong> sessions</span>
+    <span>Celkem: <strong style="color:var(--gold);font-weight:500;" id="ss-week-mins">0</strong> min</span>
+    <span>Série: <strong style="color:var(--gold);font-weight:500;" id="ss-streak">0</strong> dní</span>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════════════════
      PANEL 1 — BREATHING
      ═══════════════════════════════════════════════════════════════════ -->
@@ -953,6 +1050,12 @@ nav {
   <h2 class="sec-title">Zklidni svou<br><em>mysl dýcháním</em></h2>
   <p class="sec-desc">Vědomé dýchání přepne nervový systém z boje do klidu během minut. Vyber techniku a začni.</p>
   <a href="#breath-info" class="scroll-more">Více o dýchání <svg viewBox="0 0 16 16"><polyline points="3 6 8 11 13 6"/></svg></a>
+
+  <!-- TIME-OF-DAY RECOMMENDATION -->
+  <div id="time-rec" style="display:none;margin-bottom:16px;padding:12px 20px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);font-size:13px;color:rgba(240,237,232,.6);text-align:center;cursor:pointer;transition:border-color .3s;" onclick="this.style.display='none'">
+    <span style="color:var(--gold);font-weight:500;" id="time-rec-text"></span>
+    <span style="font-size:11px;color:rgba(240,237,232,.25);margin-left:8px;">×</span>
+  </div>
 
   <!-- TECHNIQUE PICKER -->
   <div class="techniques" id="techPicker">
@@ -1022,6 +1125,10 @@ nav {
   <div class="completion" id="completion">
     <div class="completion-title">Skvělá práce ✦</div>
     <div class="completion-sub">Cíl splněn — cítíš rozdíl?</div>
+    <div class="challenge-panel" id="breath-challenge-panel">
+      <div class="challenge-panel-title">Odškrtni si ve výzvách</div>
+      <div id="breath-challenge-list"></div>
+    </div>
   </div>
 
   <!-- BENEFIT -->
@@ -1256,13 +1363,14 @@ nav {
   <!-- DURATION -->
   <div class="duration-wrap">
     <div class="dur-display">
-      <div class="dur-number" id="med-durNumber">10</div>
+      <div class="dur-number" id="med-durNumber">5</div>
       <div class="dur-unit">minut</div>
     </div>
     <input type="range" class="dur-slider" id="med-durSlider"
-      min="10" max="60" step="1" value="10"
+      min="5" max="60" step="1" value="5"
       oninput="med.onDurSlider(this.value)">
     <div class="dur-ticks">
+      <span class="dur-tick" id="med-tick5">5</span>
       <span class="dur-tick" id="med-tick10">10</span>
       <span class="dur-tick" id="med-tick20">20</span>
       <span class="dur-tick" id="med-tick30">30</span>
@@ -1320,6 +1428,10 @@ nav {
     <div class="comp-title">Meditace dokončena</div>
     <div class="comp-sub" id="med-compSub">10 minut klidu</div>
     <div class="comp-stat" id="med-compStat"></div>
+    <div class="challenge-panel" id="med-challenge-panel">
+      <div class="challenge-panel-title">Odškrtni si ve výzvách</div>
+      <div id="med-challenge-list"></div>
+    </div>
   </div>
 
   <!-- TIP -->
@@ -1367,7 +1479,7 @@ nav {
         </div>
         <div style="padding:18px 22px;display:flex;align-items:flex-start;gap:14px;background:var(--dark3);">
           <div style="width:7px;height:7px;border-radius:50%;background:rgba(76,175,80,.7);flex-shrink:0;margin-top:5px;"></div>
-          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Začni s 10 minutami</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Nemusíš sedět hodinu. 10 minut denně už po 8 týdnech mění strukturu mozku.</div></div>
+          <div><div class="info-item-title" style="font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;">Začni s 5 minutami</div><div class="info-item-text" style="font-size:14px;line-height:1.75;color:rgba(240,237,232,.7);font-weight:300;">Nemusíš sedět hodinu. Už 5 minut denně ti pomůže zklidnit mysl. Po 8 týdnech se mění struktura mozku.</div></div>
         </div>
       </div>
     </div>
@@ -1731,6 +1843,7 @@ const breath = (function() {
     document.getElementById('completion').classList.add('show');
     playTone(528, 1.2, 0.1);
     setTimeout(function() { playTone(639, 1.2, 0.08); }, 500);
+    if (navigator.vibrate) navigator.vibrate([100, 80, 100, 80, 200]);
     totalCycles = 0;
     currentPhase = 0;
   }
@@ -1741,9 +1854,29 @@ const breath = (function() {
     document.getElementById('soundBtn').style.opacity = soundOn ? '1' : '.4';
   }
 
-  // Init
-  selectTech(0);
+  // Init — time-of-day recommendation
+  var hour = new Date().getHours();
+  var recIdx = 2, recText = '';
+  if (hour >= 5 && hour < 10) {
+    recIdx = 1; recText = 'Ráno — Box Breathing pro soustředění na celý den';
+  } else if (hour >= 10 && hour < 14) {
+    recIdx = 2; recText = 'Dopoledne — 4–4–4 pro rychlý reset mezi úkoly';
+  } else if (hour >= 14 && hour < 18) {
+    recIdx = 1; recText = 'Odpoledne — Box Breathing pro druhý dech';
+  } else if (hour >= 18 && hour < 22) {
+    recIdx = 0; recText = 'Večer — 4–7–8 pro zklidnění a lepší spánek';
+  } else {
+    recIdx = 3; recText = 'Noc — 2–1–4–1 pro hluboký klid před spánkem';
+  }
+  selectTech(recIdx);
   updateBpm();
+  var recEl = document.getElementById('time-rec');
+  var recTextEl = document.getElementById('time-rec-text');
+  if (recEl && recTextEl) {
+    recTextEl.textContent = recText;
+    recEl.style.display = '';
+    recEl.onclick = function() { selectTech(recIdx); recEl.style.display = 'none'; };
+  }
 
   return {
     selectTech: selectTech,
@@ -1783,8 +1916,8 @@ const med = (function() {
   let currentAmb = 0;
   let running = false;
   let paused = false;
-  let secondsLeft = 10 * 60;
-  let totalDur = 10 * 60;
+  let secondsLeft = 5 * 60;
+  let totalDur = 5 * 60;
   let mainInterval = null;
   let orbitAngle = -90;
   let audioCtx = null;
@@ -2172,6 +2305,7 @@ const med = (function() {
     stopAmbience(3);
     setTimeout(function() { playBowl(210, 7); }, 500);
     setTimeout(function() { playBowl(174, 8); }, 2000);
+    if (navigator.vibrate) navigator.vibrate([200, 150, 300]);
 
     var mins = Math.round(totalDur / 60);
     document.getElementById('med-compSub').textContent = mins + ' minut klidu';
@@ -2188,7 +2322,7 @@ const med = (function() {
   function _onDurSlider(val) {
     if (running) _reset();
     var mins = parseInt(val);
-    var fill = ((mins - 10) / 50) * 100;
+    var fill = ((mins - 5) / 55) * 100;
     document.getElementById('med-durSlider').style.setProperty('--fill', fill + '%');
     document.getElementById('med-durNumber').textContent = mins;
     secondsLeft = mins * 60;
@@ -2196,9 +2330,9 @@ const med = (function() {
     updateClock('Připraveno');
     renderMilestones();
     rotateTip();
-    [10,20,30,40,50,60].forEach(function(t) {
+    [5,10,20,30,40,50,60].forEach(function(t) {
       var el = document.getElementById('med-tick' + t);
-      if (el) el.classList.toggle('near', Math.abs(t - mins) <= 4);
+      if (el) el.classList.toggle('near', Math.abs(t - mins) <= 3);
     });
   }
 
@@ -2238,6 +2372,248 @@ const med = (function() {
     get _running() { return running; }
   };
 
+})();
+
+// ══════════════════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════════════════
+(function() {
+  var toastEl = document.createElement('div');
+  toastEl.id = 'klid-toast';
+  document.body.appendChild(toastEl);
+  var _timer;
+  window._showKlidToast = function(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(_timer);
+    _timer = setTimeout(function() { toastEl.classList.remove('show'); }, 3500);
+  };
+})();
+
+// ══════════════════════════════════════════════════════════════════════
+// CROSS-PAGE: CHALLENGES CHECK-OFF + SESSION TRACKING
+// ══════════════════════════════════════════════════════════════════════
+(function() {
+  var VC_KEY = 'zasebe_mind_vc2';
+  var SESSION_KEY = 'zasebe_mind_sessions';
+
+  function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function todayStr() { return isoDate(new Date()); }
+
+  function loadVC() {
+    try { var d = JSON.parse(localStorage.getItem(VC_KEY)); return (d && d.challenges) ? d : null; }
+    catch(e) { return null; }
+  }
+  function saveVC(data) { localStorage.setItem(VC_KEY, JSON.stringify(data)); }
+
+  // Find active challenges relevant to breathing/meditation
+  function getRelevantChallenges() {
+    var data = loadVC();
+    if (!data) return [];
+    var today = todayStr();
+    var keywords = ['medita','dech','dých','breath','klid','mindful','ranní','ráno','rutina','sprch','spán'];
+    var cats = ['zdravi','mysl'];
+    return data.challenges.filter(function(ch) {
+      if (ch.completed || ch.paused) return false;
+      if (ch.checkedDays && ch.checkedDays.indexOf(today) >= 0) return false;
+      var nameLower = (ch.name || '').toLowerCase();
+      var descLower = (ch.desc || '').toLowerCase();
+      var matchKeyword = keywords.some(function(kw) { return nameLower.indexOf(kw) >= 0 || descLower.indexOf(kw) >= 0; });
+      var matchCat = cats.indexOf(ch.category) >= 0;
+      return matchKeyword || matchCat;
+    });
+  }
+
+  function renderChallengePanel(listElId, panelElId) {
+    var listEl = document.getElementById(listElId);
+    var panelEl = document.getElementById(panelElId);
+    if (!listEl || !panelEl) return;
+
+    var challenges = getRelevantChallenges();
+    if (challenges.length === 0) {
+      panelEl.classList.remove('show');
+      return;
+    }
+
+    // Auto-check all relevant challenges
+    var data = loadVC();
+    var today = todayStr();
+    var autoChecked = [];
+    challenges.forEach(function(ch) {
+      var real = data.challenges.find(function(c) { return c.id === ch.id; });
+      if (real && real.checkedDays.indexOf(today) < 0) {
+        real.checkedDays.push(today);
+        autoChecked.push(real);
+        if (real.checkedDays.length >= real.days && !real.completed) {
+          real.completed = true;
+          real.completedDate = new Date().toISOString();
+          if (!data.timeline) data.timeline = [];
+          data.timeline.unshift({ date: today, text: 'Dokončena výzva: ' + real.name + ' (' + real.days + ' dní)' });
+        }
+      }
+    });
+    if (autoChecked.length > 0) saveVC(data);
+
+    var html = '';
+    autoChecked.forEach(function(ch) {
+      html += '<label class="challenge-panel-item checked" data-id="' + ch.id + '">' +
+        '<input type="checkbox" checked onchange="window._checkOffChallenge(' + ch.id + ', this)">' +
+        '<span>' + _esc(ch.name) + '</span>' +
+      '</label>';
+    });
+    if (autoChecked.length > 0) {
+      html += '<div style="font-size:11px;color:rgba(240,237,232,.25);margin-top:8px;text-align:center;">Automaticky odškrtnuto · odškrtni zpět pokud nechceš</div>';
+    } else {
+      html += '<div class="challenge-panel-empty">Vše odškrtnuto na dnešek</div>';
+    }
+    listEl.innerHTML = html;
+    panelEl.classList.add('show');
+  }
+
+  function _esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  window._checkOffChallenge = function(chId, checkbox) {
+    var data = loadVC();
+    if (!data) return;
+    var ch = data.challenges.find(function(c) { return c.id === chId; });
+    if (!ch) return;
+    var today = todayStr();
+    var idx = ch.checkedDays.indexOf(today);
+    if (checkbox.checked && idx < 0) {
+      ch.checkedDays.push(today);
+    } else if (!checkbox.checked && idx >= 0) {
+      ch.checkedDays.splice(idx, 1);
+    }
+    // Check completion
+    if (ch.checkedDays.length >= ch.days && !ch.completed) {
+      ch.completed = true;
+      ch.completedDate = new Date().toISOString();
+      if (!data.timeline) data.timeline = [];
+      data.timeline.unshift({ date: today, text: 'Dokončena výzva: ' + ch.name + ' (' + ch.days + ' dní)' });
+    } else if (ch.checkedDays.length < ch.days) {
+      ch.completed = false;
+      delete ch.completedDate;
+    }
+    saveVC(data);
+    // Visual feedback
+    var item = checkbox.closest('.challenge-panel-item');
+    if (item) item.classList.toggle('checked', checkbox.checked);
+  };
+
+  // Save session to localStorage
+  function saveSession(type, durationSec) {
+    var sessions = [];
+    try { sessions = JSON.parse(localStorage.getItem(SESSION_KEY)) || []; } catch(e) {}
+    sessions.push({
+      type: type,
+      date: todayStr(),
+      duration: Math.round(durationSec),
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem(SESSION_KEY, JSON.stringify(sessions));
+    if (window._refreshSessionStats) window._refreshSessionStats();
+    var mins = Math.round(durationSec / 60);
+    var label = type === 'breathing' ? 'Dechové cvičení' : 'Meditace';
+    if (window._showKlidToast) window._showKlidToast(label + ' uloženo · ' + mins + ' min');
+  }
+
+  // Hook into finishSession (breathing)
+  var _origBreathFinish = null;
+  // We need to patch finishSession — it's inside the breath IIFE
+  // Instead, observe the completion element
+  var breathObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.target.classList.contains('show')) {
+        renderChallengePanel('breath-challenge-list', 'breath-challenge-panel');
+        // Save session — get elapsed time from stats
+        var statEl = document.getElementById('statTime');
+        if (statEl) {
+          var parts = statEl.textContent.split(':');
+          var secs = 0;
+          if (parts.length === 2) secs = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+          else if (parts.length === 3) secs = parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+          if (secs > 0) saveSession('breathing', secs);
+        }
+      }
+    });
+  });
+  var breathComp = document.getElementById('completion');
+  if (breathComp) breathObserver.observe(breathComp, { attributes: true, attributeFilter: ['class'] });
+
+  // Hook into finishMed (meditation)
+  var medObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.target.classList.contains('show')) {
+        renderChallengePanel('med-challenge-list', 'med-challenge-panel');
+        // Save session — get duration from the subtitle text
+        var subEl = document.getElementById('med-compSub');
+        if (subEl) {
+          var match = subEl.textContent.match(/(\d+)/);
+          if (match) saveSession('meditation', parseInt(match[1]) * 60);
+        }
+      }
+    });
+  });
+  var medComp = document.getElementById('med-completion');
+  if (medComp) medObserver.observe(medComp, { attributes: true, attributeFilter: ['class'] });
+
+})();
+
+// ══════════════════════════════════════════════════════════════════════
+// SESSION STATS BAR
+// ══════════════════════════════════════════════════════════════════════
+(function() {
+  var SESSION_KEY = 'zasebe_mind_sessions';
+  function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+
+  function renderSessionStats() {
+    var sessions = [];
+    try { sessions = JSON.parse(localStorage.getItem(SESSION_KEY)) || []; } catch(e) {}
+    if (sessions.length === 0) return;
+
+    var now = new Date();
+    var dayOfWeek = now.getDay();
+    var mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    var monday = new Date(now); monday.setDate(now.getDate() + mondayOffset); monday.setHours(0,0,0,0);
+    var mondayStr = isoDate(monday);
+
+    var weekCount = 0, weekMins = 0;
+    var daySet = new Set();
+    sessions.forEach(function(s) {
+      daySet.add(s.date);
+      if (s.date >= mondayStr) { weekCount++; weekMins += Math.round((s.duration || 0) / 60); }
+    });
+
+    // Calculate streak
+    var streak = 0;
+    var check = new Date();
+    var todayStr = isoDate(check);
+    if (!daySet.has(todayStr)) check.setDate(check.getDate() - 1);
+    for (var i = 0; i < 400; i++) {
+      if (daySet.has(isoDate(check))) { streak++; check.setDate(check.getDate() - 1); }
+      else break;
+    }
+
+    document.getElementById('ss-week-count').textContent = weekCount;
+    document.getElementById('ss-week-mins').textContent = weekMins;
+    document.getElementById('ss-streak').textContent = streak;
+    document.getElementById('session-stats-bar').style.display = '';
+  }
+
+  renderSessionStats();
+
+  // Re-render when session is saved (MutationObserver on completion panels already triggers save)
+  window._refreshSessionStats = renderSessionStats;
+})();
+</script>
+<script>
+(function(){
+  if(localStorage.getItem('zm_cookie_consent')) return;
+  var b=document.createElement('div');
+  b.className='cookie-banner';
+  b.id='cookieBanner';
+  b.innerHTML='<p>Tento web používá localStorage pro ukládání tvých dat (nastavení, pokrok) a načítá písma z Google Fonts, což odesílá tvou IP adresu na servery Google. Žádné sledovací cookies nepoužíváme. <a href="zasady-ochrany-udaju.html">Zásady ochrany osobních údajů</a></p><div class="cookie-btns"><button class="cookie-btn-accept" onclick="localStorage.setItem(\'zm_cookie_consent\',\'accepted\');document.getElementById(\'cookieBanner\').remove()">Rozumím</button><button class="cookie-btn-decline" onclick="localStorage.setItem(\'zm_cookie_consent\',\'declined\');document.getElementById(\'cookieBanner\').remove()">Odmítnout</button></div>';
+  document.body.appendChild(b);
 })();
 </script>
 </body>
